@@ -1,0 +1,32 @@
+##################################################################################################
+# asn1scc
+##################################################################################################
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asn1scc
+  labels:
+    app: asn1scc
+spec:
+  selector:
+    matchLabels:
+      app: asn1scc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: asn1scc
+    spec:
+      #nodeName: master
+      containers:
+        - name: asn1scc
+          image: lucasor99/asn1scc:latest
+          securityContext:
+            runAsUser: 0
+          
+          ports:
+            - containerPort: 8080  
+
+---
+
