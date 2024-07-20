@@ -164,3 +164,5 @@ DEFAULT_FROM_EMAIL = 'webmaster@example.com'
 
 # Security settings
 
+SESSION_COOKIE_AGE = 60 * 60
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
