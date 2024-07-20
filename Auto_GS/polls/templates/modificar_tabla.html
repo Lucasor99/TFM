@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% extends 'update.html' %}
+
+{% block modificar %}
+
+
+<body>
+    <div class="container">
+        <h1>Modificar Tabla: {{ tabla_seleccionada }}</h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            <h4>Selecciona la fila que quieres modificar :</h4>
+            <div>
+                <select name="column" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                    {% for item in columns %}
+                    <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <h4>Introduzca el Valor: </h4>
+                <input type="text" name="value">
+            </div>
+            <h4>Selecciona la columna y escribe valor que quieres modificar :</h4>
+            <div>
+                <select name="new_column" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"> 
+                    {% for item in columns %}
+                    <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <h4>Introduzca el Valor: </h4>
+                <input type="text" name="new_value">
+            </div>
+            <button type="submit" class="btn btn-primary">Modificar</button>
+        </form>
+    </div>
+</body>
+
+
+
+{% endblock %}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear telecomandos:</title>
+    <link rel="stylesheet" href="{% static 'polls/telecomandstyle.css' %}">
+</head>
+
+
+<body>
+
+    <div class="container">
+        <form action="" method="post">
+            <h1>Insertar Datos</h1>
+            {% csrf_token %}
+            {% for columnName in data.columnNames %}
+            <div class="mb-3">
+                <label class="form-label">{{ columnName }}</label>
+                <input class="form-control" type="text" name="{{ columnName }}" required>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+
+    <div id="popup" style="display:none;">
+        <div id="popup_content">
+            <h2 id="popup_message"></h2>
+            <button type="button" class="btn-close" aria-label="Close" onclick="closePopup() "></button>
+        </div>
+    </div>
+    <script>
+        // Función para abrir la ventana emergente con un mensaje
+        function openPopup(message) {
+            document.getElementById("popup_message").innerText = message;
+            document.getElementById("popup").style.display = "block";
+        }
+
+        // Función para cerrar la ventana emergente
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        // Lógica para mostrar la ventana emergente si hay un mensaje de éxito o error
+        {% if success_message %}
+        openPopup("{{ success_message }}");
+        {% elif error_message %}
+        openPopup("{{ error_message }}");
+        {% endif %}
+    </script>
+
+</body>
+
+
+{% endblock %}

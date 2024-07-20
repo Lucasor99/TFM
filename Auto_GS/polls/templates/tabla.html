@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tabla: {{ item }}</title>
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <h1>Tabla: {{ item }}</h1>
+    </header>
+
+
+    <div class="container">
+        <h2>Estructura del tipo de dato</h2>
+        <div class="accordion" id="accordionPanels"></div>
+    </div>
+
+
+    <script>
+        function renderAccordion(data, parent, index = '') {
+
+
+            data.forEach(function (node, i) {
+                if (node.name === '') {
+                    renderAccordion(node.parameters || [], parent, index + i);
+                    return;
+                }
+                var accordionItem = document.createElement('div');
+                accordionItem.className = 'accordion-item';
+                parent.appendChild(accordionItem);
+
+                var accordionHeader = document.createElement('h2');
+                accordionHeader.className = 'accordion-header';
+                accordionItem.appendChild(accordionHeader);
+
+                var button = document.createElement('button');
+                button.className = 'accordion-button' + (index === '' ? '' : ' collapsed');
+                button.type = 'button';
+                button.setAttribute('data-bs-toggle', 'collapse');
+                button.setAttribute('data-bs-target', '#panelsStayOpen-collapse-' + index + i);
+                button.setAttribute('aria-expanded', index === '' ? 'true' : 'false');
+                button.setAttribute('aria-controls', 'panelsStayOpen-collapse-' + index + i);
+                button.innerText = node.name;
+                accordionHeader.appendChild(button);
+
+                var divPanel = document.createElement('div');
+                divPanel.id = 'panelsStayOpen-collapse-' + index + i;
+                divPanel.className = 'accordion-collapse collapse' + (index === '' ? ' show' : '');
+                accordionItem.appendChild(divPanel);
+
+                var divBody = document.createElement('div');
+                divBody.className = 'accordion-body';
+                divPanel.appendChild(divBody);
+
+                if (node.parameters && node.parameters.length > 0) {
+                    renderAccordion(node.parameters, divBody, index + i);
+                }
+            });
+        }
+
+        var treeData = {{ tree_data| safe }};
+        var myContainer = document.getElementById('accordionPanels');
+        renderAccordion([treeData], myContainer);
+
+
+    </script>
+    <div class="container">
+        <h2>Buscar un Dato</h2>
+        <!-- Formulario de búsqueda -->
+        <form method="GET">
+            <select name="columna" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                <option selected>Seleccionar el tipo de parámetro</option>
+                {% for columnName in data.columnNames %}
+                <option value="{{ columnName }}">{{ columnName }}</option>
+                {% endfor %}
+            </select>
+            Introduzca su valor: <input type="text" name="valor">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Ver los datos en Tabla</h2>
+        <div class="table-responsive">
+            <div class="table-scroll">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            {% for columnName in data.columnNames %}
+                            <th>{{ columnName }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if busqueda_realizada %}
+                        {% for row in data.rowData %}
+                        <tr>
+                            {% for columnName, value in row.items %}
+                            <td data-cell="{{ columnName }}">{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        {% for row in random_rows %}
+                        <tr>
+                            {% for columnName, value in row.items %}
+                            <td data-cell="{{ columnName }}">{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+    <div class="container">
+        <h2>Gráfico de barras</h2>
+        <canvas id="bar-chart"></canvas>
+    </div>
+
+    <script>
+        var data = {{ data| safe }};  // Suponiendo que 'data' es un objeto con columnas y filas
+
+
+
+        // Extraer las etiquetas (nombres de las columnas)
+        var labels = data.rowData.map(function (row) {
+            return row[data.columnNames[0]];  // Suponiendo que la primera columna contiene los valores que quieres como etiquetas
+        });
+
+        // Generar colores dinámicamente basados en la longitud de data.columnNames
+
+        function generateColors(length) {
+            var colors = [];
+            var step = 360 / length;
+            for (var i = 0; i < length; i++) {
+                var hue = i * step;
+                var color = 'hsla(' + hue + ', 70%, 50%, 0.7)';
+                colors.push(color);
+            }
+            return colors;
+        }
+        var colors = generateColors(data.columnNames.length);
+
+        // Inicializar un arreglo para almacenar los valores de cada columna
+        var datasets = [];
+
+        // Iterar sobre cada columna de datos y extraer sus valores
+        for (var i = 1; i < data.columnNames.length; i++) {
+            var columnValues = data.rowData.map(function (row) {
+                return row[data.columnNames[i]];  // Obtener el valor de la columna actual
+            });
+
+            // Agregar los valores de la columna actual al arreglo de conjuntos de datos
+            datasets.push({
+                label: data.columnNames[i],  // Utilizar el nombre de la columna como etiqueta
+                data: columnValues,
+                backgroundColor: colors[i - 1],  // Asignar un color diferente a cada conjunto de datos
+                borderColor: 'rgba(54, 162, 235, 1)',        // Color del borde de las barras
+                borderWidth: 1
+            });
+        }
+
+        // Configurar los datos para el gráfico de barras
+        var ctx = document.getElementById('bar-chart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: datasets  // Utilizar los conjuntos de datos creados anteriormente
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: data.columnNames[0],
+                            font: {
+                                size: 16 // Tamaño de la fuente del nombre del eje x
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+
+
+
+
+
+</body>
+
+{% endblock %}

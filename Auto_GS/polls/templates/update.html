@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar telecomandos:</title>
+    <link rel="stylesheet" href="{% static 'polls/telecomandstyle.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Selecciona la Tabla a modificar</h1>
+        <form action="{% url 'modificar_tabla' %}" method="get">
+            <select name="tabla" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                {% for item in nav_items %}
+                <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Seleccionar">
+        </form>
+    </div>
+    <div class="modificar">
+        {% block modificar %}{% endblock %}
+    </div>
+</body>
+
+
+
+
+{% endblock %}

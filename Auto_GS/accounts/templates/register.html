@@ -1,0 +1,36 @@
+{% extends "ac_base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <article class="card">
+            <header class="card-header text-center">
+                <h2>Registro</h2>
+            </header>
+            <div class="card-body">
+                <form method="post">
+                    {% if message %}
+                    <div class="alert alert-info">{{ message }}</div>
+                    {% endif %}
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group row ">
+                            <label for="{{ field.id_for_label }}" class="col-sm-4 col-form-label text-right">{{ field.label }}</label>
+                            <div class="col-sm-8">
+                                {{ field }}
+                            </div>
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger mt-1">{{ error }}</div>
+                                {% endfor %}
+                            
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary btn-block mt-3">Enviar</button>
+                </form>
+            </div>
+        </article>
+    </div>
+</div>
+
+{% endblock %}
