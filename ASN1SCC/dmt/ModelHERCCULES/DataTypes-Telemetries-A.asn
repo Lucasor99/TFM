@@ -1,0 +1,190 @@
+--------------------------------------------------------------------------------
+--                                                                            --
+--           Copyright (C) 2022 Universidad Politécnica de Madrid             --
+--                                                                            --
+--                           H E R C C U L E S                                --
+--                                                                            --
+--                           TMs  Data  Types                                 --
+--                                                                            --
+--  This is free software;  you can redistribute it  and/or modify it  under  --
+--  terms of the  GNU General Public License as published  by the Free Soft-  --
+--  ware  Foundation;  either version 3,  or (at your option) any later ver-  --
+--  sion.  This software is distributed in the hope  that it will be useful,  --
+--  but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHAN-  --
+--  TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public  --
+--  License for  more details.  You should have  received  a copy of the GNU  --
+--  General  Public  License  distributed  with  this  software;   see  file  --
+--  COPYING3.  If not, go to http://www.gnu.org/licenses for a complete copy  --
+--  of the license.                                                           --
+--                                                                            --
+--------------------------------------------------------------------------------
+
+
+DataTypes-Telemetries-Housekeeping DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+    EXPORTS ALL;
+
+    IMPORTS
+      UINT32-Type,INT8-Type,
+      Epoch-Type, FLOAT32-Type ,
+      Analogue-Raw-Data, Switch-Status FROM DataTypes
+
+      Balloon-Mode FROM DataTypes-OperatingModes
+	  TM-Template FROM DataTypes-Telemetries-Template
+
+      PCU-PS-Lines-Status  FROM DataTypes-Subsystems;
+
+
+    -----------------------------
+    -- TM-1: Housekeeping (HK) --
+    -----------------------------
+
+    HK-TM-Type ::= TM-Template {
+        SEQUENCE {
+            atl-hk  ATL-HK-TM-Type,
+            pcu-hk  PCU-HK-TM-Type,
+            el-hk   EL-HK-TM-Type
+        }
+    }
+
+    -- ATL:
+
+    ATL-HK-TM-Type ::= SEQUENCE {
+        snapshot-time-secs  Epoch-Type,
+        temperatures        SEQUENCE (SIZE(2)) OF Analogue-Raw-Data
+    }
+
+    -- PCU:
+
+    PCU-HK-TM-Type ::= SEQUENCE {
+        snapshot-time-secs  Epoch-Type,
+               temperature  INT8-Type,
+                     v-bat  FLOAT32-Type,
+                     a-bat  FLOAT32-Type,
+                  switches  PCU-PS-Lines-Status
+    }
+
+    -- EL:
+
+    EL-HK-TM-Type ::= SEQUENCE {
+        snapshot-time-secs  Epoch-Type,
+
+        upwards-pyranometer-temperature  Analogue-Raw-Data,
+        upwards-pyrgeometer-temperature  Analogue-Raw-Data,
+        upwards-heater-status Switch-Status,
+
+        downwards-pyranometer-temperature  Analogue-Raw-Data,
+        downwards-pyrgeometer-temperature  Analogue-Raw-Data,
+        downwards-heater-status Switch-Status,
+
+        abs-pressure-mbar-1  FLOAT32-Type,
+        abs-pressure-mbar-2  FLOAT32-Type
+    }
+	
+END
+
+DataTypes-Telemetries-Scientific DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+    EXPORTS ALL;
+
+    IMPORTS
+      Null-Type, Epoch-Type, 
+	  UINT32-Type, Analogue-Raw-Data,
+      Heater-Power-Type FROM DataTypes
+
+      Balloon-Mode FROM DataTypes-OperatingModes
+	  TM-Template FROM DataTypes-Telemetries-Template
+
+      IMU-Sensors-Data FROM DataTypes-Subsystems;
+	  
+    ------------------------------
+    -- TM-2: Scientific (SC) TM --
+    ------------------------------
+
+    SC-TM-Type ::= TM-Template {
+        SEQUENCE {
+            htl  HTL-SC-TM-Type,
+            el   EL-SC-TM-Type,
+            nads NADS-SC-TM-Type,
+            atl  ATL-SC-TM-Type
+        }
+    }
+
+    -- HTL:
+
+    HTL-SC-TM-Type ::= SEQUENCE {
+        snapshot-time-secs Epoch-Type,
+
+        exp1-horizontal-heated-plate  Analogue-Raw-Data,
+        exp2-vertical-heated-plate  Analogue-Raw-Data,
+        exp3-horizontal-heated-plate  Analogue-Raw-Data,
+        exp4-inner-vertical-plate-surface  Analogue-Raw-Data,
+        exp4-intermediate-heated-plate-surface  Analogue-Raw-Data,
+        exp4-exterior-plate-surface  Analogue-Raw-Data,
+
+        exp1-air-cavity-intermediate-height Analogue-Raw-Data,
+        exp1-air-cavity-upper-height Analogue-Raw-Data,
+        exp2-air-cavity-intermediate-height Analogue-Raw-Data,
+        exp2-air-cavity-upper-height Analogue-Raw-Data,
+        exp3-air-cavity-intermediate-height Analogue-Raw-Data,
+        exp3-air-cavity-upper-height Analogue-Raw-Data,
+        exp4-air-cavity-small-intermediate-1 Analogue-Raw-Data,
+        exp4-air-cavity-small-intermediate-2 Analogue-Raw-Data,
+        exp4-air-cavity-big-intermediate-1 Analogue-Raw-Data,
+        exp4-air-cavity-big-intermediate-2 Analogue-Raw-Data,
+
+        heaters SEQUENCE (SIZE(4)) OF Heater-Power-Type
+    }
+
+    -- EL:
+
+    EL-SC-TM-Type ::= SEQUENCE {
+        snapshot-time-secs Epoch-Type,
+        upwards-pyranometer Analogue-Raw-Data,
+        upwards-pyrgeometer Analogue-Raw-Data,
+        downwards-pyranometer Analogue-Raw-Data,
+        downwards-pyrgeometer Analogue-Raw-Data,
+        dif-barometers SEQUENCE (SIZE(4)) OF Analogue-Raw-Data
+    }
+
+    -- NADS:
+
+    NADS-SC-TM-Type ::= SEQUENCE {
+        snapshot-time-secs Epoch-Type,
+        imu-sensors IMU-Sensors-Data,
+        gps Null-Type -- TODO: To Be Defined
+    }
+
+    -- ATL:
+
+    ATL-SC-TM-Type ::= SEQUENCE {
+        snapshot-time-secs Epoch-Type,
+        photodiodes  SEQUENCE (SIZE(4)) OF Analogue-Raw-Data
+    }
+
+END
+
+DataTypes-Telemetries-Template DEFINITIONS AUTOMATIC TAGS ::=
+
+BEGIN
+
+    EXPORTS ALL;
+
+    IMPORTS
+      Epoch-Type, UINT32-Type FROM DataTypes
+      Balloon-Mode FROM DataTypes-OperatingModes;
+	  
+    ---------------------------
+    -- Template for TM types --
+    ---------------------------
+
+    TM-Template {Payload-Type} ::= SEQUENCE {
+        sequence-number-PRIMARY-KEY  UINT32-Type,
+        timestamp-secs   Epoch-Type,
+        balloon-mode     Balloon-Mode,
+        payload          Payload-Type  -- dependant on subsystem
+    }
+
+END

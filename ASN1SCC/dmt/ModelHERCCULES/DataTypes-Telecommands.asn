@@ -1,0 +1,126 @@
+--------------------------------------------------------------------------------
+--                                                                            --
+--           Copyright (C) 2022 Universidad Politécnica de Madrid             --
+--                                                                            --
+--                           H E R C C U L E S                                --
+--                                                                            --
+--                            TCs  Data Types                                 --
+--                                                                            --
+--  This is free software;  you can redistribute it  and/or modify it  under  --
+--  terms of the  GNU General Public License as published  by the Free Soft-  --
+--  ware  Foundation;  either version 3,  or (at your option) any later ver-  --
+--  sion.  This software is distributed in the hope  that it will be useful,  --
+--  but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHAN-  --
+--  TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public  --
+--  License for  more details.  You should have  received  a copy of the GNU  --
+--  General  Public  License  distributed  with  this  software;   see  file  --
+--  COPYING3.  If not, go to http://www.gnu.org/licenses for a complete copy  --
+--  of the license.                                                           --
+--                                                                            --
+--------------------------------------------------------------------------------
+
+DataTypes-Telecommands DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+    EXPORTS ALL;
+
+    IMPORTS
+        Heater-Power-Type , UINT32-Type  FROM DataTypes
+        Balloon-Mode, TMTC-Mode          FROM DataTypes-OperatingModes;
+
+    --  T E L E C O M A N D S  -------------------------------------------------
+	
+
+    Sequence-number-PRIMARY-KEY ::= UINT32-Type
+
+    --------
+    -- TC --
+    --------
+
+    TC-Type ::= CHOICE {
+        change-balloon-mode        TC-Change-Balloon-Mode,
+        start-manual-control       TC-Start-Manual-Control,
+        stop-manual-control        TC-Stop-Manual-Control,
+        control-experiment-heater  TC-Control-Experiment-Heater,
+        restart-device             TC-Restart-Device,
+        change-tm-mode             TC-Change-TM-Mode
+    }
+	
+
+
+    ------------------------------------
+    -- TC-0: Change Balloon's Mode TC --
+    ------------------------------------
+
+    TC-Change-Balloon-Mode ::= SEQUENCE {
+        new-mode  Balloon-Mode
+    }
+
+    -------------------------------------------------------------------
+    -- TC-1 & TC-2 & TC-3: Start & Stop & Control experiment heaters --
+    -------------------------------------------------------------------
+
+    TC-Start-Manual-Control ::= SEQUENCE {
+        heater  Heater-ID
+    }
+
+    TC-Stop-Manual-Control ::= SEQUENCE {
+        heater  Heater-ID
+    }
+
+    TC-Control-Experiment-Heater ::= SEQUENCE {
+        heater        Heater-ID,
+        heater-power  Heater-Power-Type
+    }
+
+    ------------------------------
+    -- TC-4: Restart Device TCs --
+    ------------------------------
+
+    TC-Restart-Device ::= SEQUENCE {
+        device-id  Restartable-Device-ID
+    }
+
+    --------------------------
+    -- TC-5: Change TM Mode --
+    --------------------------
+
+    TC-Change-TM-Mode ::= SEQUENCE {
+        new-mode  TMTC-Mode
+    }
+
+    --  A U X I L I A R Y  -----------------------------------------------------
+
+    ---------------
+    -- Heater ID --
+    ---------------
+
+    -- Type to identify an experiment's heater.
+    Heater-ID ::= ENUMERATED {
+        -- HTL --
+        htl-experiment1-heater,
+        htl-experiment2-heater,
+        htl-experiment3-heater,
+        htl-experiment4-heater
+    }
+
+    ---------------------------
+    -- Restartable Device ID --
+    ---------------------------
+
+    -- Type to identify a device that allows a software hot-restart
+    Restartable-Device-ID ::= ENUMERATED {
+        nads-gps,
+        nads-imu,
+
+        pcu-power-current-sensor,
+        pcu-tc74,
+
+        tmu-adc,
+
+        sdpu-adc,
+        sdpu-absolute-barometer-1,
+        sdpu-absolute-barometer-2
+    }
+
+END
