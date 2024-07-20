@@ -4,22 +4,22 @@
 {% block content %}
 
 <head>
-    {% load static %}
+    {% load static i18n %}
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tabla: {{ item }}</title>
+    <title>{% trans "Table: " %} {{ item }}</title>
     <link rel="stylesheet" href="{% static 'polls/style.css' %}">
 </head>
 
 <body>
     <header class="header">
-        <h1>Tabla: {{ item }}</h1>
+        <h1>{% trans "Table: " %} {{ item }}</h1>
     </header>
 
 
     <div class="container">
-        <h2>Estructura del tipo de dato</h2>
+        <h2>{% trans "Data type structure" %}</h2>
         <div class="accordion" id="accordionPanels"></div>
     </div>
 
@@ -73,22 +73,22 @@
 
     </script>
     <div class="container">
-        <h2>Buscar un Dato</h2>
+        <h2>{% trans "Search for Data" %}</h2>
         <!-- Formulario de búsqueda -->
         <form method="GET">
             <select name="columna" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                <option selected>Seleccionar el tipo de parámetro</option>
+                <option selected>{% trans "Select parameter type" %}</option>
                 {% for columnName in data.columnNames %}
                 <option value="{{ columnName }}">{{ columnName }}</option>
                 {% endfor %}
             </select>
-            Introduzca su valor: <input type="text" name="valor">
+            {% trans "Enter value: " %}<input type="text" name="valor">
             <button type="submit" class="btn btn-primary">Buscar</button>
         </form>
     </div>
 
     <div class="container">
-        <h2>Ver los datos en Tabla</h2>
+        <h2>{% trans "View data table" %}</h2>
         <div class="table-responsive">
             <div class="table-scroll">
                 <table class="table table-bordered">
@@ -126,7 +126,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
     <div class="container">
-        <h2>Gráfico de barras</h2>
+        <h2>{% trans "Bar Chart" %}</h2>
         <canvas id="bar-chart"></canvas>
     </div>
 

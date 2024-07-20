@@ -4,6 +4,10 @@ from django.template import loader
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 
+from django.shortcuts import redirect
+from django.utils.translation import activate
+from django.conf import settings
+
 from cassandra.cluster import Cluster
 
 from .models import *
@@ -20,7 +24,12 @@ session = cluster.connect()
 
 session.set_keyspace('tfm')
 
-
+def change_language(request):
+    lang_code = request.GET.get('language', settings.LANGUAGE_CODE)
+    activate(lang_code)
+    response = redirect(request.META.get('HTTP_REFERER', '/'))
+    response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang_code)
+    return response
 
 @login_required
 def index(request):

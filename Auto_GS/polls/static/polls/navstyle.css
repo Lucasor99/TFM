@@ -55,7 +55,8 @@ nav ul li a:hover {
 
 /*Pone el último elemento a la derecha y el penúltimo*/
 nav ul li:last-child,
-nav ul li:nth-last-child(2) {
+nav ul li:nth-last-child(2),
+nav ul li:nth-last-child(3) {
     float: right;
 }
 
@@ -84,6 +85,7 @@ nav ul li:nth-last-child(2) {
 .dropdown-content li {
     float: none;
 }
+.dropdown-content li:nth-last-child(3),
 .dropdown-content li:nth-last-child(2),
 .dropdown-content li:last-child {
     float: none;

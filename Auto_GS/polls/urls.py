@@ -10,4 +10,5 @@ urlpatterns = [
     path("update/modificar_tabla/", views.modificar_tabla, name="modificar_tabla"),
     path("delete/", views.delete, name="delete"),
     path("delete/borrar_datos/", views.borrar_datos, name="borrar_datos"),
+     path('change_language/', views.change_language, name='change_language'),
 ]

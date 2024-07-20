@@ -3,13 +3,14 @@
 
 {% block borrar %}
 
+{% load i18n %}
 
 <body>
     <div class="container">
-        <h1>Borrar dato de la Tabla: {{ tabla_seleccionada }}</h1>
+        <h1>{% trans "Delete data from table:" %} {{ tabla_seleccionada }}</h1>
         <form action="" method="post">
             {% csrf_token %}
-            <h4>Selecciona la fila que quieres borrar:</h4>
+            <h4>{% trans "Select the row you want to delete: " %}</h4>
             <div>
                 <select name="column" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                     {% for item in columns %}
@@ -18,13 +19,13 @@
                 </select>
             </div>
             <div>
-                <h4>Introduzca el Valor: </h4>
+                <h4>{% trans "Enter the Value: " %}</h4>
                 <input type="text" name="value">
-            <button type="submit" class="btn btn-primary">Borrar</button>
+                <button type="submit" class="btn btn-primary">{% trans "Delete" %}</button>
+            </div>
         </form>
     </div>
 </body>
-
 
 
 {% endblock %}

@@ -6,42 +6,18 @@
 
 
 <head>
-    {% load static %}
+    {% load static i18n %}
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index of the AUTO-GS</title>
+    <title>{% trans "Index of the AUTO-GS" %}</title>
     <link rel="stylesheet" href="{% static 'polls/tabla.css' %}">
 </head>
 
 <body>
-
     <div>
         <div class="container">
-            <h4>Lista de tablas</h4>
-            <table class="content-table">
-                <thead>
-                    <tr>
-                        {% for columnName in data.columnNames %}
-                        <th>{{ columnName }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in data.rowData %}
-                    <tr>
-                        {% for columnName, value in row.items %}
-                        <td>
-                            {{ value }}
-                        </td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="container">
-            <h4>Lista de tablas</h4>
+            <h4>{% trans "List of tables" %}</h4>
             <ul>
                 {% for item in nav_items %}
                 <li class="card m-3 bg-light"><a href="{% url 'tabla' item %}">{{ item }}</a></li>

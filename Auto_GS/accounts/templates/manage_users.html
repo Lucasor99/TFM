@@ -3,16 +3,16 @@
 
 {% block content %}
 <div class="container">
-    <h2>Gestión de Usuarios</h2>
+    <h2>Manage Users</h2>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Usuario</th>
+                <th>User</th>
                 <th>Email</th>
-                <th>Activo</th>
+                <th>Active</th>
                 <th>Staff</th>
-                <th>Acciones</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -29,16 +29,16 @@
                         <input type="hidden" name="user_id" value="{{ user.id }}">
                         {% if not user.is_active %}
                         <button type="submit" name="action" value="activate"
-                            class="btn btn-success btn-sm">Activar</button>
+                            class="btn btn-success btn-sm">Enable</button>
                         {% else %}
                         <button type="submit" name="action" value="deactivate"
-                            class="btn btn-warning btn-sm">Desactivar</button>
+                            class="btn btn-warning btn-sm">Disable</button>
                         {% endif %}
                         {% if not user.is_staff %}
-                        <button type="submit" name="action" value="make_staff" class="btn btn-info btn-sm">Hacer
+                        <button type="submit" name="action" value="make_staff" class="btn btn-info btn-sm">
                             Staff</button>
                         {% else %}
-                        <button type="submit" name="action" value="remove_staff" class="btn btn-secondary btn-sm">Quitar
+                        <button type="submit" name="action" value="remove_staff" class="btn btn-secondary btn-sm">Remove
                             Staff</button>
                         {% endif %}
                     </form>
@@ -49,7 +49,7 @@
     </table>
 
     <div class="text-center mt-3">
-        <button  onclick="window.location.href='/admin'" class="btn btn-danger btn-m" >Administrador de Django</button>
+        <button href="/admin" class="btn btn-danger btn-m" >Django Administrator</button>
     </div>
 </div>
 {% endblock %}

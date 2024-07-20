@@ -1,0 +1,189 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-16 16:29+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: Auto_GS/settings.py:22
+msgid "English"
+msgstr ""
+
+#: Auto_GS/settings.py:23
+msgid "Español"
+msgstr ""
+
+#: Auto_GS/settings.py:24
+msgid "Français"
+msgstr ""
+
+#: polls/templates/base.html:26
+msgid "Home"
+msgstr "Inicio"
+
+#: polls/templates/base.html:29
+msgid "Tables"
+msgstr "Tablas"
+
+#: polls/templates/base.html:38
+msgid "Create Command"
+msgstr "Crear Telecomando"
+
+#: polls/templates/base.html:39
+msgid "Update Command"
+msgstr "Modificar Telecomando"
+
+#: polls/templates/base.html:40
+msgid "Delete Command"
+msgstr "Borrar Telecomando"
+
+#: polls/templates/base.html:42
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+#: polls/templates/base.html:45
+msgid "My Account"
+msgstr "Mi cuenta"
+
+#: polls/templates/base.html:49
+msgid "User"
+msgstr "Usuario"
+
+#: polls/templates/base.html:50
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: polls/templates/base.html:54
+msgid "Manage Users"
+msgstr "Administrar usuarios"
+
+#: polls/templates/base.html:56
+msgid "Change Password"
+msgstr "Cambiar contraseña"
+
+#: polls/templates/borrar_datos.html:10
+msgid "Delete data from table:"
+msgstr "Borrar dato de la tabla: "
+
+#: polls/templates/borrar_datos.html:13
+msgid "Select the row you want to delete: "
+msgstr "Selecciona la fila que quieres borrar: "
+
+#: polls/templates/borrar_datos.html:22 polls/templates/modificar_tabla.html:28
+#: polls/templates/modificar_tabla.html:40
+msgid "Enter the Value: "
+msgstr "Introduzca el Valor: "
+
+#: polls/templates/borrar_datos.html:24
+msgid "Delete"
+msgstr "Borrar"
+
+#: polls/templates/delete.html:12
+msgid "Delete commands: "
+msgstr "Borrar telecomandos: "
+
+#: polls/templates/delete.html:18
+msgid "Select the table"
+msgstr "Selecciona la tabla"
+
+#: polls/templates/delete.html:25 polls/templates/update.html:24
+msgid "Select"
+msgstr "Seleccionar"
+
+#: polls/templates/index.html:13
+msgid "Index of the AUTO-GS"
+msgstr "Índice del AUTO-GS"
+
+#: polls/templates/index.html:20
+msgid "List of tables"
+msgstr "Lista de tablas"
+
+#: polls/templates/modificar_tabla.html:11
+msgid "Modify table"
+msgstr "Modificar tabla"
+
+#: polls/templates/modificar_tabla.html:16
+#, fuzzy
+#| msgid "Modify table"
+msgid "Modify table: "
+msgstr "Modificar tabla"
+
+#: polls/templates/modificar_tabla.html:19
+msgid "Select the row you want to modify: "
+msgstr "Selecciona la fila que quieres modificar: "
+
+#: polls/templates/modificar_tabla.html:31
+msgid "Select the column and enter the value you want to modify: "
+msgstr "Selecciona la columna y escribe el valor que quieres modificar: "
+
+#: polls/templates/modificar_tabla.html:43
+msgid "Modify"
+msgstr "Modificar"
+
+#: polls/templates/tabla.html:11 polls/templates/tabla.html:17
+msgid "Table: "
+msgstr "Tabla: "
+
+#: polls/templates/tabla.html:22
+msgid "Data type structure"
+msgstr "Estructura del tipo de dato"
+
+#: polls/templates/tabla.html:76
+msgid "Search for Data"
+msgstr "Buscar un Dato"
+
+#: polls/templates/tabla.html:80
+msgid "Select parameter type"
+msgstr "Seleccionar el tipo de parámetro"
+
+#: polls/templates/tabla.html:85
+msgid "Enter value: "
+msgstr "Introduzca su valor: "
+
+#: polls/templates/tabla.html:91
+msgid "View data table"
+msgstr "Ver los datos en tabla"
+
+#: polls/templates/tabla.html:129
+msgid "Bar Chart"
+msgstr "Gráfico de barras"
+
+#: polls/templates/telecomando.html:11
+#, fuzzy
+#| msgid "Create Command"
+msgid "Create Commands"
+msgstr "Crear Telecomando"
+
+#: polls/templates/telecomando.html:19
+msgid "Insert Data"
+msgstr "Insertar Datos"
+
+#: polls/templates/telecomando.html:27
+msgid "Submit"
+msgstr "Enviar"
+
+#: polls/templates/update.html:11
+msgid "Modify Commands"
+msgstr "Modificar Telecomandos"
+
+#: polls/templates/update.html:17
+#, fuzzy
+#| msgid "Select the table to modify"
+msgid "Select the table to Modify"
+msgstr "Selecciona la tabla a modificar"
+
+#~ msgid "Search"
+#~ msgstr "Buscar"

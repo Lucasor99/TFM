@@ -137,10 +137,11 @@ table tr:hover td {
 
 ul {
     list-style-type: none; /* Quita los puntos de la lista */
+    padding-left: 0px;
 
 }
 
-a {
+.container a {
     text-decoration: none; /* Quita el subrayado de los enlaces */
     color: black; 
     padding: 1rem;

@@ -3,22 +3,20 @@
 
 {% block content %}
 
-
 <head>
-    {% load static %}
+    {% load static i18n %}
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear telecomandos:</title>
+    <title>{% trans "Create Commands" %}</title>
     <link rel="stylesheet" href="{% static 'polls/telecomandstyle.css' %}">
 </head>
-
 
 <body>
 
     <div class="container">
         <form action="" method="post">
-            <h1>Insertar Datos</h1>
+            <h1>{% trans "Insert Data" %}</h1>
             {% csrf_token %}
             {% for columnName in data.columnNames %}
             <div class="mb-3">
@@ -26,29 +24,30 @@
                 <input class="form-control" type="text" name="{{ columnName }}" required>
             </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
         </form>
     </div>
 
     <div id="popup" style="display:none;">
         <div id="popup_content">
             <h2 id="popup_message"></h2>
-            <button type="button" class="btn-close" aria-label="Close" onclick="closePopup() "></button>
+            <button type="button" class="btn-close" aria-label="Close" onclick="closePopup()"></button>
         </div>
     </div>
+    
     <script>
-        // Función para abrir la ventana emergente con un mensaje
+        // Function to open the popup with a message
         function openPopup(message) {
             document.getElementById("popup_message").innerText = message;
             document.getElementById("popup").style.display = "block";
         }
 
-        // Función para cerrar la ventana emergente
+        // Function to close the popup
         function closePopup() {
             document.getElementById("popup").style.display = "none";
         }
 
-        // Lógica para mostrar la ventana emergente si hay un mensaje de éxito o error
+        // Logic to show the popup if there's a success or error message
         {% if success_message %}
         openPopup("{{ success_message }}");
         {% elif error_message %}
@@ -57,6 +56,5 @@
     </script>
 
 </body>
-
 
 {% endblock %}

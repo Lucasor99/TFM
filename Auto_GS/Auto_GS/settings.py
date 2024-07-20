@@ -11,12 +11,27 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+LANGUAGES = [
+    ('en', _('English')),
+    ('es', _('Español')),
+    ('fr', _('Français')),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
+LANGUAGE_CODE = 'en'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -55,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'Auto_GS.urls'
@@ -84,6 +100,9 @@ WSGI_APPLICATION = 'Auto_GS.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+
+#### ¡¡¡Cambiar a MySQL!!! ######
 
 DATABASES = {
     'default': {
@@ -145,5 +164,3 @@ DEFAULT_FROM_EMAIL = 'webmaster@example.com'
 
 # Security settings
 
-SESSION_COOKIE_AGE = 60 * 60
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
