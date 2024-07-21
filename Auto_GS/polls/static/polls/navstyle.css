@@ -51,6 +51,7 @@ nav ul li a.active {
 /* Cambia el color del enlace al pasar el mouse por encima */
 nav ul li a:hover {
     background-color: #555; /* Color de fondo al pasar el mouse */
+    color: #4fa3fd;
 }
 
 /*Pone el último elemento a la derecha y el penúltimo*/
