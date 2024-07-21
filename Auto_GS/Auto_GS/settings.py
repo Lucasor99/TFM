@@ -103,7 +103,7 @@ WSGI_APPLICATION = 'Auto_GS.wsgi.application'
 
 
 #### ¡¡¡Cambiar a MySQL!!! ######
-
+#################################
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

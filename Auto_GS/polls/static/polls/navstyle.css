@@ -52,6 +52,8 @@ nav ul li a.active {
 nav ul li a:hover {
     background-color: #555; /* Color de fondo al pasar el mouse */
     color: #4fa3fd;
+    border-radius: 5px;
+
 }
 
 /*Pone el último elemento a la derecha y el penúltimo*/
@@ -99,6 +101,8 @@ nav ul li:nth-last-child(3) {
 .dropdown-content  li a:hover{
     background-color: #b3b3b3; /* Color de fondo al pasar el mouse */
     color: #000;
+    border-radius: 0px;
+
 }
 
 .my-dropdown:hover .dropdown-content {
