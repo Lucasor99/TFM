@@ -98,6 +98,7 @@ nav ul li:nth-last-child(3) {
 
 .dropdown-content  li a:hover{
     background-color: #b3b3b3; /* Color de fondo al pasar el mouse */
+    color: #000;
 }
 
 .my-dropdown:hover .dropdown-content {
