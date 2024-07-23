@@ -103,7 +103,7 @@ def main():
         create_deployment(args.create)
     
     if args.cpCSV:
-        copy_to_pod(args.TM, 'asn1scc', '/dmt/filesCSV/')
+        copy_to_pod(args.cpCSV, 'asn1scc', '/dmt/filesCSV/')
     
     if args.cpASN:
         copy_to_pod(args.cpASN, 'asn1scc', '/dmt/filesASN1/')
