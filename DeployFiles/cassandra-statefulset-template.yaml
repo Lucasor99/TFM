@@ -79,6 +79,10 @@ spec:
             - name: cassandra-init-scripts
               mountPath: /docker-entrypoint-initdb.d/
               readOnly: true
+      volumes:
+        - name: cassandra-init-scripts
+          configMap:
+            name: cassandra-init-scripts
   volumeClaimTemplates:
     - metadata:
         name: cassandra-data
