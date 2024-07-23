@@ -40,7 +40,7 @@ def create_deployment(replicas):
         sys.exit(1)
 
     # Generate PersistentVolumes
-    with open('cassandra-pv-template.yaml', 'r') as f:
+    with open('DeployFiles/cassandra-pv-template.yaml', 'r') as f:
         cassandra_pv_template = f.read()
 
     for i in range(replicas):
@@ -48,7 +48,7 @@ def create_deployment(replicas):
         run_command(f"echo '{pv}' | kubectl apply -f -")
 
     # Generate StatefulSet and Service
-    with open('cassandra-statefulset-template.yaml', 'r') as f:
+    with open('DeployFiles/cassandra-statefulset-template.yaml', 'r') as f:
         cassandra_statefulset_template = f.read()
     
     cassandra_statefulset = cassandra_statefulset_template.replace('${REPLICAS}', str(replicas))
@@ -65,7 +65,7 @@ def create_deployment(replicas):
     print("All Cassandra pods are in Running state.")
 
     # Deploy the web service
-    run_command("kubectl apply -f web.yaml")
+    run_command("kubectl apply -f DeployFiles/web.yaml")
     
     # Wait for the web pod to be in Running state
     print("Waiting for the web pod to be in Running state...")
@@ -78,7 +78,7 @@ def create_deployment(replicas):
     print("The web pod is running. Access the service at http://localhost:30000")
 
     # Deploy the asn1scc service
-    run_command("kubectl apply -f asn1scc.yaml")
+    run_command("kubectl apply -f DeployFiles/asn1scc.yaml")
 
 def copy_to_pod(files, pod_prefix, dest_dir):
     pod = run_command(f"kubectl get pods -l app={pod_prefix} -o jsonpath='{{.items[0].metadata.name}}'")
