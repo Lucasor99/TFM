@@ -42,7 +42,8 @@ SECRET_KEY = 'django-insecure-kda*0(j&_$*sqo)2h=xg1ga6g3ijb1#y=34#&$9f4pjaka_v6%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: don't use '*' in production!
+ALLOWED_HOSTS = ['*'] #'example.com'
 
 LOGIN_URL = '/accounts/login/'  # URL a la que se redirige si el usuario no está autenticado
 LOGIN_REDIRECT_URL = '/polls/'
