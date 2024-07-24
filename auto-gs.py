@@ -87,7 +87,13 @@ def create_keyspace(rf):
     """Create the Cassandra keyspace with the given replication factor."""
     # Get one of the Cassandra pods
     pod = run_command("kubectl get pods -l app=cassandra -o jsonpath='{.items[0].metadata.name}'")
+    
     # Create the keyspace with the specified replication factor
+    print("Creating keyspace 'tfm' with replication factor {rf}.")
+
+    # Wait for 5 seconds to ensure the Cassandra pod is fully initialized
+    time.sleep(5)
+    print("Creating keyspace 'tfm'...")
     run_command(f"kubectl exec -it {pod} -- cqlsh -e \"CREATE KEYSPACE IF NOT EXISTS tfm WITH replication = {{'class': 'SimpleStrategy', 'replication_factor': {rf}}};\"")
 
 def copy_to_pod(files, pod_prefix, dest_dir):
