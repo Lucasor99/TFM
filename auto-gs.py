@@ -33,6 +33,7 @@ def create_deployment(replicas, rf):
     # Get the names of the nodes in the Kubernetes cluster
     nodes = run_command("kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{\" \"}{end}'")
     node_array = nodes.split()
+    print(f"Number of available nodes is {nodes}")
 
     # Check that the number of nodes matches the number of replicas
     if len(node_array) < replicas:
@@ -89,10 +90,10 @@ def create_keyspace(rf):
     pod = run_command("kubectl get pods -l app=cassandra -o jsonpath='{.items[0].metadata.name}'")
 
     # Create the keyspace with the specified replication factor
-    print("Creating keyspace 'tfm' with replication factor {rf}.")
+    print(f"Creating keyspace 'tfm' with replication factor {rf}.")
 
-    # Wait for 5 seconds to ensure the Cassandra pod is fully initialized
-    time.sleep(10)
+    # Wait for 30 seconds to ensure the Cassandra pod is fully initialized
+    time.sleep(30)
     run_command(f"kubectl exec -it {pod} -- cqlsh -e \"CREATE KEYSPACE IF NOT EXISTS tfm WITH replication = {{'class': 'SimpleStrategy', 'replication_factor': {rf}}};\"")
 
 def copy_to_pod(files, pod_prefix, dest_dir):
