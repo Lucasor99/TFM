@@ -9,8 +9,8 @@ metadata:
 data:
   create-db.sql: |
     CREATE DATABASE user_data;
-    CREATE USER 'upmsat3'@'192.168.%.%' IDENTIFIED BY 'upmsat3';
-    GRANT ALL PRIVILEGES ON *.* TO 'upmsat3'@'192.168.%.%';
+    CREATE USER 'admin'@'192.168.%.%' IDENTIFIED BY 'admin';
+    GRANT ALL PRIVILEGES ON *.* TO 'admin'@'192.168.%.%';
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,7 +31,7 @@ spec:
           image: mysql:8.0
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: upmsat3
+              value: admin
           ports:
             - containerPort: 3306
               name: mysql

@@ -106,10 +106,17 @@ WSGI_APPLICATION = 'Auto_GS.wsgi.application'
 #### ¡¡¡Cambiar a MySQL!!! ######
 #################################
 DATABASES = {
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': 'user_data',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'admin',
+        'PASSWORD': 'admin',
+        'HOST': 'mysql',
+        #'HOST': 'mysql.default.svc.cluster.local',
+        'PORT': '3306',
     }
+
 }
 
 
