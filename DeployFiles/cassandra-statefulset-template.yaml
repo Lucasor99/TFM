@@ -11,15 +11,6 @@ spec:
   selector:
     app: cassandra
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cassandra-init-scripts
-data:
-  create-keyspace.cql: |
-    CREATE KEYSPACE IF NOT EXISTS tfm
-    WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 3};
----
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:

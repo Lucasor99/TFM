@@ -26,7 +26,7 @@ def label_nodes_with_ip():
             # Label the node with its IP
             run_command(f"kubectl label node {node_name} ip={node_ip}")
 
-def create_deployment(replicas):
+def create_deployment(replicas, rf):
     # Label nodes with their IPs if necessary
     label_nodes_with_ip()
 
@@ -64,6 +64,9 @@ def create_deployment(replicas):
     
     print("All Cassandra pods are in Running state.")
 
+    # Create the keyspace with the specified replication factor
+    create_keyspace(rf)
+
     # Deploy the web service
     run_command("kubectl apply -f DeployFiles/web.yaml")
     
@@ -80,6 +83,13 @@ def create_deployment(replicas):
     # Deploy the asn1scc service
     run_command("kubectl apply -f DeployFiles/asn1scc.yaml")
 
+def create_keyspace(rf):
+    """Create the Cassandra keyspace with the given replication factor."""
+    # Get one of the Cassandra pods
+    pod = run_command("kubectl get pods -l app=cassandra -o jsonpath='{.items[0].metadata.name}'")
+    # Create the keyspace with the specified replication factor
+    run_command(f"kubectl exec -it {pod} -- cqlsh -e \"CREATE KEYSPACE IF NOT EXISTS tfm WITH replication = {{'class': 'SimpleStrategy', 'replication_factor': {rf}}};\"")
+
 def copy_to_pod(files, pod_prefix, dest_dir):
     pod = run_command(f"kubectl get pods -l app={pod_prefix} -o jsonpath='{{.items[0].metadata.name}}'")
     for file in files:
@@ -92,6 +102,7 @@ def open_console(pod_prefix):
 def main():
     parser = argparse.ArgumentParser(description="Manage deployments and file copies in Kubernetes.")
     parser.add_argument('-create', type=int, help="Create Auto Ground Station deployment with the specified number of replicas")
+    parser.add_argument('-rf', type=int, help="Replication factor for Cassandra keyspace", default=3)
     parser.add_argument('-cpCSV', nargs='+', help="Copy one or more files to the asn1scc pod in the folder src/filesCSV/")
     parser.add_argument('-cpASN', nargs='+', help="Copy one or more files to the asn1scc pod in the folder src/filesASN/")
     parser.add_argument('-web', action='store_true', help="Open a console in the pod web")
@@ -100,7 +111,7 @@ def main():
     args = parser.parse_args()
     
     if args.create:
-        create_deployment(args.create)
+        create_deployment(args.create, args.rf)
     
     if args.cpCSV:
         copy_to_pod(args.cpCSV, 'asn1scc', '/dmt/filesCSV/')
