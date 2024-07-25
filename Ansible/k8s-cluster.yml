@@ -1,0 +1,191 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: Allow OpenSSH through firewall
+      ansible.builtin.ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: Enable the firewall
+      ansible.builtin.ufw:
+        state: enabled
+        logging: 'on'
+
+    - name: Allow Kubernetes ports
+      ansible.builtin.ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop:
+        - 6443
+        - 2379:2380
+        - 10250
+        - 10259
+        - 10257
+        - 30000:32767
+
+    - name: Allow Calico ports
+      ansible.builtin.ufw:
+        rule: allow
+        port: "{{ item.0 }}"
+        proto: "{{ item.1 }}"
+      loop:
+        - [179, 'tcp']
+        - [4789, 'udp']
+        - [5473, 'tcp']
+        - [51820, 'udp']
+        - [51821, 'udp']
+
+    - name: Allow Cassandra ports
+      ansible.builtin.ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop:
+        - 7000
+        - 7001
+        - 7199
+
+    - name: Ensure kernel modules are loaded
+      ansible.builtin.shell: |
+        modprobe overlay
+        modprobe br_netfilter
+      args:
+        warn: false
+
+    - name: Add kernel modules to load at boot
+      ansible.builtin.copy:
+        dest: /etc/modules-load.d/k8s.conf
+        content: |
+          overlay
+          br_netfilter
+
+    - name: Set sysctl parameters for Kubernetes
+      ansible.builtin.copy:
+        dest: /etc/sysctl.d/k8s.conf
+        content: |
+          net.bridge.bridge-nf-call-iptables = 1
+          net.bridge.bridge-nf-call-ip6tables = 1
+          net.ipv4.ip_forward = 1
+
+    - name: Apply sysctl settings
+      ansible.builtin.command: sysctl --system
+
+    - name: Disable swap
+      ansible.builtin.shell: sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
+    - name: Turn off swap
+      ansible.builtin.command: swapoff -a
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Install dependencies
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+        state: present
+        update_cache: true
+
+    - name: Add Docker repository key
+      ansible.builtin.shell: |
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+      args:
+        warn: false
+
+    - name: Add Docker repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+
+    - name: Install containerd
+      ansible.builtin.apt:
+        name: containerd.io
+        state: present
+
+    - name: Configure containerd with SystemdCgroup
+      ansible.builtin.shell: |
+        mkdir -p /etc/containerd
+        containerd config default | tee /etc/containerd/config.toml
+        sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+      args:
+        warn: false
+
+    - name: Start and enable containerd
+      ansible.builtin.systemd:
+        name: containerd
+        enabled: yes
+        state: started
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Add Kubernetes repository key
+      ansible.builtin.shell: |
+        curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      args:
+        warn: false
+
+    - name: Add Kubernetes repository
+      ansible.builtin.apt_repository:
+        repo: deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+
+    - name: Install Kubernetes components
+      ansible.builtin.apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+        update_cache: true
+
+    - name: Hold Kubernetes packages
+      ansible.builtin.apt_mark:
+        name: "{{ item }}"
+        state: hold
+      loop:
+        - kubelet
+        - kubeadm
+        - kubectl
+
+- hosts: master
+  become: true
+  tasks:
+    - name: Ensure br_netfilter is enabled
+      ansible.builtin.command: lsmod | grep br_netfilter
+      register: br_netfilter_check
+      ignore_errors: true
+
+    - name: Pull Kubernetes control plane images
+      ansible.builtin.command: kubeadm config images pull
+
+    - name: Initialize Kubernetes cluster
+      ansible.builtin.command: >
+        kubeadm init
+        --pod-network-cidr=192.168.0.0/16
+        --apiserver-advertise-address={{ ansible_default_ipv4.address }}
+        --cri-socket=unix:///run/containerd/containerd.sock
+      register: kubeadm_init
+
+    - name: Set up Kubernetes admin config
+      ansible.builtin.shell: |
+        mkdir -p $HOME/.kube
+        cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+        chown $(id -u):$(id -g) $HOME/.kube/config
+      args:
+        executable: /bin/bash
+      when: kubeadm_init.changed
+
+    - name: Install Calico network plugin
+      ansible.builtin.shell: |
+        kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/tigera-operator.yaml
+        curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/custom-resources.yaml
+        kubectl create -f custom-resources.yaml
+      when: kubeadm_init.changed
+
+    - name: Watch Calico pods until ready
+      ansible.builtin.command: watch kubectl get pods -n calico-system
+      async: 300
+      poll: 0
+      when: kubeadm_init.changed
