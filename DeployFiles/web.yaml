@@ -2,67 +2,6 @@
 # Auto Ground Station
 ##################################################################################################
 
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mysql-init-scripts
-data:
-  create-db.sql: |
-    CREATE DATABASE user_data;
-    CREATE USER 'admin'@'192.168.%.%' IDENTIFIED BY 'admin';
-    GRANT ALL PRIVILEGES ON *.* TO 'admin'@'192.168.%.%';
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mysql
-spec:
-  selector:
-    matchLabels:
-      app: mysql
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: mysql
-    spec:
-      containers:
-        - name: mysql
-          image: mysql:8.0
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: MYSQL_ROOT_PASSWORD
-          ports:
-            - containerPort: 3306
-              name: mysql
-          volumeMounts:
-            - name: mysql-init-scripts
-              mountPath: /docker-entrypoint-initdb.d/
-              readOnly: true
-      volumes:
-        - name: mysql-init-scripts
-          configMap:
-            name: mysql-init-scripts
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-  labels:
-    app: mysql
-    service: mysql
-spec:
-  selector:
-    app: mysql
-  ports:
-    - name: mysql
-      port: 3306
-      targetPort: mysql
-  type: NodePort
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
