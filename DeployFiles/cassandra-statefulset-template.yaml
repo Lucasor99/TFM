@@ -88,18 +88,6 @@ spec:
           volumeMounts:
             - name: cassandra-data
               mountPath: /var/lib/cassandra/data
-            - name: init-scripts
-              mountPath: /docker-entrypoint-initdb.d/init-cassandra.sh
-              subPath: init-cassandra.sh
-              readOnly: true
-          lifecycle:
-            postStart:
-              exec:
-                command: ["/bin/bash", "/docker-entrypoint-initdb.d/init-cassandra.sh"]
-      volumes:
-        - name: init-scripts
-          configMap:
-            name: cassandra-init-scripts
   volumeClaimTemplates:
     - metadata:
         name: cassandra-data

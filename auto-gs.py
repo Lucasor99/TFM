@@ -66,7 +66,7 @@ def create_deployment(replicas, rf):
     print("All Cassandra pods are in Running state.")
 
     # Create the keyspace with the specified replication factor
-    #create_keyspace(rf)
+    create_keyspace(rf)
 
     # Deploy the web service
     run_command("kubectl apply -f DeployFiles/web.yaml")
@@ -95,6 +95,7 @@ def create_keyspace(rf):
     # Wait for 30 seconds to ensure the Cassandra pod is fully initialized
     time.sleep(30)
     run_command(f"kubectl exec -it {pod} -- cqlsh -e \"CREATE KEYSPACE IF NOT EXISTS tfm WITH replication = {{'class': 'SimpleStrategy', 'replication_factor': {rf}}};\"")
+    run_command(f"kubectl exec -it {pod} -- cqlsh -e \"ALTER USER cassandra WITH PASSWORD admin;\"")
 
 def copy_to_pod(files, pod_prefix, dest_dir):
     pod = run_command(f"kubectl get pods -l app={pod_prefix} -o jsonpath='{{.items[0].metadata.name}}'")
