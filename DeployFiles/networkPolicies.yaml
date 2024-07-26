@@ -104,7 +104,7 @@ spec:
     - namespaceSelector: {}
     ports:
     - protocol: TCP
-      port: 9042
+      port: 3306
   egress:
   - to:
     - podSelector:
@@ -112,7 +112,7 @@ spec:
           app: web
     ports:
     - protocol: TCP
-      port: 9042
+      port: 3306
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
