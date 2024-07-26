@@ -1,5 +1,5 @@
 from cassandra.cluster import Cluster
-from cassandra_conection import get_cassandra_session
+from .cassandra_conection import get_cassandra_session
 
 def user_info(request):
     if request.user.is_authenticated:
