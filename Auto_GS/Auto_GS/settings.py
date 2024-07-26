@@ -54,6 +54,7 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 INSTALLED_APPS = [
     "accounts",
     "polls.apps.PollsConfig",
+    "django_cassandra_engine",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -114,18 +115,19 @@ DATABASES = {
         'PORT': '3306',
     },
 
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # },
+
     'cassandra': {
         'ENGINE': 'django_cassandra_engine',
-        'KEYSPACE': 'tfm',
+        'NAME': 'tfm',
         'USER': os.getenv('CASSANDRA_USER', 'cassandra'),  
         'PASSWORD': os.getenv('CASSANDRA_PASSWORD'),        
-        'HOST': 'cassandra',                                
+        'HOST': 'cassandra',
         'PORT': '9042',
-        'OPTIONS': {
-            'connection': {
-                'contact_points': ['cassandra']
-            }
-        }
+        'contact_points': ['cassandra'],
     }
 }
 

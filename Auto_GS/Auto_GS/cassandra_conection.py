@@ -5,8 +5,8 @@ from django.conf import settings
 
 def get_cassandra_session():
     db_settings = settings.DATABASES['cassandra']
-    contact_points = db_settings['OPTIONS']['connection']['contact_points']
-    keyspace = db_settings['KEYSPACE']
+    contact_points = db_settings['contact_points']
+    keyspace = db_settings['NAME']
     user = db_settings['USER']
     password = db_settings['PASSWORD']
 
