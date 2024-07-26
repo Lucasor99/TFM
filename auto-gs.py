@@ -33,7 +33,7 @@ def create_deployment(replicas, rf):
     # Get the names of the nodes in the Kubernetes cluster
     nodes = run_command("kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{\" \"}{end}'")
     node_array = nodes.split()
-    print(f"Number of available nodes is {nodes}")
+    print(f"Number of available nodes is {len(node_array)}")
 
     # Check that the number of nodes matches the number of replicas
     if len(node_array) < replicas:
