@@ -1,4 +1,3 @@
-from cassandra.cluster import Cluster
 from Auto_GS.cassandra_conection import get_cassandra_session
 
 

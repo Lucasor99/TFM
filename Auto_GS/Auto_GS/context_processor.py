@@ -1,4 +1,3 @@
-from cassandra.cluster import Cluster
 from .cassandra_conection import get_cassandra_session
 
 def user_info(request):

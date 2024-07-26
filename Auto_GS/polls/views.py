@@ -8,8 +8,7 @@ from django.shortcuts import redirect
 from django.utils.translation import activate
 from django.conf import settings
 
-from cassandra.cluster import Cluster
-
+from Auto_GS.cassandra_conection import get_cassandra_session
 from .models import *
 
 from .utilities.functions import insert_data, create_tree_view, select_by, update_data, delete_data
@@ -18,11 +17,7 @@ import json, random
 
 
 
-contact_points = ['cassandra']
-cluster = Cluster(contact_points)
-session = cluster.connect()
-
-session.set_keyspace('tfm')
+session = get_cassandra_session()
 
 def change_language(request):
     lang_code = request.GET.get('language', settings.LANGUAGE_CODE)
