@@ -1,0 +1,128 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-cassandra
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandra
+  policyTypes:
+  - Ingress
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-cassandra-asn1scc
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandra
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: asn1scc
+    - namespaceSelector: {}
+    ports:
+    - protocol: TCP
+      port: 9042
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: asn1scc
+    ports:
+    - protocol: TCP
+      port: 9042
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-web-to-cassandra
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandra
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: web
+    - namespaceSelector: {}
+    ports:
+    - protocol: TCP
+      port: 9042
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: web
+    ports:
+    - protocol: TCP
+      port: 9042
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-and-cassandra
+  namespace: default
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+    - {}
+  egress:
+  - to:
+    - namespaceSelector: {}
+      podSelector: {}
+    ports:
+    - protocol: UDP
+      port: 53 # DNS
+    - protocol: TCP
+      port: 53 # DNS
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-external-access
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: web
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+    - {}
+  egress:
+    - {}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-external-access
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: asn1scc
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+    - {}
+  egress:
+    - {}
