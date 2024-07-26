@@ -81,7 +81,7 @@ spec:
             - name: CASSANDRA_ENDPOINT_SNITCH
               value: GossipingPropertyFileSnitch
             - name: CASSANDRA_PASSWORD
-              fromValue:
+              valueFrom:
                 secretKeyRef:
                   name: db-secrets
                   key: CASSANDRA_PASSWORD
