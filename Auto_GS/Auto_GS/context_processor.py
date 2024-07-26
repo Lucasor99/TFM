@@ -1,5 +1,5 @@
 from cassandra.cluster import Cluster
-
+from cassandra_conection import get_cassandra_session
 
 def user_info(request):
     if request.user.is_authenticated:
@@ -11,13 +11,7 @@ def user_info(request):
 
 
 def nav_items_processor(request):
-    contact_points = ['cassandra']
-    cluster = Cluster(contact_points)
-    session = cluster.connect()
-    keyspace_query = "CREATE KEYSPACE IF NOT EXISTS tfm WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 3}"
-    session.execute(keyspace_query)
-
-    session.set_keyspace('tfm')
+    session = get_cassandra_session()
 
     nav_items = []
     aux = session.execute("describe tables")

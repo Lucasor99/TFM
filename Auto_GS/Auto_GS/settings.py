@@ -102,21 +102,31 @@ WSGI_APPLICATION = 'Auto_GS.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-
-#### ¡¡¡Cambiar a MySQL!!! ######
-#################################
 DATABASES = {
 
     'default': {
         'NAME': 'user_data',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'admin',
-        'PASSWORD': 'admin',
+        'PASSWORD': os.getenv('MYSQL_ROOT_PASSWORD'),
         'HOST': 'mysql',
         #'HOST': 'mysql.default.svc.cluster.local',
         'PORT': '3306',
-    }
+    },
 
+    'cassandra': {
+        'ENGINE': 'django_cassandra_engine',
+        'KEYSPACE': 'tfm',
+        'USER': os.getenv('CASSANDRA_USER', 'cassandra'),  
+        'PASSWORD': os.getenv('CASSANDRA_PASSWORD'),        
+        'HOST': 'cassandra',                                
+        'PORT': '9042',
+        'OPTIONS': {
+            'connection': {
+                'contact_points': ['cassandra']
+            }
+        }
+    }
 }
 
 

@@ -52,7 +52,7 @@ def create_deployment(replicas, rf):
     with open('DeployFiles/cassandra-statefulset-template.yaml', 'r') as f:
         cassandra_statefulset_template = f.read()
     
-    cassandra_statefulset = cassandra_statefulset_template.replace('${REPLICAS}', str(replicas))
+    cassandra_statefulset = (cassandra_statefulset_template.replace('${REPLICAS}', str(replicas)).replace('${RF}', str(rf)))
     run_command(f"echo '{cassandra_statefulset}' | kubectl apply -f -")
 
     # Wait for Cassandra pods to be in Running state
@@ -66,7 +66,7 @@ def create_deployment(replicas, rf):
     print("All Cassandra pods are in Running state.")
 
     # Create the keyspace with the specified replication factor
-    create_keyspace(rf)
+    #create_keyspace(rf)
 
     # Deploy the web service
     run_command("kubectl apply -f DeployFiles/web.yaml")

@@ -24,7 +24,12 @@ spec:
           image: lucasor99/asn1scc:latest
           securityContext:
             runAsUser: 0
-          
+          env:
+            - name: CASSANDRA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: CASSANDRA_PASSWORD
           ports:
             - containerPort: 8080  
 

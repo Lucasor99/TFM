@@ -2,9 +2,11 @@
 
 
 from cassandra.cluster import Cluster
+from cassandra.auth import PlainTextAuthProvider
 
 # Connect to the container cassandra
-cluster = Cluster(['cassandra'], port=9042)
+auth_provider = PlainTextAuthProvider(username=os.getenv('CASSANDRA_USER', 'cassandra'), password=os.getenv('CASSANDRA_PASSWORD'))
+cluster = Cluster(['cassandra'], port=9042, auth_provider=auth_provider)
 keyspace = 'tfm'
 createKeyspace="CREATE KEYSPACE IF NOT EXISTS %s WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : '3' }"  % keyspace
 session=cluster.connect()

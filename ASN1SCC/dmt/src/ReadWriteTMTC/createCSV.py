@@ -1,5 +1,6 @@
 #from commonPy.configMT import session,keyspace
 from cassandra.cluster import Cluster
+from cassandra.auth import PlainTextAuthProvider
 from cassandracsv import CassandraCsv
 import csv
 import os
@@ -52,7 +53,8 @@ def main() -> None:
     contact_points= asn2dataModel.getParam("-contact_points")
     clusterPort= asn2dataModel.getParam("-clusterPort")
 
-    cluster = Cluster([contact_points], port=clusterPort)
+    auth_provider = PlainTextAuthProvider(username=os.getenv('CASSANDRA_USER', 'cassandra'), password=os.getenv('CASSANDRA_PASSWORD'))
+    cluster = Cluster([contact_points], port=clusterPort, auth_provider=auth_provider)
 
     #keyspace must be exists
     session = cluster.connect(keyspace)

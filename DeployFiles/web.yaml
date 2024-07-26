@@ -31,7 +31,10 @@ spec:
           image: mysql:8.0
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: MYSQL_ROOT_PASSWORD
           ports:
             - containerPort: 3306
               name: mysql
@@ -79,6 +82,12 @@ spec:
       containers:
         - name: web
           image: lucasor99/auto-gs-web:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: MYSQL_ROOT_PASSWORD
           command: ["/bin/sh", "-c", "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"]
           ports:
             - containerPort: 8000

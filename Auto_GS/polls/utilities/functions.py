@@ -1,12 +1,10 @@
 from cassandra.cluster import Cluster
+from Auto_GS.cassandra_conection import get_cassandra_session
 
 
 #Insertar dato
 def insert_data(data):
-    contact_points = ['cassandra']
-    cluster = Cluster(contact_points)
-    session = cluster.connect()
-    session.set_keyspace('tfm')
+    session = get_cassandra_session()
     session.execute(
         """
         INSERT INTO example_dataview (example_dataview_sequence_number, dummy_telecommand__myinteger_payload, dummy_telecommand__myinteger_timestamp, dummy_telemetry__myinteger_payload, dummy_telemetry__myinteger_timestamp)
@@ -17,10 +15,7 @@ def insert_data(data):
 
 def select_by(table, key, value):
     try:
-        contact_points = ['cassandra']
-        cluster = Cluster(contact_points)
-        session = cluster.connect()
-        session.set_keyspace('tfm')
+        session = get_cassandra_session()
 
         #Escrito así para evitar inyección
         query = f"SELECT * FROM {table} WHERE {key} = ? ALLOW FILTERING"
@@ -35,11 +30,7 @@ def select_by(table, key, value):
 
 def update_data(table, key_column, key_value, column_to_update, new_value):
     try:
-        # Establecer la conexión con el clúster de Cassandra
-        contact_points = ['cassandra']
-        cluster = Cluster(contact_points)
-        session = cluster.connect()
-        session.set_keyspace('tfm')
+        session = get_cassandra_session()
 
         # Construir la consulta de actualización
         update_query = f"UPDATE {table} SET {column_to_update} = ? WHERE {key_column} = ?"
@@ -59,10 +50,7 @@ def update_data(table, key_column, key_value, column_to_update, new_value):
 def delete_data(table, column, value):
     try:
         # Establecer la conexión con el clúster de Cassandra
-        contact_points = ['cassandra']
-        cluster = Cluster(contact_points)
-        session = cluster.connect()
-        session.set_keyspace('tfm')
+        session = get_cassandra_session()
 
         # Construir la consulta de actualización
         update_query = f"DELETE FROM {table} WHERE {column} = ?"

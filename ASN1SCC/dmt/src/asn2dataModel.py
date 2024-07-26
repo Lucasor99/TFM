@@ -10,6 +10,7 @@ from commonPy.asnParser import Filename, AST_Lookup, AST_Leaftypes
 from commonPy.asnAST import AsnNode 
 import cqlMapper.cql_mapper as cql_mapper
 from cassandra.cluster import Cluster
+from cassandra.auth import PlainTextAuthProvider
 
 
 def usage() -> None:
@@ -59,7 +60,8 @@ def getParam(param: str,optional: bool = False)  -> str:
         usage() 
 
 def createSession(keyspace: str,contact_points: str,clusterPort: int) -> Cluster:
-    cluster = Cluster([contact_points], port=clusterPort)
+    auth_provider = PlainTextAuthProvider(username=os.getenv('CASSANDRA_USER', 'cassandra'), password=os.getenv('CASSANDRA_PASSWORD'))
+    cluster = Cluster([contact_points], port=clusterPort, auth_provider=auth_provider)
     session=cluster.connect()
     session.execute("CREATE KEYSPACE IF NOT EXISTS %s WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : '3' }"  % keyspace)
     session.set_keyspace(keyspace)

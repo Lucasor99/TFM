@@ -11,6 +11,33 @@ spec:
   selector:
     app: cassandra
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cassandra-init-scripts
+data:
+  init-cassandra.sh: |
+    #!/bin/bash
+
+    # Esperar hasta que Cassandra esté disponible
+    until cqlsh -e 'SHOW VERSION' > /dev/null 2>&1; do
+      echo "Esperando que Cassandra esté disponible..."
+      sleep 5
+    done
+
+    # Verificar si el keyspace tfm ya existe
+    KEYSPACE_EXISTS=$(cqlsh -e "SELECT keyspace_name FROM system_schema.keyspaces WHERE keyspace_name = 'tfm';")
+
+    if [ -z "$KEYSPACE_EXISTS" ]; then
+      echo "Creando el keyspace tfm..."
+      cqlsh -e "CREATE KEYSPACE tfm WITH replication = {'class': 'SimpleStrategy', 'replication_factor': ${RF}};"
+    else
+      echo "El keyspace tfm ya existe."
+    fi
+
+    # Cambiar la contraseña del usuario cassandra
+    cqlsh -e "ALTER USER cassandra WITH PASSWORD '${CASSANDRA_PASSWORD}';"
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -53,9 +80,26 @@ spec:
               value: "Rack1"
             - name: CASSANDRA_ENDPOINT_SNITCH
               value: GossipingPropertyFileSnitch
+            - name: CASSANDRA_PASSWORD
+              fromValue:
+                secretKeyRef:
+                  name: db-secrets
+                  key: CASSANDRA_PASSWORD
           volumeMounts:
             - name: cassandra-data
               mountPath: /var/lib/cassandra/data
+            - name: init-scripts
+              mountPath: /docker-entrypoint-initdb.d/init-cassandra.sh
+              subPath: init-cassandra.sh
+              readOnly: true
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/bash", "/docker-entrypoint-initdb.d/init-cassandra.sh"]
+      volumes:
+        - name: init-scripts
+          configMap:
+            name: cassandra-init-scripts
   volumeClaimTemplates:
     - metadata:
         name: cassandra-data
