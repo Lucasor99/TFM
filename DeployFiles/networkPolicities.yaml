@@ -30,7 +30,7 @@ spec:
         matchLabels:
           app: asn1scc
   egress:
-  - from:
+  - to:
     - podSelector:
         matchLabels:
           app: web
@@ -56,7 +56,7 @@ spec:
         matchLabels:
           app: web
   egress:
-  - from:
+  - to:
     - podSelector:
         matchLabels:
           app: web
