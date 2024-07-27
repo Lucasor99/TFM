@@ -40,6 +40,14 @@ def create_deployment(replicas, rf):
         print("Error: the number of available nodes is less than the number of replicas")
         sys.exit(1)
 
+    # Create the secrets
+    run_command("kubectl apply -f DeployFiles/secrets.yaml")
+    print("Creating secrets...")
+
+    # Create the network policies
+    run_command("kubectl apply -f DeployFiles/networkPolicies.yaml")
+    print("Creating network policies...")
+
     # Generate PersistentVolumes
     with open('DeployFiles/cassandra-pv-template.yaml', 'r') as f:
         cassandra_pv_template = f.read()
@@ -95,9 +103,17 @@ def create_keyspace(rf):
     # Create the keyspace with the specified replication factor
     print(f"Creating keyspace 'tfm' with replication factor {rf}.")
 
-    # Wait for 30 seconds to ensure the Cassandra pod is fully initialized
-    time.sleep(30)
-    run_command(f"kubectl exec -it {pod} -- cqlsh -e \"CREATE KEYSPACE IF NOT EXISTS tfm WITH replication = {{'class': 'SimpleStrategy', 'replication_factor': {rf}}};\"")
+    # Try to create the keyspace with the specified replication factor during Timeout seconds
+    start_time = time.time()
+    while True:
+        _, stderr, returncode = run_command(f"kubectl exec -it {pod} -- cqlsh -e \"CREATE KEYSPACE IF NOT EXISTS tfm WITH replication = {{'class': 'SimpleStrategy', 'replication_factor': {rf}}};\"")
+        if returncode == 0:
+            print("Keyspace 'tfm' created successfully.")
+            break
+        if time.time() - start_time > 120:  # Timeout
+            print(f"Error: Failed to create keyspace 'tfm'. Last error: {stderr}")
+            sys.exit(1)
+        time.sleep(2)
 
 def copy_to_pod(files, pod_prefix, dest_dir):
     pod = run_command(f"kubectl get pods -l app={pod_prefix} -o jsonpath='{{.items[0].metadata.name}}'")
