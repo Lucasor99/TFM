@@ -107,7 +107,7 @@ def create_keyspace(rf):
 
     # Create the keyspace with the specified replication factor
     print(f"Creating keyspace 'tfm' with replication factor {rf}.")
-
+    time.sleep(20)
     # Try to create the keyspace with the specified replication factor during Timeout seconds
     start_time = time.time()
     while True:
@@ -121,7 +121,7 @@ def create_keyspace(rf):
             print(f"Error: Failed to create keyspace 'tfm' within 2 minutes. Last error: {stderr}")
             sys.exit(1)
         print("Retrying to create keyspace...")
-        time.sleep(2)
+        time.sleep(5)
 
 def copy_to_pod(files, pod_prefix, dest_dir):
     pod, _, _ = run_command(f"kubectl get pods -l app={pod_prefix} -o jsonpath='{{.items[0].metadata.name}}'")

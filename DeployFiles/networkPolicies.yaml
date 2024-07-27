@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: deny-all-cassandra
+  name: deny-all
   namespace: default
 spec:
   podSelector: {}
@@ -12,63 +12,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: deny-all-cassandra
-  namespace: default
-spec:
-  podSelector:
-    matchLabels:
-      app: cassandra
-  policyTypes:
-  - Ingress
-  - Egress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: deny-all-mysql
-  namespace: default
-spec:
-  podSelector:
-    matchLabels:
-      app: mysql
-  policyTypes:
-  - Ingress
-  - Egress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-cassandra-asn1scc
-  namespace: default
-spec:
-  podSelector:
-    matchLabels:
-      app: cassandra
-  policyTypes:
-  - Ingress
-  - Egress
-  ingress:
-  - from:
-    - podSelector:
-        matchLabels:
-          app: asn1scc
-    - namespaceSelector: {}
-    ports:
-    - protocol: TCP
-      port: 9042
-  egress:
-  - to:
-    - podSelector:
-        matchLabels:
-          app: asn1scc
-    ports:
-    - protocol: TCP
-      port: 9042
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-web-to-cassandra
+  name: allow-cassandra
   namespace: default
 spec:
   podSelector:
@@ -82,7 +26,9 @@ spec:
     - podSelector:
         matchLabels:
           app: web
-    - namespaceSelector: {}
+    - podSelector:
+        matchLabels:
+          app: asn1scc
     ports:
     - protocol: TCP
       port: 9042
@@ -91,6 +37,9 @@ spec:
     - podSelector:
         matchLabels:
           app: web
+    - podSelector:
+        matchLabels:
+          app: asn1scc
     ports:
     - protocol: TCP
       port: 9042
@@ -98,7 +47,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-web-to-mysql
+  name: allow-mysql
   namespace: default
 spec:
   podSelector:
@@ -112,7 +61,6 @@ spec:
     - podSelector:
         matchLabels:
           app: web
-    - namespaceSelector: {}
     ports:
     - protocol: TCP
       port: 3306
@@ -150,7 +98,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-all-web
+  name: allow-web
   namespace: default
 spec:
   podSelector:
@@ -160,14 +108,26 @@ spec:
   - Ingress
   - Egress
   ingress:
-    - {}
+  - from:
+    - podSelector:
+        matchLabels:
+          app: cassandra
+    - podSelector:
+        matchLabels:
+          app: mysql
   egress:
-    - {}
+  - to:
+    - podSelector:
+        matchLabels:
+          app: cassandra
+    - podSelector:
+        matchLabels:
+          app: mysql
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-all-asn1scc
+  name: allow-asn1scc-to-cassandra
   namespace: default
 spec:
   podSelector:
@@ -177,6 +137,12 @@ spec:
   - Ingress
   - Egress
   ingress:
-    - {}
+  - from:
+    - podSelector:
+        matchLabels:
+          app: cassandra
   egress:
-    - {}
+  - to:
+    - podSelector:
+        matchLabels:
+          app: cassandra

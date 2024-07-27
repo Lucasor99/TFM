@@ -18,21 +18,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-LANGUAGES = [
-    ('en', _('English')),
-    ('es', _('Español')),
-    ('fr', _('Français')),
-]
-
-LOCALE_PATHS = [
-    BASE_DIR / 'locale',
-]
-
-LANGUAGE_CODE = 'en'
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -105,20 +90,20 @@ WSGI_APPLICATION = 'Auto_GS.wsgi.application'
 
 DATABASES = {
 
-    'default': {
-        'NAME': 'user_data',
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': 'admin',
-        'PASSWORD': os.getenv('MYSQL_ROOT_PASSWORD'),
-        'HOST': 'mysql',
-        #'HOST': 'mysql.default.svc.cluster.local',
-        'PORT': '3306',
-    },
-
     # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #     'NAME': 'user_data',
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'USER': 'admin',
+    #     'PASSWORD': os.getenv('MYSQL_ROOT_PASSWORD'),
+    #     'HOST': 'mysql',
+    #     #'HOST': 'mysql.default.svc.cluster.local',
+    #     'PORT': '3306',
     # },
+
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
 
     'cassandra': {
         'ENGINE': 'django_cassandra_engine',
@@ -154,11 +139,23 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
+LANGUAGES = [
+    ('en', _('English')),
+    ('es', _('Español')),
+    ('fr', _('Français')),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
+
+USE_L10N = True
 
 USE_TZ = True
 
@@ -183,6 +180,6 @@ EMAIL_HOST_PASSWORD = 'your_password'
 DEFAULT_FROM_EMAIL = 'webmaster@example.com'
 
 # Security settings
-
+SECURE_SSL_REDIRECT = False # Change to True if you are using HTTPS
 SESSION_COOKIE_AGE = 60 * 60
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
