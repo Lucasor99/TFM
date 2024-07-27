@@ -9,19 +9,24 @@ import time
 config.load_kube_config()
 
 def run_command(command):
-    """Run a shell command and return the output."""
-    result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return result.stdout.decode().strip()
+    """Run a shell command and return the output, error, and exit code."""
+    try:
+        result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout = result.stdout.decode().strip() if result.stdout else ''
+        stderr = result.stderr.decode().strip() if result.stderr else ''
+        return stdout, stderr, result.returncode
+    except Exception as e:
+        return '', str(e), 1
 
 def label_nodes_with_ip():
     """Label nodes with their internal IPs if not already labeled."""
-    nodes = run_command("kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}={.status.addresses[?(@.type==\"InternalIP\")].address} {end}'")
+    nodes, _, _ = run_command("kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}={.status.addresses[?(@.type==\"InternalIP\")].address} {end}'")
     node_array = nodes.split()
 
     for node_info in node_array:
         node_name, node_ip = node_info.split("=")
         # Check if the node is already labeled with the IP
-        labels = run_command(f"kubectl get node {node_name} --show-labels")
+        labels, _, _ = run_command(f"kubectl get node {node_name} --show-labels")
         if f"ip={node_ip}" not in labels:
             # Label the node with its IP
             run_command(f"kubectl label node {node_name} ip={node_ip}")
@@ -31,7 +36,7 @@ def create_deployment(replicas, rf):
     label_nodes_with_ip()
 
     # Get the names of the nodes in the Kubernetes cluster
-    nodes = run_command("kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{\" \"}{end}'")
+    nodes, _, _ = run_command("kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{\" \"}{end}'")
     node_array = nodes.split()
     print(f"Number of available nodes is {len(node_array)}")
 
@@ -60,13 +65,13 @@ def create_deployment(replicas, rf):
     with open('DeployFiles/cassandra-statefulset-template.yaml', 'r') as f:
         cassandra_statefulset_template = f.read()
     
-    cassandra_statefulset = (cassandra_statefulset_template.replace('${REPLICAS}', str(replicas)).replace('${RF}', str(rf)))
+    cassandra_statefulset = cassandra_statefulset_template.replace('${REPLICAS}', str(replicas)).replace('${RF}', str(rf))
     run_command(f"echo '{cassandra_statefulset}' | kubectl apply -f -")
 
     # Wait for Cassandra pods to be in Running state
     print("Waiting for Cassandra pods to be in Running state...")
     while True:
-        pods_status = run_command("kubectl get pods -l app=cassandra -o jsonpath='{.items[*].status.phase}'")
+        pods_status, _, _ = run_command("kubectl get pods -l app=cassandra -o jsonpath='{.items[*].status.phase}'")
         if all(status == 'Running' for status in pods_status.split()):
             break
         time.sleep(5)
@@ -85,7 +90,7 @@ def create_deployment(replicas, rf):
     # Wait for the web pod to be in Running state
     print("Waiting for the web pod to be in Running state...")
     while True:
-        web_status = run_command("kubectl get pods -l app=web -o jsonpath='{.items[*].status.phase}'")
+        web_status, _, _ = run_command("kubectl get pods -l app=web -o jsonpath='{.items[*].status.phase}'")
         if 'Running' in web_status.split():
             break
         time.sleep(5)
@@ -98,7 +103,7 @@ def create_deployment(replicas, rf):
 def create_keyspace(rf):
     """Create the Cassandra keyspace with the given replication factor."""
     # Get one of the Cassandra pods
-    pod = run_command("kubectl get pods -l app=cassandra -o jsonpath='{.items[0].metadata.name}'")
+    pod, _, _ = run_command("kubectl get pods -l app=cassandra -o jsonpath='{.items[0].metadata.name}'")
 
     # Create the keyspace with the specified replication factor
     print(f"Creating keyspace 'tfm' with replication factor {rf}.")
@@ -106,22 +111,25 @@ def create_keyspace(rf):
     # Try to create the keyspace with the specified replication factor during Timeout seconds
     start_time = time.time()
     while True:
-        _, stderr, returncode = run_command(f"kubectl exec -it {pod} -- cqlsh -e \"CREATE KEYSPACE IF NOT EXISTS tfm WITH replication = {{'class': 'SimpleStrategy', 'replication_factor': {rf}}};\"")
+        stdout, stderr, returncode = run_command(f"kubectl exec -it {pod} -- cqlsh -e \"CREATE KEYSPACE IF NOT EXISTS tfm WITH replication = {{'class': 'SimpleStrategy', 'replication_factor': {rf}}};\"")
         if returncode == 0:
             print("Keyspace 'tfm' created successfully.")
             break
-        if time.time() - start_time > 120:  # Timeout
-            print(f"Error: Failed to create keyspace 'tfm'. Last error: {stderr}")
+        else:
+            print(f"Failed to create keyspace: {stderr}")
+        if time.time() - start_time > 120:  # Timeout after 2 minutes
+            print(f"Error: Failed to create keyspace 'tfm' within 2 minutes. Last error: {stderr}")
             sys.exit(1)
+        print("Retrying to create keyspace...")
         time.sleep(2)
 
 def copy_to_pod(files, pod_prefix, dest_dir):
-    pod = run_command(f"kubectl get pods -l app={pod_prefix} -o jsonpath='{{.items[0].metadata.name}}'")
+    pod, _, _ = run_command(f"kubectl get pods -l app={pod_prefix} -o jsonpath='{{.items[0].metadata.name}}'")
     for file in files:
         run_command(f"kubectl cp {file} {pod}:{dest_dir}")
 
 def open_console(pod_prefix):
-    pod = run_command(f"kubectl get pods -l app={pod_prefix} -o jsonpath='{{.items[0].metadata.name}}'")
+    pod, _, _ = run_command(f"kubectl get pods -l app={pod_prefix} -o jsonpath='{{.items[0].metadata.name}}'")
     os.system(f"kubectl exec -it {pod} -- /bin/bash")
 
 def main():
