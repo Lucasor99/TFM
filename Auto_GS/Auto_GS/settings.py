@@ -90,20 +90,20 @@ WSGI_APPLICATION = 'Auto_GS.wsgi.application'
 
 DATABASES = {
 
-    # 'default': {
-    #     'NAME': 'user_data',
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'USER': 'admin',
-    #     'PASSWORD': os.getenv('MYSQL_ROOT_PASSWORD'),
-    #     'HOST': 'mysql',
-    #     #'HOST': 'mysql.default.svc.cluster.local',
-    #     'PORT': '3306',
-    # },
-
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'user_data',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'admin',
+        'PASSWORD': os.getenv('MYSQL_ROOT_PASSWORD'),
+        'HOST': 'mysql',
+        #'HOST': 'mysql.default.svc.cluster.local',
+        'PORT': '3306',
     },
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # },
 
     'cassandra': {
         'ENGINE': 'django_cassandra_engine',
