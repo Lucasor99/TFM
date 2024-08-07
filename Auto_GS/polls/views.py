@@ -236,5 +236,5 @@ def process_data(request):
 
         return JsonResponse(response.json())
 
-    return render(request, 'process_form.html')
+    return render(request, 'process.html')
     
