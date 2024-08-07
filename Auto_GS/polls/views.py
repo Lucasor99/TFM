@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template import loader
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,7 @@ from .models import *
 
 from .utilities.functions import insert_data, create_tree_view, select_by, update_data, delete_data
 
-import json, random
+import json, random, requests
 
 
 
@@ -214,4 +214,27 @@ def borrar_datos(request):
     else:
         # Manejar el caso donde no se seleccionó ninguna tabla
         return HttpResponse("No se seleccionó ninguna tabla.")
+    
+def process_data(request):
+    if request.method == 'POST':
+        modules_telecommand = request.POST.get('modulesTelecommand')
+        keyspace = request.POST.get('keyspace')
+        contact_points = request.POST.get('contact_points')
+        cluster_port = request.POST.get('clusterPort')
+        asn_files = request.FILES.getlist('asn_files')
+
+        # Preparar los datos y archivos para enviar a la API Flask
+        files = [('asn_files', (file.name, file.read(), file.content_type)) for file in asn_files]
+        data = {
+            'modulesTelecommand': modules_telecommand,
+            'keyspace': keyspace,
+            'contact_points': contact_points,
+            'clusterPort': cluster_port
+        }
+
+        response = requests.post('http://asn1scc-service:5000/process', files=files, data=data)
+
+        return JsonResponse(response.json())
+
+    return render(request, 'process_form.html')
     
