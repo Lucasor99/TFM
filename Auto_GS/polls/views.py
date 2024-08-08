@@ -246,10 +246,24 @@ def create_models(request):
         try:
             response = requests.post('http://as1scc:5000/create_models', data=data, files=files)
             response.raise_for_status()  # Lanza excepción para errores HTTP
+            response_data = response.json()
+            print(response_data)
+
+            return JsonResponse(response_data)
+
         except requests.exceptions.RequestException as e:
             return render(request, 'create_models.html', {'error_message': f'Error al conectar con el servicio de ASN1SCC: {str(e)}'})
         
-        return render(request, 'create_models.html', {'data': response.json()})
+
+        # Comprobar si hay errores en la respuesta
+        if response_data.get('error'):
+            error_message = ""
+            error_message = response_data['error']
+            print(response_data)
+            return render(request, 'create_models.html', {'error_message': "Error al crear las tablas: " + error_message})
+        else:
+            success_message = 'Tablas creadas correctamente'
+            return render(request, 'create_models.html', {'success_message': success_message})
 
     return render(request, 'create_models.html')
 

@@ -39,7 +39,50 @@ def process():
 
     command.append('./filesASN1')  
     command.extend(filenames) 
-    print(filenames)
+
+    # Ejecutar el comando
+    result = subprocess.run(command, capture_output=True, text=True)
+    output = result.stdout
+    error = result.stderr
+
+    # Limpiar archivos temporales
+    for filename in filenames:
+        os.remove(os.path.join('filesASN1', filename))
+
+    return jsonify({"command": command, "output": output, "error": error})
+
+
+@app.route('/read_tmtc', methods=['POST'])
+def process_csv():
+
+    keyspace = request.form.get('keyspace', '')
+    contact_points = request.form.get('contact_points', '')
+    cluster_port = request.form.get('clusterPort', '')
+
+    csv_files = request.files.getlist('csv_file')
+
+
+    # Procesar cada archivo CSV
+    for csv_file in csv_files:
+        # Guardar el archivo CSV temporalmente
+        csv_filename = os.path.join('filesCSV', csv_file.filename)
+        csv_file.save(csv_filename)
+
+    # Construir el comando
+    command = [
+        "python3",
+        "/dmt/src/ReadWriteTMTC/readTMTC.py",
+        "./filesCSV"
+    ]
+
+    if keyspace:
+        command.extend([f"-keyspace", keyspace])
+
+    if contact_points:
+        command.extend([f"-contact_points", contact_points])
+
+    if cluster_port:
+        command.extend([f"-clusterPort", cluster_port])
 
     # Ejecutar el comando
     result = subprocess.run(command, capture_output=True, text=True)
@@ -50,10 +93,12 @@ def process():
     print(error)
 
     # Limpiar archivos temporales
-    for filename in filenames:
+    for filename in csv_files:
         os.remove(os.path.join('filesASN1', filename))
 
     return jsonify({"command": command, "output": output, "error": error})
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

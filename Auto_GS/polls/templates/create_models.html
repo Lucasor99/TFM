@@ -10,7 +10,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "Index of the AUTO-GS" %}</title>
+    <title>{% trans "Create Models" %}</title>
     <link rel="stylesheet" href="{% static 'polls/tabla.css' %}">
     <link rel="stylesheet" href="{% static 'polls/form.css' %}">
 </head>
@@ -27,18 +27,24 @@
                     <p>{% trans "Drag files here" %}</p>
                     <input type="file" id="asn_files" class="form-control-file" name="asn_files" multiple style="display: none;">
                 </div>
-                <div id="errorMessage" class="error"></div>
             </div>
             
             <h5>{% trans "Mark the telecommand models:" %}</h5>
             <div id="progressContainer" class="progress-container">
                 <div id="progressBar" class="progress-bar"></div>
+                <div id="progressText" class="progress-text">0%</div>
             </div>
             <div class="file-list" id="fileList">
                 <!-- File list will be populated here -->
+                 <a>{% trans "No files" %}</a>
             </div>
 
             <input type="hidden" id="modulesTelecommand" name="modulesTelecommand">
+
+ 
+            <div id="successMessage" class="alert alert-success"></div>
+            <div id="errorMessage" class="alert alert-danger"></div>
+
 
             <div class="form-group mt-3">
                 <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
@@ -47,58 +53,73 @@
     </div>
 
     <script>
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('asn_files');
-        const fileList = document.getElementById('fileList');
-        const errorMessage = document.getElementById('errorMessage');
-        const modulesTelecommandInput = document.getElementById('modulesTelecommand');
-        const progressContainer = document.getElementById('progressContainer');
-        const progressBar = document.getElementById('progressBar');
-        const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1 MB
+        document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('createModelsForm');
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('asn_files');
+    const fileList = document.getElementById('fileList');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    const modulesTelecommandInput = document.getElementById('modulesTelecommand');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1 MB
 
-        let files = [];
+    let files = [];
 
-        dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('click', () => fileInput.click());
 
-        dropZone.addEventListener('dragover', (event) => {
-            event.preventDefault();
-            dropZone.classList.add('hover');
+    dropZone.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        dropZone.classList.add('hover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('hover');
+    });
+
+    dropZone.addEventListener('drop', (event) => {
+        event.preventDefault();
+        dropZone.classList.remove('hover');
+        handleFiles(event.dataTransfer.files);
+    });
+
+    fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+    function handleFiles(newFiles) {
+        errorMessage.textContent = ''; // Clear previous error messages
+        errorMessage.style.display = 'none';
+        successMessage.textContent = ''; // Clear previous success message
+        successMessage.style.display = 'none';
+
+        Array.from(newFiles).forEach(file => {
+            if (!file.name.endsWith('.asn')) {
+                errorMessage.textContent = `Only .asn files are allowed: ${file.name}`;
+                return;
+            }
+            if (file.size > MAX_FILE_SIZE) {
+                errorMessage.textContent = `File size exceeds 1 MB limit for file: ${file.name}`;
+                return;
+            }
+            if (!files.some(f => f.name === file.name)) {
+                files.push(file);
+            }
         });
 
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('hover');
-        });
+        updateFileList();
+    }
 
-        dropZone.addEventListener('drop', (event) => {
-            event.preventDefault();
-            dropZone.classList.remove('hover');
-            handleFiles(event.dataTransfer.files);
-        });
+    function updateFileList() {
+        fileList.innerHTML = ''; // Clear the list before adding new items
 
-        fileInput.addEventListener('change', () => handleFiles(fileInput.files));
 
-        function handleFiles(newFiles) {
-            errorMessage.textContent = ''; // Clear previous error messages
 
-            Array.from(newFiles).forEach(file => {
-                if (!file.name.endsWith('.asn')) {
-                    errorMessage.textContent = `{% trans "Only .asn files are allowed:" %} ${file.name}`;
-                    return;
-                }
-                if (file.size > MAX_FILE_SIZE) {
-                    errorMessage.textContent = `{% trans "File size exceeds 1 MB limit for file:" %} ${file.name}`;
-                    return;
-                }
-                if (!files.some(f => f.name === file.name)) {
-                    files.push(file);
-                }
-            });
-
-            updateFileList();
-        }
-
-        function updateFileList() {
-            fileList.innerHTML = ''; // Clear the list before adding new items
+        if (files.length === 0) {
+            const noFilesMessage = document.createElement('a');
+            noFilesMessage.textContent = '{% trans "No files" %}';
+            fileList.appendChild(noFilesMessage);
+        } else {
 
             files.forEach(file => {
                 const fileItem = document.createElement('div');
@@ -115,7 +136,7 @@
 
                 const removeButton = document.createElement('button');
                 removeButton.textContent = '❌';
-                removeButton.title = '{% trans "Remove this file" %}';
+                removeButton.title = 'Remove this file';
                 removeButton.addEventListener('click', () => removeFile(file.name));
 
                 fileItem.appendChild(checkbox);
@@ -123,74 +144,88 @@
                 fileItem.appendChild(removeButton);
                 fileList.appendChild(fileItem);
             });
-
-            updateModulesTelecommand();
         }
+        updateModulesTelecommand();
+    }
 
-        function updateModulesTelecommand() {
-            const checkedFiles = Array.from(document.querySelectorAll('input[name="telecommandModels"]:checked'))
-                .map(checkbox => checkbox.value.replace(/\.[^/.]+$/, "")); // Remove file extension
+    function updateModulesTelecommand() {
+        const checkedFiles = Array.from(document.querySelectorAll('input[name="telecommandModels"]:checked'))
+            .map(checkbox => checkbox.value.replace(/\.[^/.]+$/, "")); // Remove file extension
 
-            modulesTelecommandInput.value = checkedFiles.join(',');
-        }
+        modulesTelecommandInput.value = checkedFiles.join(',');
+    }
 
-        function removeFile(fileName) {
-            files = files.filter(file => file.name !== fileName);
-            updateFileList();
-        }
+    function removeFile(fileName) {
+        files = files.filter(file => file.name !== fileName);
+        updateFileList();
+    }
 
-        function resetForm() {
-            files = []; 
-            fileList.innerHTML = ''; 
-            document.getElementById('createModelsForm').reset();
-            modulesTelecommandInput.value = ''; 
-        }
+    function resetForm() {
+        files = [];
+        fileList.innerHTML = '';
+        form.reset();
+        modulesTelecommandInput.value = '';
+        progressBar.style.width = '0%';
+        progressText.textContent = '0%';
+    }
 
+    form.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent the default form submission
+        progressBar.style.width = '0%';
+        progressText.textContent = '0%';
 
-        // Add event listener to the form submission
-        document.getElementById('createModelsForm').addEventListener('submit', (event) => {
-            event.preventDefault(); // Prevent default form submission
+        const formData = new FormData(event.target);
 
-            const formData = new FormData(event.target);
+        files.forEach(file => {
+            formData.append('asn_files', file);
+        });
 
-            files.forEach(file => {
-                formData.append('asn_files', file);
-            });
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', form.action, true);
 
-            // Create a new XMLHttpRequest to handle form submission
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', event.target.action, true);
+        xhr.upload.addEventListener('progress', (event) => {
+            if (event.lengthComputable) {
+                const percentComplete = Math.round((event.loaded / event.total) * 100);
+                progressBar.style.width = percentComplete + '%';
+                progressText.textContent = percentComplete + '%';
+                progressContainer.style.visibility = 'visible';
+            }
+        });
 
-            let progressText = document.createElement('div');
-            progressText.className = 'progress-text';
-            progressText.textContent = '0%';
-            progressContainer.appendChild(progressText);
+        xhr.onload = () => {
+            if (xhr.status === 200) {
 
-            xhr.upload.addEventListener('progress', (event) => {
-                if (event.lengthComputable) {
-                    const percentComplete = Math.round((event.loaded / event.total) * 100);
-                    progressBar.style.width = percentComplete + '%';
-                    progressText.textContent = percentComplete + '%';
-                    progressContainer.style.visibility = 'visible';
-                }
-            });
+                errorMessage.style.display = 'none';
+                errorMessage.textContent = '';
+                successMessage.style.display = 'none';
+                successMessage.textContent = ''
 
-            // Handle the response
-            xhr.onload = () => {
-                if (xhr.status === 200) {
-                    // Resetear el formulario y limpiar archivos
+                const response = JSON.parse(xhr.responseText);
+                if (response.error) {
+                    errorMessage.textContent = 'Error'
+                    errorMessage.style.display = 'block';
+  
+                } else {
+                    successMessage.textContent = 'Files uploaded successfully!';
+                    successMessage.style.display = 'block';
                     resetForm();
                     progressContainer.style.visibility = 'hidden';
-                } else {
-                    errorMessage.textContent = `{% trans "Error during file upload:" %} ${xhr.statusText}`;
                 }
- 
-            };
+            } else {
+                errorMessage.textContent = `Error during file upload: ${xhr.statusText}`;
+                errorMessage.style.display = 'block';
+            }
+        };
 
+        xhr.onerror = () => {
+            errorMessage.textContent = `Error during file upload: ${xhr.statusText}`;
+            errorMessage.style.display = 'block';
+        };
 
+        xhr.send(formData);
+    });
+});
 
-            xhr.send(formData);
-        });
     </script>
 </body>
 

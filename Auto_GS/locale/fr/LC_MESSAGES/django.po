@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-08 15:29+0000\n"
+"POT-Creation-Date: 2024-08-08 19:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,39 +38,51 @@ msgstr "Accueil"
 msgid "Tables"
 msgstr "Tables"
 
-#: polls/templates/base.html:39
+#: polls/templates/base.html:41
+#, fuzzy
+#| msgid "Delete commands: "
+msgid "Telecommands"
+msgstr "Supprimer les commandes: "
+
+#: polls/templates/base.html:44
 msgid "Create Command"
 msgstr "Créer Commande"
 
-#: polls/templates/base.html:40
+#: polls/templates/base.html:45
 msgid "Update Command"
 msgstr "Mettre à jour Commande"
 
-#: polls/templates/base.html:41
+#: polls/templates/base.html:46
 msgid "Delete Command"
 msgstr "Supprimer Commande"
 
-#: polls/templates/base.html:43
+#: polls/templates/base.html:49 polls/templates/create_models.html:13
+#, fuzzy
+#| msgid "Create data models:"
+msgid "Create Models"
+msgstr "Créer des modèles de données:"
+
+#: polls/templates/base.html:51
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: polls/templates/base.html:46
+#: polls/templates/base.html:54
 msgid "My Account"
 msgstr "Mon Compte"
 
-#: polls/templates/base.html:50
+#: polls/templates/base.html:58
 msgid "User"
 msgstr "Utilisateur"
 
-#: polls/templates/base.html:51
+#: polls/templates/base.html:59
 msgid "Email"
 msgstr "E-mail"
 
-#: polls/templates/base.html:55
+#: polls/templates/base.html:63
 msgid "Manage Users"
 msgstr "Gérer les Utilisateurs"
 
-#: polls/templates/base.html:57
+#: polls/templates/base.html:65
 msgid "Change Password"
 msgstr "Changer le Mot de Passe"
 
@@ -91,10 +103,6 @@ msgstr "Entrez la Valeur: "
 msgid "Delete"
 msgstr "Supprimer"
 
-#: polls/templates/create_models.html:13 polls/templates/index.html:13
-msgid "Index of the AUTO-GS"
-msgstr "Index de l'AUTO-GS"
-
 #: polls/templates/create_models.html:24
 msgid "Create data models:"
 msgstr "Créer des modèles de données:"
@@ -108,29 +116,17 @@ msgstr ""
 msgid "Drag files here"
 msgstr "Faites glisser les fichiers ici"
 
-#: polls/templates/create_models.html:33
+#: polls/templates/create_models.html:32
 msgid "Mark the telecommand models:"
 msgstr "Marquer les modèles de commande télécommandé:"
 
-#: polls/templates/create_models.html:44 polls/templates/telecomando.html:27
+#: polls/templates/create_models.html:39 polls/templates/create_models.html:120
+msgid "No files"
+msgstr ""
+
+#: polls/templates/create_models.html:50 polls/templates/telecomando.html:27
 msgid "Submit"
 msgstr "Soumettre"
-
-#: polls/templates/create_models.html:85
-msgid "Only .asn files are allowed:"
-msgstr "Seuls les fichiers .asn sont autorisés:"
-
-#: polls/templates/create_models.html:89
-msgid "File size exceeds 1 MB limit for file:"
-msgstr "La taille du fichier dépasse la limite de 1 MB pour le fichier:"
-
-#: polls/templates/create_models.html:118
-msgid "Remove this file"
-msgstr "Supprimer ce fichier"
-
-#: polls/templates/create_models.html:185
-msgid "Error during file upload:"
-msgstr "Erreur lors de l'envoi du fichier:"
 
 #: polls/templates/delete.html:12
 msgid "Delete commands: "
@@ -144,9 +140,21 @@ msgstr "Sélectionnez la table"
 msgid "Select"
 msgstr "Sélectionner"
 
-#: polls/templates/index.html:20
+#: polls/templates/index.html:13
+msgid "Index of the AUTO-GS"
+msgstr "Index de l'AUTO-GS"
+
+#: polls/templates/index.html:21
 msgid "List of tables"
 msgstr "Liste des tables"
+
+#: polls/templates/index.html:28
+msgid "No tables"
+msgstr "Aucune table"
+
+#: polls/templates/index.html:30
+msgid "Create a new table"
+msgstr "Créer une nouvelle table"
 
 #: polls/templates/modificar_tabla.html:11
 msgid "Modify table"
@@ -212,3 +220,15 @@ msgstr "Modifier des Commandes"
 #: polls/templates/update.html:17
 msgid "Select the table to Modify"
 msgstr "Sélectionnez la table à modifier"
+
+#~ msgid "Only .asn files are allowed:"
+#~ msgstr "Seuls les fichiers .asn sont autorisés:"
+
+#~ msgid "File size exceeds 1 MB limit for file:"
+#~ msgstr "La taille du fichier dépasse la limite de 1 MB pour le fichier:"
+
+#~ msgid "Remove this file"
+#~ msgstr "Supprimer ce fichier"
+
+#~ msgid "Error during file upload:"
+#~ msgstr "Erreur lors de l'envoi du fichier:"
