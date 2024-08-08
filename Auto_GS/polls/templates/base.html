@@ -36,9 +36,17 @@
                 </ul>
             </li>
             {% if user.is_staff %}
-            <li><a href="{% url 'telecomando' %}">{% trans "Create Command" %}</a></li>
-            <li><a href="{% url 'update' %}">{% trans "Update Command" %}</a></li>
-            <li><a href="{% url 'delete' %}">{% trans "Delete Command" %}</a></li>
+            <li class="my-dropdown">
+                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                    {% trans "Telecommands" %} <span class="caret"></span>
+                </a>
+                <ul class="dropdown-content" role="menu">
+                    <li><a href="{% url 'telecomando' %}">{% trans "Create Command" %}</a></li>
+                    <li><a href="{% url 'update' %}">{% trans "Update Command" %}</a></li>
+                    <li><a href="{% url 'delete' %}">{% trans "Delete Command" %}</a></li> 
+                </ul>
+            </li>
+            <li><a href="{% url 'create_models' %}">{% trans "Create Models" %}</a></li>
             {% endif %}
             <li><a href="{% url 'logout' %}">{% trans "Logout" %}</a></li>
             <li class="my-dropdown">

@@ -238,13 +238,13 @@ def create_models(request):
         data = {
             'modulesTelecommand': ','.join(modules_telecommand_list),
             'keyspace': "tfm",
-            'contact_points': "localhost",
+            'contact_points': "cassandra",
             'clusterPort': 9042
         }
         
         # Enviar solicitud POST con archivos y datos
         try:
-            response = requests.post('http://localhost:5000/create_models', data=data, files=files)
+            response = requests.post('http://as1scc:5000/create_models', data=data, files=files)
             response.raise_for_status()  # Lanza excepción para errores HTTP
         except requests.exceptions.RequestException as e:
             return render(request, 'create_models.html', {'error_message': f'Error al conectar con el servicio de ASN1SCC: {str(e)}'})
