@@ -7,6 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import redirect
 from django.utils.translation import activate
 from django.conf import settings
+import requests.exceptions
 
 from Auto_GS.cassandra_conection import get_cassandra_session
 from .models import *
@@ -191,6 +192,7 @@ def delete(request):
  # Imprimir el valor de item para depurar
     return render(request, "delete.html")
 
+@login_required
 @staff_member_required
 def borrar_datos(request):
     if 'tabla' in request.GET:
@@ -215,26 +217,40 @@ def borrar_datos(request):
         # Manejar el caso donde no se seleccionó ninguna tabla
         return HttpResponse("No se seleccionó ninguna tabla.")
     
-def process_data(request):
+@login_required
+@staff_member_required
+def create_models(request):
     if request.method == 'POST':
-        modules_telecommand = request.POST.get('modulesTelecommand')
-        keyspace = request.POST.get('keyspace')
-        contact_points = request.POST.get('contact_points')
-        cluster_port = request.POST.get('clusterPort')
+        # Obtén el valor de modulesTelecommand como una cadena de texto
+        modules_telecommand_str = request.POST.get('modulesTelecommand', '')
+        modules_telecommand_list = modules_telecommand_str.split(',')
+        
         asn_files = request.FILES.getlist('asn_files')
+   
+        # Validar tamaños de archivos
+        MAX_FILE_SIZE = 1 * 1024 * 1024  # 1 MB
+        for file in asn_files:
+            if file.size > MAX_FILE_SIZE:
+                return JsonResponse({'error': f'File size exceeds 1 MB limit: {file.name}'}, status=400)
 
         # Preparar los datos y archivos para enviar a la API Flask
         files = [('asn_files', (file.name, file.read(), file.content_type)) for file in asn_files]
         data = {
-            'modulesTelecommand': modules_telecommand,
-            'keyspace': keyspace,
-            'contact_points': contact_points,
-            'clusterPort': cluster_port
+            'modulesTelecommand': ','.join(modules_telecommand_list),
+            'keyspace': "tfm",
+            'contact_points': "localhost",
+            'clusterPort': 9042
         }
+        
+        # Enviar solicitud POST con archivos y datos
+        try:
+            response = requests.post('http://localhost:5000/create_models', data=data, files=files)
+            response.raise_for_status()  # Lanza excepción para errores HTTP
+        except requests.exceptions.RequestException as e:
+            return render(request, 'create_models.html', {'error_message': f'Error al conectar con el servicio de ASN1SCC: {str(e)}'})
+        
+        return render(request, 'create_models.html', {'data': response.json()})
 
-        response = requests.post('http://asn1scc-service:5000/process', files=files, data=data)
+    return render(request, 'create_models.html')
 
-        return JsonResponse(response.json())
-
-    return render(request, 'process.html')
     

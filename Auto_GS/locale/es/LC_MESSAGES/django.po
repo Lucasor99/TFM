@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-16 16:29+0200\n"
+"POT-Creation-Date: 2024-08-08 15:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,59 +18,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Auto_GS/settings.py:22
+#: Auto_GS/settings.py:153
 msgid "English"
 msgstr ""
 
-#: Auto_GS/settings.py:23
+#: Auto_GS/settings.py:154
 msgid "Español"
 msgstr ""
 
-#: Auto_GS/settings.py:24
+#: Auto_GS/settings.py:155
 msgid "Français"
 msgstr ""
 
-#: polls/templates/base.html:26
+#: polls/templates/base.html:27
 msgid "Home"
 msgstr "Inicio"
 
-#: polls/templates/base.html:29
+#: polls/templates/base.html:30
 msgid "Tables"
 msgstr "Tablas"
 
-#: polls/templates/base.html:38
+#: polls/templates/base.html:39
 msgid "Create Command"
 msgstr "Crear Telecomando"
 
-#: polls/templates/base.html:39
+#: polls/templates/base.html:40
 msgid "Update Command"
 msgstr "Modificar Telecomando"
 
-#: polls/templates/base.html:40
+#: polls/templates/base.html:41
 msgid "Delete Command"
 msgstr "Borrar Telecomando"
 
-#: polls/templates/base.html:42
+#: polls/templates/base.html:43
 msgid "Logout"
 msgstr "Cerrar sesión"
 
-#: polls/templates/base.html:45
+#: polls/templates/base.html:46
 msgid "My Account"
 msgstr "Mi cuenta"
 
-#: polls/templates/base.html:49
+#: polls/templates/base.html:50
 msgid "User"
 msgstr "Usuario"
 
-#: polls/templates/base.html:50
+#: polls/templates/base.html:51
 msgid "Email"
 msgstr "Correo electrónico"
 
-#: polls/templates/base.html:54
+#: polls/templates/base.html:55
 msgid "Manage Users"
 msgstr "Administrar usuarios"
 
-#: polls/templates/base.html:56
+#: polls/templates/base.html:57
 msgid "Change Password"
 msgstr "Cambiar contraseña"
 
@@ -91,6 +91,46 @@ msgstr "Introduzca el Valor: "
 msgid "Delete"
 msgstr "Borrar"
 
+#: polls/templates/create_models.html:13 polls/templates/index.html:13
+msgid "Index of the AUTO-GS"
+msgstr "Índice del AUTO-GS"
+
+#: polls/templates/create_models.html:24
+msgid "Create data models:"
+msgstr "Crear modelos de datos:"
+
+#: polls/templates/create_models.html:25
+msgid "Drag and drop ASN Files here or click to select:"
+msgstr "Arrastre y suelte los archivos ASN aquí o haga clic para seleccionar:"
+
+#: polls/templates/create_models.html:27
+msgid "Drag files here"
+msgstr "Arrastre los archivos aquí"
+
+#: polls/templates/create_models.html:33
+msgid "Mark the telecommand models:"
+msgstr "Marcar los modelos de telecomando:"
+
+#: polls/templates/create_models.html:44 polls/templates/telecomando.html:27
+msgid "Submit"
+msgstr "Enviar"
+
+#: polls/templates/create_models.html:85
+msgid "Only .asn files are allowed:"
+msgstr "Solo se permiten archivos .asn:"
+
+#: polls/templates/create_models.html:89
+msgid "File size exceeds 1 MB limit for file:"
+msgstr "El tamaño del archivo supera el límite de 1 MB para el archivo:"
+
+#: polls/templates/create_models.html:118
+msgid "Remove this file"
+msgstr "Eliminar este archivo"
+
+#: polls/templates/create_models.html:185
+msgid "Error during file upload:"
+msgstr "Error durante la carga del archivo:"
+
 #: polls/templates/delete.html:12
 msgid "Delete commands: "
 msgstr "Borrar telecomandos: "
@@ -102,10 +142,6 @@ msgstr "Selecciona la tabla"
 #: polls/templates/delete.html:25 polls/templates/update.html:24
 msgid "Select"
 msgstr "Seleccionar"
-
-#: polls/templates/index.html:13
-msgid "Index of the AUTO-GS"
-msgstr "Índice del AUTO-GS"
 
 #: polls/templates/index.html:20
 msgid "List of tables"
@@ -170,10 +206,6 @@ msgstr "Crear Telecomando"
 #: polls/templates/telecomando.html:19
 msgid "Insert Data"
 msgstr "Insertar Datos"
-
-#: polls/templates/telecomando.html:27
-msgid "Submit"
-msgstr "Enviar"
 
 #: polls/templates/update.html:11
 msgid "Modify Commands"

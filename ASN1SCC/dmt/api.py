@@ -3,43 +3,57 @@ import subprocess
 import os
 
 app = Flask(__name__)
+app.config['DEBUG'] = True
 
-@app.route('/process', methods=['POST'])
+@app.route('/create_models', methods=['POST'])
 def process():
-    data = request.json
-    modules_telecommand = data.get('modulesTelecommand')
-    keyspace = data.get('keyspace')
-    contact_points = data.get('contact_points')
-    cluster_port = data.get('clusterPort')
-    asn_files = data.get('asn_files')
+    # Obtener los datos de la solicitud POST
+    modules_telecommand = request.form.get('modulesTelecommand', '')
+    keyspace = request.form.get('keyspace', '')
+    contact_points = request.form.get('contact_points', '')
+    cluster_port = request.form.get('clusterPort', '')
 
-    # Guardar archivos ASN1 temporalmente
-    file_paths = []
+    asn_files = request.files.getlist('asn_files')
+
+    # Guardar archivos ASN1 temporalmente y recolectar los nombres de archivos
+    filenames = []
     for file in asn_files:
-        file_path = f'/tmp/{file["filename"]}'
-        with open(file_path, 'wb') as f:
-            f.write(file['content'].encode('latin1'))
-        file_paths.append(file_path)
+        file_path = os.path.join('filesASN1', file.filename)
+        file.save(file_path)
+        filenames.append(file.filename)
 
     # Construir el comando
-    command = [
-        "python3", "/dmt/src/asn2dataModel.py",
-        f"-modulesTelecommand", modules_telecommand,
-        f"-keyspace", keyspace,
-        f"-contact_points", contact_points,
-        f"-clusterPort", cluster_port
-    ] + file_paths
+    command = ["python3", "src/asn2dataModel.py"]
+
+    if modules_telecommand:
+        command.extend([f"-modulesTelecommand", modules_telecommand])
+
+    if keyspace:
+        command.extend([f"-keyspace", keyspace])
+
+    if contact_points:
+        command.extend([f"-contact_points", contact_points])
+
+    if cluster_port:
+        command.extend([f"-clusterPort", cluster_port])
+
+    command.append('./filesASN1')  
+    command.extend(filenames) 
+    print(filenames)
 
     # Ejecutar el comando
     result = subprocess.run(command, capture_output=True, text=True)
     output = result.stdout
     error = result.stderr
+    print(command)
+    print(output)
+    print(error)
 
     # Limpiar archivos temporales
-    for file_path in file_paths:
-        os.remove(file_path)
+    for filename in filenames:
+        os.remove(os.path.join('filesASN1', filename))
 
-    return jsonify({"output": output, "error": error})
+    return jsonify({"command": command, "output": output, "error": error})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

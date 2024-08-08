@@ -12,3 +12,4 @@ mypy-extensions>=0.3.0
 cqlsh
 watchdog
 flask
+gunicorn

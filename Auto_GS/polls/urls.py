@@ -11,5 +11,5 @@ urlpatterns = [
     path("delete/", views.delete, name="delete"),
     path("delete/borrar_datos/", views.borrar_datos, name="borrar_datos"),
     path('change_language/', views.change_language, name='change_language'),
-    path("process/", views.process_data, name="process_data"),
+    path("create_models/", views.create_models, name="create_models"),
 ]

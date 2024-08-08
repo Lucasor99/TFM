@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-16 16:28+0200\n"
+"POT-Creation-Date: 2024-08-08 15:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,59 +18,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: Auto_GS/settings.py:22
+#: Auto_GS/settings.py:153
 msgid "English"
 msgstr "Anglais"
 
-#: Auto_GS/settings.py:23
+#: Auto_GS/settings.py:154
 msgid "Español"
 msgstr "Espagnol"
 
-#: Auto_GS/settings.py:24
+#: Auto_GS/settings.py:155
 msgid "Français"
 msgstr "Français"
 
-#: polls/templates/base.html:26
+#: polls/templates/base.html:27
 msgid "Home"
 msgstr "Accueil"
 
-#: polls/templates/base.html:29
+#: polls/templates/base.html:30
 msgid "Tables"
 msgstr "Tables"
 
-#: polls/templates/base.html:38
+#: polls/templates/base.html:39
 msgid "Create Command"
 msgstr "Créer Commande"
 
-#: polls/templates/base.html:39
+#: polls/templates/base.html:40
 msgid "Update Command"
 msgstr "Mettre à jour Commande"
 
-#: polls/templates/base.html:40
+#: polls/templates/base.html:41
 msgid "Delete Command"
 msgstr "Supprimer Commande"
 
-#: polls/templates/base.html:42
+#: polls/templates/base.html:43
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: polls/templates/base.html:45
+#: polls/templates/base.html:46
 msgid "My Account"
 msgstr "Mon Compte"
 
-#: polls/templates/base.html:49
+#: polls/templates/base.html:50
 msgid "User"
 msgstr "Utilisateur"
 
-#: polls/templates/base.html:50
+#: polls/templates/base.html:51
 msgid "Email"
 msgstr "E-mail"
 
-#: polls/templates/base.html:54
+#: polls/templates/base.html:55
 msgid "Manage Users"
 msgstr "Gérer les Utilisateurs"
 
-#: polls/templates/base.html:56
+#: polls/templates/base.html:57
 msgid "Change Password"
 msgstr "Changer le Mot de Passe"
 
@@ -91,6 +91,47 @@ msgstr "Entrez la Valeur: "
 msgid "Delete"
 msgstr "Supprimer"
 
+#: polls/templates/create_models.html:13 polls/templates/index.html:13
+msgid "Index of the AUTO-GS"
+msgstr "Index de l'AUTO-GS"
+
+#: polls/templates/create_models.html:24
+msgid "Create data models:"
+msgstr "Créer des modèles de données:"
+
+#: polls/templates/create_models.html:25
+msgid "Drag and drop ASN Files here or click to select:"
+msgstr ""
+"Faites glisser et déposez les fichiers ASN ici ou cliquez pour sélectionner:"
+
+#: polls/templates/create_models.html:27
+msgid "Drag files here"
+msgstr "Faites glisser les fichiers ici"
+
+#: polls/templates/create_models.html:33
+msgid "Mark the telecommand models:"
+msgstr "Marquer les modèles de commande télécommandé:"
+
+#: polls/templates/create_models.html:44 polls/templates/telecomando.html:27
+msgid "Submit"
+msgstr "Soumettre"
+
+#: polls/templates/create_models.html:85
+msgid "Only .asn files are allowed:"
+msgstr "Seuls les fichiers .asn sont autorisés:"
+
+#: polls/templates/create_models.html:89
+msgid "File size exceeds 1 MB limit for file:"
+msgstr "La taille du fichier dépasse la limite de 1 MB pour le fichier:"
+
+#: polls/templates/create_models.html:118
+msgid "Remove this file"
+msgstr "Supprimer ce fichier"
+
+#: polls/templates/create_models.html:185
+msgid "Error during file upload:"
+msgstr "Erreur lors de l'envoi du fichier:"
+
 #: polls/templates/delete.html:12
 msgid "Delete commands: "
 msgstr "Supprimer les commandes: "
@@ -103,10 +144,6 @@ msgstr "Sélectionnez la table"
 msgid "Select"
 msgstr "Sélectionner"
 
-#: polls/templates/index.html:13
-msgid "Index of the AUTO-GS"
-msgstr "Index de l'AUTO-GS"
-
 #: polls/templates/index.html:20
 msgid "List of tables"
 msgstr "Liste des tables"
@@ -117,7 +154,7 @@ msgstr "Modifier la table"
 
 #: polls/templates/modificar_tabla.html:16
 msgid "Modify table: "
-msgstr "Modifier la table: " 
+msgstr "Modifier la table: "
 
 #: polls/templates/modificar_tabla.html:19
 msgid "Select the row you want to modify: "
@@ -125,7 +162,8 @@ msgstr "Sélectionnez la ligne que vous souhaitez modifier :"
 
 #: polls/templates/modificar_tabla.html:31
 msgid "Select the column and enter the value you want to modify: "
-msgstr "Sélectionnez la colonne et entrez la valeur que vous souhaitez modifier :"
+msgstr ""
+"Sélectionnez la colonne et entrez la valeur que vous souhaitez modifier :"
 
 #: polls/templates/modificar_tabla.html:43
 msgid "Modify"
@@ -166,10 +204,6 @@ msgstr "Créer des Commandes"
 #: polls/templates/telecomando.html:19
 msgid "Insert Data"
 msgstr "Insérer des Données"
-
-#: polls/templates/telecomando.html:27
-msgid "Submit"
-msgstr "Soumettre"
 
 #: polls/templates/update.html:11
 msgid "Modify Commands"
