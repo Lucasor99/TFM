@@ -41,7 +41,7 @@ metadata:
     app: web
     service: web
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: web
   ports:

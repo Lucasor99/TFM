@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-09 10:55+0000\n"
+"POT-Creation-Date: 2024-08-09 15:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,8 +59,6 @@ msgid "Create Models"
 msgstr "Crear modelos"
 
 #: polls/templates/base.html:50
-#, fuzzy
-#| msgid "Insert Data"
 msgid "Send Data"
 msgstr "Insertar Datos"
 
@@ -140,8 +138,8 @@ msgid "File size exceeds 1 MB limit for file:"
 msgstr "El tamaño del archivo supera el límite de 1 MB para el archivo:"
 
 #: polls/templates/create_models.html:205 polls/templates/send_data.html:185
-msgid "Error"
-msgstr "Error"
+msgid "Error: "
+msgstr "Error: "
 
 #: polls/templates/create_models.html:209 polls/templates/send_data.html:189
 msgid "Files uploaded successfully!"

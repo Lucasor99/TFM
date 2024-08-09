@@ -115,6 +115,9 @@ spec:
     - podSelector:
         matchLabels:
           app: mysql
+    - podSelector:
+        matchLabels:
+          app: web
   egress:
   - to:
     - podSelector:
@@ -123,6 +126,9 @@ spec:
     - podSelector:
         matchLabels:
           app: mysql
+    - podSelector:
+        matchLabels:
+          app: web
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -141,8 +147,14 @@ spec:
     - podSelector:
         matchLabels:
           app: cassandra
+    - podSelector:
+        matchLabels:
+          app: web
   egress:
   - to:
     - podSelector:
         matchLabels:
           app: cassandra
+    - podSelector:
+        matchLabels:
+          app: web

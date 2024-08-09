@@ -57,5 +57,5 @@ spec:
     - name: mysql
       port: 3306
       targetPort: mysql
-  type: NodePort
+  type: ClusterIP
 ---

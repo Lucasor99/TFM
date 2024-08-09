@@ -202,7 +202,7 @@
 
                 const response = JSON.parse(xhr.responseText);
                 if (response.error) {
-                    errorMessage.textContent = '{% trans "Error" %}'
+                    errorMessage.textContent = '{% trans "Error: " %}' + response.error;
                     errorMessage.style.display = 'block';
   
                 } else {

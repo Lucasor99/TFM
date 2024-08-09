@@ -50,8 +50,8 @@ def create_deployment(replicas, rf):
     print("Creating secrets...")
 
     # Create the network policies
-    #run_command("kubectl apply -f DeployFiles/networkPolicies.yaml")
-    print("NO Creating network policies...")
+    run_command("kubectl apply -f DeployFiles/networkPolicies.yaml")
+    print("Creating network policies...")
 
     # Generate PersistentVolumes
     with open('DeployFiles/cassandra-pv-template.yaml', 'r') as f:
