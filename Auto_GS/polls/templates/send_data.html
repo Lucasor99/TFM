@@ -10,7 +10,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "Create Models" %}</title>
+    <title>{% trans "Send data" %}</title>
     <link rel="stylesheet" href="{% static 'polls/tabla.css' %}">
     <link rel="stylesheet" href="{% static 'polls/form.css' %}">
 </head>
@@ -21,11 +21,11 @@
             {% csrf_token %}
             
             <div class="form-group">
-                <h2>{% trans "Create data models" %}</h2>
-                <label class="mb-3" for="asn_files">{% trans "Drag and drop ASN Files here or click to select:" %}</label>
+                <h2>{% trans "Send data" %}</h2>
+                <label class="mb-3" for="csv_files">{% trans "Drag and drop CSV Files here or click to select:" %}</label>
                 <div id="dropZone" class="drop-zone">
                     <p>{% trans "Drag files here" %}</p>
-                    <input type="file" id="asn_files" class="form-control-file" name="asn_files" multiple style="display: none;">
+                    <input type="file" id="csv_files" class="form-control-file" name="csv_files" multiple style="display: none;">
                 </div>
             </div>
             
@@ -38,9 +38,6 @@
                 <!-- File list will be populated here -->
                  <a>{% trans "No files" %}</a>
             </div>
-
-            <input type="hidden" id="modulesTelecommand" name="modulesTelecommand">
-
  
             <div id="successMessage" class="alert alert-success"></div>
             <div id="errorMessage" class="alert alert-danger"></div>
@@ -56,15 +53,14 @@
         document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('createModelsForm');
     const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('asn_files');
+    const fileInput = document.getElementById('csv_files');
     const fileList = document.getElementById('fileList');
     const errorMessage = document.getElementById('errorMessage');
     const successMessage = document.getElementById('successMessage');
-    const modulesTelecommandInput = document.getElementById('modulesTelecommand');
     const progressContainer = document.getElementById('progressContainer');
     const progressBar = document.getElementById('progressBar');
     const progressText = document.getElementById('progressText');
-    const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1 MB
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
     let files = [];
 
@@ -94,12 +90,12 @@
         successMessage.style.display = 'none';
 
         Array.from(newFiles).forEach(file => {
-            if (!file.name.endsWith('.asn')) {
-                errorMessage.textContent = `{% trans "Only .asn files are allowed:" %} ${file.name}`;
+            if (!file.name.endsWith('.csv')) {
+                errorMessage.textContent = `{% trans "Only .csv files are allowed:" %} ${file.name}`;
                 return;
             }
             if (file.size > MAX_FILE_SIZE) {
-                errorMessage.textContent = `{% trans "File size exceeds 1 MB limit for file:" %} ${file.name}`;
+                errorMessage.textContent = `{% trans "File size exceeds 10 MB limit for file:" %} ${file.name}`;
                 return;
             }
             if (!files.some(f => f.name === file.name)) {
@@ -125,12 +121,6 @@
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
 
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.name = 'telecommandModels';
-                checkbox.value = file.name;
-                checkbox.addEventListener('change', updateModulesTelecommand); // Update the hidden input when checked state changes
-
                 const label = document.createElement('label');
                 label.textContent = file.name;
 
@@ -139,20 +129,11 @@
                 removeButton.title = 'Remove this file';
                 removeButton.addEventListener('click', () => removeFile(file.name));
 
-                fileItem.appendChild(checkbox);
                 fileItem.appendChild(label);
                 fileItem.appendChild(removeButton);
                 fileList.appendChild(fileItem);
             });
         }
-        updateModulesTelecommand();
-    }
-
-    function updateModulesTelecommand() {
-        const checkedFiles = Array.from(document.querySelectorAll('input[name="telecommandModels"]:checked'))
-            .map(checkbox => checkbox.value.replace(/\.[^/.]+$/, "")); // Remove file extension
-
-        modulesTelecommandInput.value = checkedFiles.join(',');
     }
 
     function removeFile(fileName) {
@@ -164,7 +145,6 @@
         files = [];
         fileList.innerHTML = '';
         form.reset();
-        modulesTelecommandInput.value = '';
         progressBar.style.width = '0%';
         progressText.textContent = '0%';
     }
@@ -177,7 +157,7 @@
         const formData = new FormData(event.target);
 
         files.forEach(file => {
-            formData.append('asn_files', file);
+            formData.append('csv_files', file);
         });
 
         const xhr = new XMLHttpRequest();

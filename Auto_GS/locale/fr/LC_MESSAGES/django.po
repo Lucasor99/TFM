@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-08 19:56+0000\n"
+"POT-Creation-Date: 2024-08-09 10:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,11 +20,11 @@ msgstr ""
 
 #: Auto_GS/settings.py:153
 msgid "English"
-msgstr "Anglais"
+msgstr ""
 
 #: Auto_GS/settings.py:154
 msgid "Español"
-msgstr "Espagnol"
+msgstr ""
 
 #: Auto_GS/settings.py:155
 msgid "Français"
@@ -39,50 +39,50 @@ msgid "Tables"
 msgstr "Tables"
 
 #: polls/templates/base.html:41
-#, fuzzy
-#| msgid "Delete commands: "
 msgid "Telecommands"
-msgstr "Supprimer les commandes: "
+msgstr "Télécommandes"
 
 #: polls/templates/base.html:44
-msgid "Create Command"
-msgstr "Créer Commande"
+msgid "Create Telecommand"
+msgstr "Créer Télécommande"
 
 #: polls/templates/base.html:45
-msgid "Update Command"
-msgstr "Mettre à jour Commande"
+msgid "Update Telecommand"
+msgstr "Mettre à jour Télécommande"
 
 #: polls/templates/base.html:46
-msgid "Delete Command"
-msgstr "Supprimer Commande"
+msgid "Delete Telecommand"
+msgstr "Supprimer Télécommande"
 
 #: polls/templates/base.html:49 polls/templates/create_models.html:13
-#, fuzzy
-#| msgid "Create data models:"
 msgid "Create Models"
-msgstr "Créer des modèles de données:"
+msgstr "Créer des modèles"
 
-#: polls/templates/base.html:51
+#: polls/templates/base.html:50
+msgid "Send Data"
+msgstr "Envoyer des Données"
+
+#: polls/templates/base.html:52
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: polls/templates/base.html:54
+#: polls/templates/base.html:55
 msgid "My Account"
 msgstr "Mon Compte"
 
-#: polls/templates/base.html:58
+#: polls/templates/base.html:59
 msgid "User"
 msgstr "Utilisateur"
 
-#: polls/templates/base.html:59
+#: polls/templates/base.html:60
 msgid "Email"
 msgstr "E-mail"
 
-#: polls/templates/base.html:63
+#: polls/templates/base.html:64
 msgid "Manage Users"
 msgstr "Gérer les Utilisateurs"
 
-#: polls/templates/base.html:65
+#: polls/templates/base.html:66
 msgid "Change Password"
 msgstr "Changer le Mot de Passe"
 
@@ -104,29 +104,53 @@ msgid "Delete"
 msgstr "Supprimer"
 
 #: polls/templates/create_models.html:24
-msgid "Create data models:"
-msgstr "Créer des modèles de données:"
+msgid "Create data models"
+msgstr "Créer des modèles"
 
 #: polls/templates/create_models.html:25
 msgid "Drag and drop ASN Files here or click to select:"
 msgstr ""
 "Faites glisser et déposez les fichiers ASN ici ou cliquez pour sélectionner:"
 
-#: polls/templates/create_models.html:27
+#: polls/templates/create_models.html:27 polls/templates/send_data.html:27
 msgid "Drag files here"
 msgstr "Faites glisser les fichiers ici"
 
-#: polls/templates/create_models.html:32
+#: polls/templates/create_models.html:32 polls/templates/send_data.html:32
 msgid "Mark the telecommand models:"
 msgstr "Marquer les modèles de commande télécommandé:"
 
 #: polls/templates/create_models.html:39 polls/templates/create_models.html:120
+#: polls/templates/send_data.html:39 polls/templates/send_data.html:116
 msgid "No files"
-msgstr ""
+msgstr "Aucun fichier"
 
-#: polls/templates/create_models.html:50 polls/templates/telecomando.html:27
+#: polls/templates/create_models.html:50 polls/templates/send_data.html:47
+#: polls/templates/telecomando.html:27
 msgid "Submit"
 msgstr "Soumettre"
+
+#: polls/templates/create_models.html:98
+msgid "Only .asn files are allowed:"
+msgstr "Seuls les fichiers .asn sont autorisés:"
+
+#: polls/templates/create_models.html:102
+msgid "File size exceeds 1 MB limit for file:"
+msgstr "La taille du fichier dépasse la limite de 1 MB pour le fichier:"
+
+#: polls/templates/create_models.html:205 polls/templates/send_data.html:185
+msgid "Error"
+msgstr "Erreur"
+
+#: polls/templates/create_models.html:209 polls/templates/send_data.html:189
+msgid "Files uploaded successfully!"
+msgstr "Fichiers téléchargés avec succès!"
+
+#: polls/templates/create_models.html:215
+#: polls/templates/create_models.html:221 polls/templates/send_data.html:195
+#: polls/templates/send_data.html:201
+msgid "Error during file upload:"
+msgstr "Erreur lors de l'envoi du fichier:"
 
 #: polls/templates/delete.html:12
 msgid "Delete commands: "
@@ -177,6 +201,23 @@ msgstr ""
 msgid "Modify"
 msgstr "Modifier"
 
+#: polls/templates/send_data.html:13 polls/templates/send_data.html:24
+msgid "Send data"
+msgstr "Envoyer des Données"
+
+#: polls/templates/send_data.html:25
+msgid "Drag and drop CSV Files here or click to select:"
+msgstr ""
+"Faites glisser et déposez les fichiers CSV ici ou cliquez pour sélectionner:"
+
+#: polls/templates/send_data.html:94
+msgid "Only .csv files are allowed:"
+msgstr "Seuls les fichiers .csv sont autorisés:"
+
+#: polls/templates/send_data.html:98
+msgid "File size exceeds 10 MB limit for file:"
+msgstr "La taille du fichier dépasse la limite de 10 MB pour le fichier:"
+
 #: polls/templates/tabla.html:11 polls/templates/tabla.html:17
 msgid "Table: "
 msgstr "Table: "
@@ -206,29 +247,22 @@ msgid "Bar Chart"
 msgstr "Graphique à Barres"
 
 #: polls/templates/telecomando.html:11
-msgid "Create Commands"
-msgstr "Créer des Commandes"
+msgid "Create Telecommands"
+msgstr "Créer des Telecommandes"
 
 #: polls/templates/telecomando.html:19
 msgid "Insert Data"
 msgstr "Insérer des Données"
 
 #: polls/templates/update.html:11
+#, fuzzy
+#| msgid "Modify Telecommands"
 msgid "Modify Commands"
-msgstr "Modifier des Commandes"
+msgstr "Modifier des Telecommandes"
 
 #: polls/templates/update.html:17
 msgid "Select the table to Modify"
 msgstr "Sélectionnez la table à modifier"
 
-#~ msgid "Only .asn files are allowed:"
-#~ msgstr "Seuls les fichiers .asn sont autorisés:"
-
-#~ msgid "File size exceeds 1 MB limit for file:"
-#~ msgstr "La taille du fichier dépasse la limite de 1 MB pour le fichier:"
-
 #~ msgid "Remove this file"
 #~ msgstr "Supprimer ce fichier"
-
-#~ msgid "Error during file upload:"
-#~ msgstr "Erreur lors de l'envoi du fichier:"

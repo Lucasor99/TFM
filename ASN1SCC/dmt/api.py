@@ -59,8 +59,10 @@ def process_csv():
     contact_points = request.form.get('contact_points', '')
     cluster_port = request.form.get('clusterPort', '')
 
-    csv_files = request.files.getlist('csv_file')
+    csv_files = request.files.getlist('csv_files')
 
+    if os.path.exists(os.path.join('filesCSV', 'zzz.txt')):
+        os.remove(os.path.join('filesCSV', 'zzz.txt'))
 
     # Procesar cada archivo CSV
     for csv_file in csv_files:
@@ -71,7 +73,7 @@ def process_csv():
     # Construir el comando
     command = [
         "python3",
-        "/dmt/src/ReadWriteTMTC/readTMTC.py",
+        "src/ReadWriteTMTC/readCSV.py",
         "./filesCSV"
     ]
 
@@ -88,13 +90,10 @@ def process_csv():
     result = subprocess.run(command, capture_output=True, text=True)
     output = result.stdout
     error = result.stderr
-    print(command)
-    print(output)
-    print(error)
 
     # Limpiar archivos temporales
     for filename in csv_files:
-        os.remove(os.path.join('filesASN1', filename))
+        os.remove(os.path.join('filesCSV', filename))
 
     return jsonify({"command": command, "output": output, "error": error})
 

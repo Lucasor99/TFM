@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-08 19:55+0000\n"
+"POT-Creation-Date: 2024-08-09 10:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,50 +39,52 @@ msgid "Tables"
 msgstr "Tablas"
 
 #: polls/templates/base.html:41
-#, fuzzy
-#| msgid "Delete commands: "
 msgid "Telecommands"
-msgstr "Borrar telecomandos: "
+msgstr "Telecomandos"
 
 #: polls/templates/base.html:44
-msgid "Create Command"
+msgid "Create Telecommand"
 msgstr "Crear Telecomando"
 
 #: polls/templates/base.html:45
-msgid "Update Command"
+msgid "Update Telecommand"
 msgstr "Modificar Telecomando"
 
 #: polls/templates/base.html:46
-msgid "Delete Command"
+msgid "Delete Telecommand"
 msgstr "Borrar Telecomando"
 
 #: polls/templates/base.html:49 polls/templates/create_models.html:13
-#, fuzzy
-#| msgid "Create data models:"
 msgid "Create Models"
-msgstr "Crear modelos de datos:"
+msgstr "Crear modelos"
 
-#: polls/templates/base.html:51
+#: polls/templates/base.html:50
+#, fuzzy
+#| msgid "Insert Data"
+msgid "Send Data"
+msgstr "Insertar Datos"
+
+#: polls/templates/base.html:52
 msgid "Logout"
 msgstr "Cerrar sesión"
 
-#: polls/templates/base.html:54
+#: polls/templates/base.html:55
 msgid "My Account"
 msgstr "Mi cuenta"
 
-#: polls/templates/base.html:58
+#: polls/templates/base.html:59
 msgid "User"
 msgstr "Usuario"
 
-#: polls/templates/base.html:59
+#: polls/templates/base.html:60
 msgid "Email"
 msgstr "Correo electrónico"
 
-#: polls/templates/base.html:63
+#: polls/templates/base.html:64
 msgid "Manage Users"
 msgstr "Administrar usuarios"
 
-#: polls/templates/base.html:65
+#: polls/templates/base.html:66
 msgid "Change Password"
 msgstr "Cambiar contraseña"
 
@@ -104,28 +106,52 @@ msgid "Delete"
 msgstr "Borrar"
 
 #: polls/templates/create_models.html:24
-msgid "Create data models:"
-msgstr "Crear modelos de datos:"
+msgid "Create data models"
+msgstr "Crear modelos de datos"
 
 #: polls/templates/create_models.html:25
 msgid "Drag and drop ASN Files here or click to select:"
 msgstr "Arrastre y suelte los archivos ASN aquí o haga clic para seleccionar:"
 
-#: polls/templates/create_models.html:27
+#: polls/templates/create_models.html:27 polls/templates/send_data.html:27
 msgid "Drag files here"
 msgstr "Arrastre los archivos aquí"
 
-#: polls/templates/create_models.html:32
+#: polls/templates/create_models.html:32 polls/templates/send_data.html:32
 msgid "Mark the telecommand models:"
 msgstr "Marcar los modelos de telecomando:"
 
 #: polls/templates/create_models.html:39 polls/templates/create_models.html:120
+#: polls/templates/send_data.html:39 polls/templates/send_data.html:116
 msgid "No files"
-msgstr ""
+msgstr "No hay archivos"
 
-#: polls/templates/create_models.html:50 polls/templates/telecomando.html:27
+#: polls/templates/create_models.html:50 polls/templates/send_data.html:47
+#: polls/templates/telecomando.html:27
 msgid "Submit"
 msgstr "Enviar"
+
+#: polls/templates/create_models.html:98
+msgid "Only .asn files are allowed:"
+msgstr "Solo se permiten archivos .asn:"
+
+#: polls/templates/create_models.html:102
+msgid "File size exceeds 1 MB limit for file:"
+msgstr "El tamaño del archivo supera el límite de 1 MB para el archivo:"
+
+#: polls/templates/create_models.html:205 polls/templates/send_data.html:185
+msgid "Error"
+msgstr "Error"
+
+#: polls/templates/create_models.html:209 polls/templates/send_data.html:189
+msgid "Files uploaded successfully!"
+msgstr "Archivos subidos con éxito!"
+
+#: polls/templates/create_models.html:215
+#: polls/templates/create_models.html:221 polls/templates/send_data.html:195
+#: polls/templates/send_data.html:201
+msgid "Error during file upload:"
+msgstr "Error durante la carga del archivo:"
 
 #: polls/templates/delete.html:12
 msgid "Delete commands: "
@@ -160,10 +186,8 @@ msgid "Modify table"
 msgstr "Modificar tabla"
 
 #: polls/templates/modificar_tabla.html:16
-#, fuzzy
-#| msgid "Modify table"
 msgid "Modify table: "
-msgstr "Modificar tabla"
+msgstr "Modificar tabla: "
 
 #: polls/templates/modificar_tabla.html:19
 msgid "Select the row you want to modify: "
@@ -176,6 +200,22 @@ msgstr "Selecciona la columna y escribe el valor que quieres modificar: "
 #: polls/templates/modificar_tabla.html:43
 msgid "Modify"
 msgstr "Modificar"
+
+#: polls/templates/send_data.html:13 polls/templates/send_data.html:24
+msgid "Send data"
+msgstr "Enviar datos"
+
+#: polls/templates/send_data.html:25
+msgid "Drag and drop CSV Files here or click to select:"
+msgstr "Arrastre y suelte los archivos CSV aquí o haga clic para seleccionar:"
+
+#: polls/templates/send_data.html:94
+msgid "Only .csv files are allowed:"
+msgstr "Solo se permiten archivos .csv:"
+
+#: polls/templates/send_data.html:98
+msgid "File size exceeds 10 MB limit for file:"
+msgstr "El tamaño del archivo supera el límite de 10 MB para el archivo:"
 
 #: polls/templates/tabla.html:11 polls/templates/tabla.html:17
 msgid "Table: "
@@ -206,36 +246,25 @@ msgid "Bar Chart"
 msgstr "Gráfico de barras"
 
 #: polls/templates/telecomando.html:11
-#, fuzzy
-#| msgid "Create Command"
-msgid "Create Commands"
-msgstr "Crear Telecomando"
+msgid "Create Telecommands"
+msgstr "Crear Telecomandos"
 
 #: polls/templates/telecomando.html:19
 msgid "Insert Data"
 msgstr "Insertar Datos"
 
 #: polls/templates/update.html:11
+#, fuzzy
+#| msgid "Modify Telecommands"
 msgid "Modify Commands"
 msgstr "Modificar Telecomandos"
 
 #: polls/templates/update.html:17
-#, fuzzy
-#| msgid "Select the table to modify"
 msgid "Select the table to Modify"
 msgstr "Selecciona la tabla a modificar"
 
-#~ msgid "Only .asn files are allowed:"
-#~ msgstr "Solo se permiten archivos .asn:"
-
-#~ msgid "File size exceeds 1 MB limit for file:"
-#~ msgstr "El tamaño del archivo supera el límite de 1 MB para el archivo:"
-
 #~ msgid "Remove this file"
 #~ msgstr "Eliminar este archivo"
-
-#~ msgid "Error during file upload:"
-#~ msgstr "Error durante la carga del archivo:"
 
 #~ msgid "Search"
 #~ msgstr "Buscar"

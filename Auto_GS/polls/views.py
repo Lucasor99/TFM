@@ -255,16 +255,42 @@ def create_models(request):
             return render(request, 'create_models.html', {'error_message': f'Error al conectar con el servicio de ASN1SCC: {str(e)}'})
         
 
-        # Comprobar si hay errores en la respuesta
-        if response_data.get('error'):
-            error_message = ""
-            error_message = response_data['error']
-            print(response_data)
-            return render(request, 'create_models.html', {'error_message': "Error al crear las tablas: " + error_message})
-        else:
-            success_message = 'Tablas creadas correctamente'
-            return render(request, 'create_models.html', {'success_message': success_message})
-
     return render(request, 'create_models.html')
+
+login_required
+@staff_member_required
+def send_data(request):
+    if request.method == 'POST':
+
+        csv_files = request.FILES.getlist('csv_files')
+        # Validar tamaños de archivos
+        MAX_FILE_SIZE = 10 * 1024 * 1024  # 1 MB
+        for file in csv_files:
+            if file.size > MAX_FILE_SIZE:
+                return JsonResponse({'error': f'File size exceeds 1 MB limit: {file.name}'}, status=400)
+
+        # Preparar los datos y archivos para enviar a la API Flask
+        files = [('csv_files', (file.name, file.read(), file.content_type)) for file in csv_files]
+        data = {
+            'keyspace': "tfm",
+            'contact_points': "cassandra",
+            'clusterPort': 9042
+        }
+        
+        # Enviar solicitud POST con archivos y datos
+        try:
+            response = requests.post('http://as1scc:5000/read_tmtc', data=data, files=files)
+            response.raise_for_status()  # Lanza excepción para errores HTTP
+            response_data = response.json()
+            print(response_data)
+
+            return JsonResponse(response_data)
+
+        except requests.exceptions.RequestException as e:
+            return render(request, 'send_data.html', {'error_message': f'Error al conectar con el servicio de ASN1SCC: {str(e)}'})
+        
+
+    return render(request, 'send_data.html')
+
 
     
