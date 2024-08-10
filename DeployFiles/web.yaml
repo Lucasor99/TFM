@@ -34,11 +34,18 @@ spec:
                   key: DJANGO_SECRET_KEY
             - name: DJANGO_SETTINGS_MODULE
               value: "config.settings.prod"
-          command: ["/bin/sh", "-c", "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"]
+          command: ["/bin/sh", "-c", "python3 manage.py migrate && gunicorn -w 2-b 0.0.0.0:8000 config.wsgi:application"]
           ports:
             - containerPort: 8000
-          securityContext:
-            runAsUser: 0
+          # securityContext:
+          #   runAsUser: 0
+          volumeMounts:
+            - name: static-storage
+              mountPath: /staticfiles
+      volumes:
+        - name: static-storage
+          emptyDir: {}
+
 ---
 apiVersion: v1
 kind: Service

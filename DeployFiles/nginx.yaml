@@ -41,15 +41,18 @@ spec:
       - name: nginx
         image: nginx:latest
         ports:
-        - containerPort: 80
+          - containerPort: 80
         volumeMounts:
-        - name: nginx-config
-          mountPath: /etc/nginx/conf.d
-          subPath: nginx.conf
+          - name: static-storage
+            mountPath: /staticfiles
+          - name: nginx-config
+            mountPath: /etc/nginx/conf.d
       volumes:
-      - name: nginx-config
-        configMap:
-          name: nginx-config
+        - name: static-storage
+          emptyDir: {}
+        - name: nginx-config
+          configMap:
+            name: nginx-config
 ---
 apiVersion: v1
 kind: Service
