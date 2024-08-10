@@ -27,6 +27,13 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: MYSQL_ROOT_PASSWORD
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: DJANGO_SECRET_KEY
+            - name: DJANGO_SETTINGS_MODULE
+              value: "config.settings.prod"
           command: ["/bin/sh", "-c", "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"]
           ports:
             - containerPort: 8000

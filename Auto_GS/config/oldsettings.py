@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders"
 ]
 
 
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -182,3 +184,20 @@ DEFAULT_FROM_EMAIL = 'webmaster@example.com'
 SECURE_SSL_REDIRECT = False # Change to True if you are using HTTPS
 SESSION_COOKIE_AGE = 60 * 60
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# CORS_ALLOWED_ORIGINS = [
+#     'http://asn1scc:5000',
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+
+# Si estás utilizando cookies o autenticación basada en sesiones, también necesitas esto:
+CORS_ALLOW_CREDENTIALS = True
+
+# Asegúrate de que la cabecera 'Authorization' (o cualquier otra cabecera personalizada que necesites) esté permitida:
+CORS_ALLOW_HEADERS = ['*']
+
+# Métodos permitidos, si solo especificas algunos asegúrate de incluir POST:
+CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']

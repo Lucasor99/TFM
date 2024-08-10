@@ -9,7 +9,7 @@ from django.utils.translation import activate
 from django.conf import settings
 import requests.exceptions
 
-from Auto_GS.cassandra_conection import get_cassandra_session
+from config.cassandra_conection import get_cassandra_session
 from .models import *
 
 from .utilities.functions import insert_data, create_tree_view, select_by, update_data, delete_data
@@ -244,7 +244,7 @@ def create_models(request):
         
         # Enviar solicitud POST con archivos y datos
         try:
-            response = requests.post('http://as1scc:5000/create_models', data=data, files=files)
+            response = requests.post('http://asn1scc:5000/create_models', data=data, files=files)
             response.raise_for_status()  # Lanza excepción para errores HTTP
             response_data = response.json()
             print(response_data)
@@ -279,7 +279,7 @@ def send_data(request):
         
         # Enviar solicitud POST con archivos y datos
         try:
-            response = requests.post('http://as1scc:5000/read_tmtc', data=data, files=files)
+            response = requests.post('http://asn1scc:5000/read_tmtc', data=data, files=files)
             response.raise_for_status()  # Lanza excepción para errores HTTP
             response_data = response.json()
             print(response_data)

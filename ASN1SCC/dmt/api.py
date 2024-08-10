@@ -5,6 +5,10 @@ import os
 app = Flask(__name__)
 app.config['DEBUG'] = False
 
+@app.route('/')
+def hello():
+    return "Hello, World!"
+
 @app.route('/create_models', methods=['POST'])
 def process():
     # Obtener los datos de la solicitud POST
@@ -65,10 +69,12 @@ def process_csv():
         os.remove(os.path.join('filesCSV', 'zzz.txt'))
 
     # Procesar cada archivo CSV
+    csv_filenames = []
     for csv_file in csv_files:
         # Guardar el archivo CSV temporalmente
         csv_filename = os.path.join('filesCSV', csv_file.filename)
         csv_file.save(csv_filename)
+        csv_filenames.append(csv_file.filename)
 
     # Construir el comando
     command = [
@@ -92,7 +98,7 @@ def process_csv():
     error = result.stderr
 
     # Limpiar archivos temporales
-    for filename in csv_files:
+    for filename in csv_filenames:
         os.remove(os.path.join('filesCSV', filename))
 
     return jsonify({"command": command, "output": output, "error": error})
