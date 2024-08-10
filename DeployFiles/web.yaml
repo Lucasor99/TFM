@@ -34,7 +34,7 @@ spec:
                   key: DJANGO_SECRET_KEY
             - name: DJANGO_SETTINGS_MODULE
               value: "config.settings.prod"
-          command: ["/bin/sh", "-c", "python3 manage.py migrate && gunicorn -w 2 -b 0.0.0.0:8000 config.wsgi:application"]
+          command: ["/bin/sh", "-c", "python3 manage.py collectstatic --noinput && python3 manage.py migrate && gunicorn -w 2 -b 0.0.0.0:8000 config.wsgi:application"]
           ports:
             - containerPort: 8000
           # securityContext:
@@ -44,7 +44,8 @@ spec:
               mountPath: /staticfiles
       volumes:
         - name: static-storage
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: staticfiles-pvc
 
 ---
 apiVersion: v1
@@ -62,4 +63,4 @@ spec:
     - port: 8000
       name: http
       targetPort: 8000
-      nodePort: 30000
+      #nodePort: 30000

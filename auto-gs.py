@@ -53,9 +53,6 @@ def create_deployment(replicas, rf):
     run_command("kubectl apply -f DeployFiles/networkPolicies.yaml")
     print("Creating network policies...")
 
-    # Create nginx service
-    run_command("kubectl apply -f DeployFiles/nginx.yaml")
-    print("Creating nginx service...")
 
     # Generate PersistentVolumes
     with open('DeployFiles/cassandra-pv-template.yaml', 'r') as f:
@@ -103,6 +100,11 @@ def create_deployment(replicas, rf):
 
     # Deploy the asn1scc service
     run_command("kubectl apply -f DeployFiles/asn1scc.yaml")
+    print("Deploying asn1scc service...")
+
+    # Create nginx service
+    run_command("kubectl apply -f DeployFiles/nginx.yaml")
+    print("Deploying nginx service...")
 
 def create_keyspace(rf):
     """Create the Cassandra keyspace with the given replication factor."""
