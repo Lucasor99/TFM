@@ -53,6 +53,10 @@ def create_deployment(replicas, rf):
     run_command("kubectl apply -f DeployFiles/networkPolicies.yaml")
     print("Creating network policies...")
 
+    # Create nginx service
+    run_command("kubectl apply -f DeployFiles/nginx.yaml")
+    print("Creating nginx service...")
+
     # Generate PersistentVolumes
     with open('DeployFiles/cassandra-pv-template.yaml', 'r') as f:
         cassandra_pv_template = f.read()
