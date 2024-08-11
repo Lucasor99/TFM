@@ -7,7 +7,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DEBUG = False
 
 # Define los hosts permitidos en producción
-ALLOWED_HOSTS = ['autogs.lucasor.com']  # Cambia esto por tu dominio
+ALLOWED_HOSTS = ['*']  # Cambia esto por tu dominio
 
 # Base de datos para producción
 DATABASES = {
@@ -29,6 +29,17 @@ DATABASES = {
         'contact_points': ['cassandra'],
     }
 }
+
+# Pasword reset (Definir dominio y correo si se utiliza)
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.example.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your_email@example.com'
+EMAIL_HOST_PASSWORD = 'your_password' # os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'webmaster@example.com'
+
 
 # Otros ajustes específicos de producción
 SECURE_SSL_REDIRECT = False  # Redirigir a HTTPS en producción

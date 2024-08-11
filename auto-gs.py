@@ -53,14 +53,18 @@ def create_deployment(replicas, rf):
     run_command("kubectl apply -f DeployFiles/networkPolicies.yaml")
     print("Creating network policies...")
 
-
     # Generate PersistentVolumes
+    run_command("kubectl apply -f DeployFiles/static-pv.yaml")
+    print("Creating static files persistent volume...")
+
     with open('DeployFiles/cassandra-pv-template.yaml', 'r') as f:
         cassandra_pv_template = f.read()
 
     for i in range(replicas):
         pv = cassandra_pv_template.replace('${ID}', str(i)).replace('${NODE}', node_array[i])
         run_command(f"echo '{pv}' | kubectl apply -f -")
+        
+    print("Creating Cassandra persistent volumes...")
 
     # Generate StatefulSet and Service
     with open('DeployFiles/cassandra-statefulset-template.yaml', 'r') as f:
