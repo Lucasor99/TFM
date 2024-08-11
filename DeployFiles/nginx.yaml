@@ -6,7 +6,7 @@ data:
   nginx.conf: |
     server {
         listen 80;
-        server_name _;
+        server_name autogs.lucasor.com;
 
         location /static/ {
             alias /staticfiles/;

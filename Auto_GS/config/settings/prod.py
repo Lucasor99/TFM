@@ -7,7 +7,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DEBUG = False
 
 # Define los hosts permitidos en producción
-ALLOWED_HOSTS = ['*']  # Cambia esto por tu dominio
+ALLOWED_HOSTS = ['autogs.lucasor.com']  # Cambia esto por tu dominio
 
 # Base de datos para producción
 DATABASES = {
@@ -40,9 +40,3 @@ SECURE_BROWSER_XSS_FILTER = False
 SECURE_CONTENT_TYPE_NOSNIFF = False
 
 
-# CORS settings
-
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = ['*']
-CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
