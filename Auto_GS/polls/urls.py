@@ -13,4 +13,5 @@ urlpatterns = [
     path('change_language/', views.change_language, name='change_language'),
     path("create_models/", views.create_models, name="create_models"),
     path("send_data/", views.send_data, name="send_data"),
+    path("download_tables/", views.download_tables, name="download_tables"),
 ]

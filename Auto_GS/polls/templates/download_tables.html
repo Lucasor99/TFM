@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<head>
+    {% load static i18n %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Create Models" %}</title>
+    <link rel="stylesheet" href="{% static 'polls/tabla.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/form.css' %}">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <form id="createModelsForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <h2>{% trans "Download Tables" %}</h2>
+            </div>
+            <h5>{% trans "Mark the tables to download:" %}</h5>
+            
+            <div class="file-list" id="fileList">
+                {% for item in nav_items %}
+                <div class="file-item">
+                    <input type="checkbox" class="check-item" name="tablenames" value="{{ item }}"><label>{{ item }}</label>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div id="progressContainer" class="progress-container">
+                <div id="progressBar" class="progress-bar"></div>
+                <div id="progressText" class="progress-text">0%</div>
+            </div>
+
+            <input type="hidden" id="tableList" name="tableList">
+
+ 
+            <div id="successMessage" class="alert alert-success"></div>
+            <div id="errorMessage" class="alert alert-danger"></div>
+
+
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">{% trans "Download" %}</button>
+            </div>
+        </form>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('createModelsForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const tableListInput = document.getElementById('tableList');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+
+        function updateFileList() {
+            const checkedItems = Array.from(document.querySelectorAll('input[name="tablenames"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            tableListInput.value = checkedItems.join(' ');
+            console.log(tableListInput.value);
+        }
+
+        form.addEventListener('submit', (event) => {
+            updateFileList();
+            event.preventDefault(); // Prevent the default form submission
+
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = '';
+            successMessage.style.display = 'none';
+            successMessage.textContent = ''
+
+            const formData = new FormData(event.target);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', form.action, true);
+
+            xhr.upload.addEventListener('progress', (event) => {
+                if (event.lengthComputable) {
+                    const percentComplete = Math.round((event.loaded / event.total) * 100);
+                    progressBar.style.width = percentComplete + '%';
+                    progressText.textContent = percentComplete + '%';
+                    progressContainer.style.visibility = 'visible';
+                }
+            });
+
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    errorMessage.style.display = 'none';
+                    successMessage.style.display = 'none';
+
+                    if (tableListInput.value.length > 0){
+                        
+                        try {
+                            const tempLink = document.createElement('a');
+                            tempLink.href = URL.createObjectURL(new Blob([xhr.response], { type: 'application/zip' }));
+                            tempLink.download = 'files.zip';
+                            document.body.appendChild(tempLink);
+                            tempLink.click();
+                            document.body.removeChild(tempLink);
+
+                            successMessage.textContent = '{% trans "Files downloaded successfully!" %}';
+                            successMessage.style.display = 'block';
+                            progressContainer.style.visibility = 'hidden';
+                            
+                        } catch (e) {
+                            errorMessage.textContent = '{% trans "Error: " %}' + e;
+                            errorMessage.style.display = 'block';
+                        }
+                    } else {
+                        errorMessage.textContent = '{% trans "No tables selected" %}';
+                        errorMessage.style.display = 'block';
+                    }
+                } else {
+                    errorMessage.textContent = `{% trans "Error during file download: " %} ${xhr.statusText}`;
+                    errorMessage.style.display = 'block';
+                }
+            };
+
+            xhr.onerror = () => {
+                errorMessage.textContent = `{% trans "Error during file download: " %} ${xhr.statusText}`;
+                errorMessage.style.display = 'block';
+            };
+
+            xhr.responseType = 'blob';
+
+            xhr.send(formData);
+        });
+    });
+</script>
+</body>
+
+{% endblock %}

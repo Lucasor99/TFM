@@ -17,6 +17,10 @@
     font-size: 1.2rem;
 }
 
+.check-item {
+    margin-left: 20px;
+}
+
 .file-list a {
     font-size: 1.5rem;
     font-style: italic;

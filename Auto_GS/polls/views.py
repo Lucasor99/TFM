@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.template import loader
 from django.contrib.auth.decorators import login_required
@@ -292,5 +292,59 @@ def send_data(request):
 
     return render(request, 'send_data.html')
 
+@login_required
+@staff_member_required
+def download_tables(request):
+    if request.method == 'POST':
+        # Obtén el valor de tablenames como una cadena de texto
+        tablenames_list = request.POST.get('tableList', '')
+        
+        print(f"tablanames_list: {tablenames_list}")
+        # Preparar los datos para enviar a la API Flask
+        data = {
+            'tablenames': tablenames_list,
+            'keyspace': "tfm",
+            'contact_points': "cassandra",
+            'clusterPort': 9042
+        }
+        
+        # Enviar solicitud POST con archivos y datos
+        try:
+            response = requests.post('http://asn1scc:5000/createCSV', data=data)
+            response.raise_for_status()  # Lanza excepción para errores HTTP
+            response_data = response.json()
+            
+       # Descargar los archivos desde las URLs proporcionadas en la respuesta
+            files = []
+            files = response_data.get('files', [])
+            print(f"files: {files}")
+            if not files:
+                return HttpResponseBadRequest('No files returned from the API')
 
+            # Crea un archivo zip con todos los archivos CSV y devuélvelo como respuesta
+            from io import BytesIO
+            from zipfile import ZipFile
+
+            zip_buffer = BytesIO()
+            with ZipFile(zip_buffer, 'w') as zip_file:
+                for file_info in files:
+                    file_url = file_info.get('url')
+                    if file_url:
+                        file_name = file_info.get('filename')
+                        print(file_name)
+                        # Descargar el archivo CSV
+                        file_response = requests.get('http://asn1scc:5000' + file_url)
+                        file_response.raise_for_status()  # Lanza excepción para errores HTTP
+                        zip_file.writestr(file_name, file_response.content)
+            
+            zip_buffer.seek(0)
+            response = HttpResponse(zip_buffer, content_type='application/zip')
+            response['Content-Disposition'] = 'attachment; filename=files.zip'
+            return response
+
+        except requests.exceptions.RequestException as e:
+            return render(request, 'download_tables.html', {'error_message': f'Error al conectar con el servicio de ASN1SCC: {str(e)}'})
+        
+
+    return render(request, 'download_tables.html')
     

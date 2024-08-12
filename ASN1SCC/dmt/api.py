@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory, after_this_request
 import subprocess
 import os
 
 app = Flask(__name__)
-app.config['DEBUG'] = False
+app.config['DEBUG'] = True
 
 @app.route('/')
 def hello():
@@ -104,6 +104,64 @@ def process_csv():
     return jsonify({"command": command, "output": output, "error": error})
 
 
+@app.route('/createCSV', methods=['POST'])
+def create_csv():
+    # Obtener los datos de la solicitud POST
+    keyspace = request.form.get('keyspace', '')
+    contact_points = request.form.get('contact_points', '')
+    cluster_port = request.form.get('clusterPort', '')
+    send_telecommands = request.form.get('sendTelecommands', '')
+    
+    tablenames = request.form.get('tablenames', '').split(' ')
+    print(tablenames)
+
+    # Construir el comando
+    command = [
+        "python3",
+        "src/ReadWriteTMTC/createCSV.py",
+        "./filesTelecommand"
+    ]
+    for tablename in tablenames:
+        command.extend([ tablename])
+        
+    command.extend([f"-keyspace", keyspace])
+    command.extend([f"-contact_points", contact_points])
+    command.extend([f"-clusterPort", cluster_port])
+
+    if send_telecommands:
+        command.extend([f"-sendTelecommands", send_telecommands])
+
+    # Ejecutar el comando
+    result = subprocess.run(command, capture_output=True, text=True)
+    output = result.stdout
+    error = result.stderr
+
+    # Verificar y devolver los archivos CSV generados
+    csv_files = []
+    for filename in os.listdir('filesTelecommand'):
+        if filename.endswith('.csv'):
+            csv_files.append(filename)
+           
+
+    # Crear respuesta JSON con archivos CSV generados
+    files_info = [{"filename": f, "url": f"/filesTelecommand/{f}"} for f in csv_files]
+ 
+
+    return jsonify({"command": command, "output": output, "error": error, "files": files_info})
+
+@app.route('/filesTelecommand/<filename>')
+def download_file(filename):
+    file_path = os.path.join('filesTelecommand', filename)
+
+    @after_this_request
+    def remove_file(response):
+        try:
+            os.remove(file_path)
+        except Exception as e:
+            app.logger.error(f'Error removing file {file_path}: {e}')
+        return response
+
+    return send_from_directory('filesTelecommand', filename)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

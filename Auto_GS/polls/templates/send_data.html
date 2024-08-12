@@ -29,7 +29,7 @@
                 </div>
             </div>
             
-            <h5>{% trans "Mark the telecommand models:" %}</h5>
+            <h5>{% trans "Files to send:" %}</h5>
             <div id="progressContainer" class="progress-container">
                 <div id="progressBar" class="progress-bar"></div>
                 <div id="progressText" class="progress-text">0%</div>
@@ -176,20 +176,23 @@
             if (xhr.status === 200) {
 
                 errorMessage.style.display = 'none';
-                errorMessage.textContent = '';
                 successMessage.style.display = 'none';
-                successMessage.textContent = ''
 
-                const response = JSON.parse(xhr.responseText);
-                if (response.error) {
-                    errorMessage.textContent = '{% trans "Error: " %}' + response.error;
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.error) {
+                        errorMessage.textContent = '{% trans "Error: " %}' + response.error;
+                        errorMessage.style.display = 'block';
+    
+                    } else {
+                        successMessage.textContent = '{% trans "Files uploaded successfully!" %}';
+                        successMessage.style.display = 'block';
+                        resetForm();
+                        progressContainer.style.visibility = 'hidden';
+                    }
+                } catch (e) {
+                    errorMessage.textContent = `{% trans "Error:" %} ${e}`;
                     errorMessage.style.display = 'block';
-  
-                } else {
-                    successMessage.textContent = '{% trans "Files uploaded successfully!" %}';
-                    successMessage.style.display = 'block';
-                    resetForm();
-                    progressContainer.style.visibility = 'hidden';
                 }
             } else {
                 errorMessage.textContent = `{% trans "Error during file upload:" %} ${xhr.statusText}`;

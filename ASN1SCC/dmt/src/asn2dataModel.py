@@ -3,7 +3,7 @@ import sys
 import copy
 
 from typing import  Dict, Tuple, List,Set  
-from commonPy.configMT import  session
+#from commonPy.configMT import  session
 from  commonPy import cleanupNodes , asnParser , verify  
 from  commonPy.utility import  panic
 from commonPy.asnParser import Filename, AST_Lookup, AST_Leaftypes  

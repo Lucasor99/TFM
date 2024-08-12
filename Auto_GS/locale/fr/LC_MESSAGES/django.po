@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-09 14:29+0000\n"
+"POT-Creation-Date: 2024-08-12 11:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: Auto_GS/settings.py:153
+#: config/settings/common.py:75 config/settings/oldsettings.py:155
 msgid "English"
 msgstr ""
 
-#: Auto_GS/settings.py:154
+#: config/settings/common.py:76 config/settings/oldsettings.py:156
 msgid "Español"
 msgstr ""
 
-#: Auto_GS/settings.py:155
+#: config/settings/common.py:77 config/settings/oldsettings.py:157
 msgid "Français"
 msgstr "Français"
 
@@ -55,6 +55,7 @@ msgid "Delete Telecommand"
 msgstr "Supprimer Télécommande"
 
 #: polls/templates/base.html:49 polls/templates/create_models.html:13
+#: polls/templates/download_tables.html:13
 msgid "Create Models"
 msgstr "Créer des modèles"
 
@@ -62,27 +63,31 @@ msgstr "Créer des modèles"
 msgid "Send Data"
 msgstr "Envoyer des Données"
 
-#: polls/templates/base.html:52
+#: polls/templates/base.html:51 polls/templates/download_tables.html:24
+msgid "Download Tables"
+msgstr "Télécharger des Tableaux"
+
+#: polls/templates/base.html:53
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: polls/templates/base.html:55
+#: polls/templates/base.html:56
 msgid "My Account"
 msgstr "Mon Compte"
 
-#: polls/templates/base.html:59
+#: polls/templates/base.html:60
 msgid "User"
 msgstr "Utilisateur"
 
-#: polls/templates/base.html:60
+#: polls/templates/base.html:61
 msgid "Email"
 msgstr "E-mail"
 
-#: polls/templates/base.html:64
+#: polls/templates/base.html:65
 msgid "Manage Users"
 msgstr "Gérer les Utilisateurs"
 
-#: polls/templates/base.html:66
+#: polls/templates/base.html:67
 msgid "Change Password"
 msgstr "Changer le Mot de Passe"
 
@@ -116,7 +121,7 @@ msgstr ""
 msgid "Drag files here"
 msgstr "Faites glisser les fichiers ici"
 
-#: polls/templates/create_models.html:32 polls/templates/send_data.html:32
+#: polls/templates/create_models.html:32
 msgid "Mark the telecommand models:"
 msgstr "Marquer les modèles de commande télécommandé:"
 
@@ -138,17 +143,23 @@ msgstr "Seuls les fichiers .asn sont autorisés:"
 msgid "File size exceeds 1 MB limit for file:"
 msgstr "La taille du fichier dépasse la limite de 1 MB pour le fichier:"
 
-#: polls/templates/create_models.html:205 polls/templates/send_data.html:185
+#: polls/templates/create_models.html:206
+#: polls/templates/download_tables.html:97
+#: polls/templates/download_tables.html:105 polls/templates/send_data.html:184
 msgid "Error: "
 msgstr "Erreur: "
 
-#: polls/templates/create_models.html:209 polls/templates/send_data.html:189
+#: polls/templates/create_models.html:210 polls/templates/send_data.html:188
 msgid "Files uploaded successfully!"
 msgstr "Fichiers téléchargés avec succès!"
 
-#: polls/templates/create_models.html:215
-#: polls/templates/create_models.html:221 polls/templates/send_data.html:195
-#: polls/templates/send_data.html:201
+#: polls/templates/create_models.html:216 polls/templates/send_data.html:194
+msgid "Error:"
+msgstr "Erreur: "
+
+#: polls/templates/create_models.html:220
+#: polls/templates/create_models.html:226 polls/templates/send_data.html:198
+#: polls/templates/send_data.html:204
 msgid "Error during file upload:"
 msgstr "Erreur lors de l'envoi du fichier:"
 
@@ -163,6 +174,23 @@ msgstr "Sélectionnez la table"
 #: polls/templates/delete.html:25 polls/templates/update.html:24
 msgid "Select"
 msgstr "Sélectionner"
+
+#: polls/templates/download_tables.html:26
+msgid "Mark the tables to download:"
+msgstr "Marquer les tables à télécharger:"
+
+#: polls/templates/download_tables.html:49
+msgid "Download"
+msgstr "Télécharger"
+
+#: polls/templates/download_tables.html:100
+msgid "Files downloaded successfully!"
+msgstr "Fichiers téléchargés avec succès!"
+
+#: polls/templates/download_tables.html:110
+#: polls/templates/download_tables.html:116
+msgid "Error during file download: "
+msgstr "Erreur lors de la téléchargement du fichier: "
 
 #: polls/templates/index.html:13
 msgid "Index of the AUTO-GS"
@@ -209,6 +237,10 @@ msgstr "Envoyer des Données"
 msgid "Drag and drop CSV Files here or click to select:"
 msgstr ""
 "Faites glisser et déposez les fichiers CSV ici ou cliquez pour sélectionner:"
+
+#: polls/templates/send_data.html:32
+msgid "Files to send:"
+msgstr "Fichiers à envoyer:"
 
 #: polls/templates/send_data.html:94
 msgid "Only .csv files are allowed:"

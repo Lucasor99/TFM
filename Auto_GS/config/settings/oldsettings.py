@@ -16,7 +16,7 @@ from django.utils.translation import gettext_lazy as _
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -62,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
 ]
 
-ROOT_URLCONF = 'Auto_GS.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -76,15 +76,15 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'Auto_GS.context_processor.user_info',
-                'Auto_GS.context_processor.nav_items_processor'
+                'config.context_processor.user_info',
+                'config.context_processor.nav_items_processor',
 
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'Auto_GS.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
@@ -92,29 +92,29 @@ WSGI_APPLICATION = 'Auto_GS.wsgi.application'
 
 DATABASES = {
 
-    'default': {
-        'NAME': 'user_data',
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': 'admin',
-        'PASSWORD': os.getenv('MYSQL_ROOT_PASSWORD'),
-        'HOST': 'mysql',
-        #'HOST': 'mysql.default.svc.cluster.local',
-        'PORT': '3306',
-    },
-
     # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #     'NAME': 'user_data',
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'USER': 'admin',
+    #     'PASSWORD': os.getenv('MYSQL_ROOT_PASSWORD'),
+    #     'HOST': 'mysql',
+    #     #'HOST': 'mysql.default.svc.cluster.local',
+    #     'PORT': '3306',
     # },
+
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
 
     'cassandra': {
         'ENGINE': 'django_cassandra_engine',
         'NAME': 'tfm',
         'USER': os.getenv('CASSANDRA_USER', 'cassandra'),  
         'PASSWORD': os.getenv('CASSANDRA_PASSWORD'),        
-        'HOST': 'cassandra',
+        'HOST': 'localhost',
         'PORT': '9042',
-        'contact_points': ['cassandra'],
+        'contact_points': ['localhost'],
     }
 }
 
