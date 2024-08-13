@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-12 11:55+0000\n"
+"POT-Creation-Date: 2024-08-13 14:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,84 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: accounts/templates/ac_base.html:35
+#: accounts/templates/password_change_done.html:12
+msgid "Back"
+msgstr "Retour"
+
+#: accounts/templates/login.html:27
+msgid "Forgot your password?"
+msgstr "Mot de passe oublié ?"
+
+#: accounts/templates/manage_users.html:32
+msgid "Enable"
+msgstr "Activer"
+
+#: accounts/templates/manage_users.html:35
+msgid "Disable"
+msgstr "Désactiver"
+
+#: accounts/templates/manage_users.html:39
+msgid "Staff"
+msgstr ""
+
+#: accounts/templates/manage_users.html:41
+msgid "Remove Staff"
+msgstr "Supprimer Staff"
+
+#: accounts/templates/manage_users.html:51
+msgid "Django Administrator"
+msgstr "Administrateur Django"
+
+#: accounts/templates/password_change.html:9 polls/templates/base.html:67
+msgid "Change Password"
+msgstr "Changer le Mot de Passe"
+
+#: accounts/templates/password_change.html:26
+#: accounts/templates/password_reset/password_reset.html:25
+#: accounts/templates/password_reset/password_reset_confirm.html:25
+#: accounts/templates/register.html:29 polls/templates/create_models.html:50
+#: polls/templates/send_data.html:47 polls/templates/telecomando.html:27
+msgid "Submit"
+msgstr "Soumettre"
+
+#: accounts/templates/password_change_done.html:8
+msgid "Password Changed"
+msgstr "Mot de passe modifié"
+
+#: accounts/templates/password_change_done.html:11
+msgid "Your password has been changed"
+msgstr "Votre mot de passe a été modifié"
+
+#: accounts/templates/password_reset/password_reset.html:9
+msgid "Reset Password"
+msgstr "Réinitialiser le mot de passe"
+
+#: accounts/templates/password_reset/password_reset_complete.html:9
+#: accounts/templates/password_reset/password_reset_done.html:9
+msgid "Password Reset"
+msgstr "Réinitialisation du mot de passe"
+
+#: accounts/templates/password_reset/password_reset_complete.html:12
+msgid "Your password has been set. You can now"
+msgstr "Votre mot de passe a été défini. Vous pouvez maintenant"
+
+#: accounts/templates/password_reset/password_reset_confirm.html:9
+msgid "Confirm Password"
+msgstr "Confirmer le mot de passe"
+
+#: accounts/templates/password_reset/password_reset_done.html:12
+msgid ""
+"We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr "Nous vous avons envoyé des instructions pour définir votre mot de passe, si un compte existe avec l'adresse e-mail que vous avez entrée. Vous devriez les recevoir bientôt."
+
+#: accounts/templates/password_reset/password_reset_done.html:13
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr "Si vous ne recevez pas d'e-mail, assurez-vous d'avoir entré l'adresse avec laquelle vous vous êtes inscrit et vérifiez votre dossier de spam."
 
 #: config/settings/common.py:75 config/settings/oldsettings.py:155
 msgid "English"
@@ -87,10 +165,6 @@ msgstr "E-mail"
 msgid "Manage Users"
 msgstr "Gérer les Utilisateurs"
 
-#: polls/templates/base.html:67
-msgid "Change Password"
-msgstr "Changer le Mot de Passe"
-
 #: polls/templates/borrar_datos.html:10
 msgid "Delete data from table:"
 msgstr "Supprimer les données de la table: "
@@ -130,11 +204,6 @@ msgstr "Marquer les modèles de commande télécommandé:"
 msgid "No files"
 msgstr "Aucun fichier"
 
-#: polls/templates/create_models.html:50 polls/templates/send_data.html:47
-#: polls/templates/telecomando.html:27
-msgid "Submit"
-msgstr "Soumettre"
-
 #: polls/templates/create_models.html:98
 msgid "Only .asn files are allowed:"
 msgstr "Seuls les fichiers .asn sont autorisés:"
@@ -144,8 +213,7 @@ msgid "File size exceeds 1 MB limit for file:"
 msgstr "La taille du fichier dépasse la limite de 1 MB pour le fichier:"
 
 #: polls/templates/create_models.html:206
-#: polls/templates/download_tables.html:97
-#: polls/templates/download_tables.html:105 polls/templates/send_data.html:184
+#: polls/templates/download_tables.html:122 polls/templates/send_data.html:184
 msgid "Error: "
 msgstr "Erreur: "
 
@@ -183,12 +251,18 @@ msgstr "Marquer les tables à télécharger:"
 msgid "Download"
 msgstr "Télécharger"
 
-#: polls/templates/download_tables.html:100
+#: polls/templates/download_tables.html:117
 msgid "Files downloaded successfully!"
 msgstr "Fichiers téléchargés avec succès!"
 
-#: polls/templates/download_tables.html:110
-#: polls/templates/download_tables.html:116
+#: polls/templates/download_tables.html:126
+#, fuzzy
+#| msgid "No tables"
+msgid "No tables selected"
+msgstr "Aucune table"
+
+#: polls/templates/download_tables.html:130
+#: polls/templates/download_tables.html:136
 msgid "Error during file download: "
 msgstr "Erreur lors de la téléchargement du fichier: "
 
@@ -295,6 +369,3 @@ msgstr "Modifier des Telecommandes"
 #: polls/templates/update.html:17
 msgid "Select the table to Modify"
 msgstr "Sélectionnez la table à modifier"
-
-#~ msgid "Remove this file"
-#~ msgstr "Supprimer ce fichier"

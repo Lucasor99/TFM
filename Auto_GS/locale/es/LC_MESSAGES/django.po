@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-12 11:55+0000\n"
+"POT-Creation-Date: 2024-08-13 14:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,84 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: accounts/templates/ac_base.html:35
+#: accounts/templates/password_change_done.html:12
+msgid "Back"
+msgstr "Volver"
+
+#: accounts/templates/login.html:27
+msgid "Forgot your password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: accounts/templates/manage_users.html:32
+msgid "Enable"
+msgstr "Habilitar"
+
+#: accounts/templates/manage_users.html:35
+msgid "Disable"
+msgstr "Deshabilitar"
+
+#: accounts/templates/manage_users.html:39
+msgid "Staff"
+msgstr ""
+
+#: accounts/templates/manage_users.html:41
+msgid "Remove Staff"
+msgstr "Eliminar Staff"
+
+#: accounts/templates/manage_users.html:51
+msgid "Django Administrator"
+msgstr "Administrador Django"
+
+#: accounts/templates/password_change.html:9 polls/templates/base.html:67
+msgid "Change Password"
+msgstr "Cambiar contraseña"
+
+#: accounts/templates/password_change.html:26
+#: accounts/templates/password_reset/password_reset.html:25
+#: accounts/templates/password_reset/password_reset_confirm.html:25
+#: accounts/templates/register.html:29 polls/templates/create_models.html:50
+#: polls/templates/send_data.html:47 polls/templates/telecomando.html:27
+msgid "Submit"
+msgstr "Enviar"
+
+#: accounts/templates/password_change_done.html:8
+msgid "Password Changed"
+msgstr "Contraseña cambiada"
+
+#: accounts/templates/password_change_done.html:11
+msgid "Your password has been changed"
+msgstr "Tu contraseña ha sido cambiada"
+
+#: accounts/templates/password_reset/password_reset.html:9
+msgid "Reset Password"
+msgstr "Restablecer contraseña"
+
+#: accounts/templates/password_reset/password_reset_complete.html:9
+#: accounts/templates/password_reset/password_reset_done.html:9
+msgid "Password Reset"
+msgstr "Contraseña restablecida"
+
+#: accounts/templates/password_reset/password_reset_complete.html:12
+msgid "Your password has been set. You can now"
+msgstr "Tu contraseña ha sido establecida. Ahora puedes"
+
+#: accounts/templates/password_reset/password_reset_confirm.html:9
+msgid "Confirm Password"
+msgstr "Confirmar contraseña"
+
+#: accounts/templates/password_reset/password_reset_done.html:12
+msgid ""
+"We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr "Te hemos enviado instrucciones para establecer tu contraseña, si existe una cuenta con el correo electrónico que has introducido. Deberías recibirlas pronto."
+
+#: accounts/templates/password_reset/password_reset_done.html:13
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr "Si no recibes un correo electrónico, asegúrate de haber introducido la dirección con la que te registraste y comprueba tu carpeta de spam."
 
 #: config/settings/common.py:75 config/settings/oldsettings.py:155
 msgid "English"
@@ -87,10 +165,6 @@ msgstr "Correo electrónico"
 msgid "Manage Users"
 msgstr "Administrar usuarios"
 
-#: polls/templates/base.html:67
-msgid "Change Password"
-msgstr "Cambiar contraseña"
-
 #: polls/templates/borrar_datos.html:10
 msgid "Delete data from table:"
 msgstr "Borrar dato de la tabla: "
@@ -129,11 +203,6 @@ msgstr "Marcar los modelos de telecomando:"
 msgid "No files"
 msgstr "No hay archivos"
 
-#: polls/templates/create_models.html:50 polls/templates/send_data.html:47
-#: polls/templates/telecomando.html:27
-msgid "Submit"
-msgstr "Enviar"
-
 #: polls/templates/create_models.html:98
 msgid "Only .asn files are allowed:"
 msgstr "Solo se permiten archivos .asn:"
@@ -143,8 +212,7 @@ msgid "File size exceeds 1 MB limit for file:"
 msgstr "El tamaño del archivo supera el límite de 1 MB para el archivo:"
 
 #: polls/templates/create_models.html:206
-#: polls/templates/download_tables.html:97
-#: polls/templates/download_tables.html:105 polls/templates/send_data.html:184
+#: polls/templates/download_tables.html:122 polls/templates/send_data.html:184
 msgid "Error: "
 msgstr "Error: "
 
@@ -184,12 +252,18 @@ msgstr "Marcar las tablas a descargar:"
 msgid "Download"
 msgstr "Descargar"
 
-#: polls/templates/download_tables.html:100
+#: polls/templates/download_tables.html:117
 msgid "Files downloaded successfully!"
 msgstr "Archivos descargados con éxito!"
 
-#: polls/templates/download_tables.html:110
-#: polls/templates/download_tables.html:116
+#: polls/templates/download_tables.html:126
+#, fuzzy
+#| msgid "No tables"
+msgid "No tables selected"
+msgstr "No hay tablas"
+
+#: polls/templates/download_tables.html:130
+#: polls/templates/download_tables.html:136
 msgid "Error during file download: "
 msgstr "Error durante la descarga del archivo: "
 
@@ -294,9 +368,6 @@ msgstr "Modificar Telecomandos"
 #: polls/templates/update.html:17
 msgid "Select the table to Modify"
 msgstr "Selecciona la tabla a modificar"
-
-#~ msgid "Remove this file"
-#~ msgstr "Eliminar este archivo"
 
 #~ msgid "Search"
 #~ msgstr "Buscar"

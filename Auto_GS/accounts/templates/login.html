@@ -22,9 +22,9 @@
             <div class="alert alert-danger mt-1">{{ form.non_field_errors }}</div>
             {% endif %}
           </div>
-          <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
+          <button type="submit" class="btn btn-primary btn-block mt-3">{% trans "Submit"}</button>
           <div class="text-center mt-3">
-            <a href="{% url 'password_reset' %}">Forgot your password?</a>
+            <a href="{% url 'password_reset' %}">{% trans "Forgot your password?"%}</a>
           </div>
         </form>
       </div>
