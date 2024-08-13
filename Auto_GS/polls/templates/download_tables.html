@@ -66,7 +66,6 @@
                 .map(checkbox => checkbox.value);
 
             tableListInput.value = checkedItems.join(' ');
-            console.log(tableListInput.value);
         }
 
         form.addEventListener('submit', (event) => {
@@ -103,9 +102,14 @@
                     if (tableListInput.value.length > 0){
                         
                         try {
+                            const now = new Date();
+                            const timestamp = now.toISOString().replace(/[:.]/g, '-');
+                            const filename = `tmtc_${timestamp}.zip`;
+
+
                             const tempLink = document.createElement('a');
                             tempLink.href = URL.createObjectURL(new Blob([xhr.response], { type: 'application/zip' }));
-                            tempLink.download = 'files.zip';
+                            tempLink.download = filename;
                             document.body.appendChild(tempLink);
                             tempLink.click();
                             document.body.removeChild(tempLink);
