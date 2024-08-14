@@ -1,5 +1,7 @@
 {% extends "ac_base.html" %}
 
+{% load i18n %}
+
 {% block content %}
 
 <div class="row justify-content-center">
@@ -22,9 +24,9 @@
             <div class="alert alert-danger mt-1">{{ form.non_field_errors }}</div>
             {% endif %}
           </div>
-          <button type="submit" class="btn btn-primary btn-block mt-3">{% trans "Submit"}</button>
+          <button type="submit" class="btn btn-primary btn-block mt-3">{% trans "Submit" %}</button>
           <div class="text-center mt-3">
-            <a href="{% url 'password_reset' %}">{% trans "Forgot your password?"%}</a>
+            <a href="{% url 'password_reset' %}">{% trans "Forgot your password?" %}</a>
           </div>
         </form>
       </div>

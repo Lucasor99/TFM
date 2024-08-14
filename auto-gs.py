@@ -131,7 +131,7 @@ def create_keyspace(rf):
             print(f"Error: Failed to create keyspace 'tfm' within 2 minutes. Last error: {stderr}")
             sys.exit(1)
         print("Retrying to create keyspace...")
-        time.sleep(5)
+        time.sleep(10)
 
 def copy_to_pod(files, pod_prefix, dest_dir):
     pod, _, _ = run_command(f"kubectl get pods -l app={pod_prefix} -o jsonpath='{{.items[0].metadata.name}}'")
