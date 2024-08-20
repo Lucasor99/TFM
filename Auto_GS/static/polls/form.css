@@ -1,8 +1,7 @@
 .file-list {
     margin-top: 2px;
-    margin-bottom: 20px;
-    margin-right: 15rem;
-    margin-left: 15rem;
+    display: grid;
+    justify-content: center;
 }
 .file-item {
     display: flex;
@@ -56,6 +55,10 @@
     color: red;
     margin-top: 10px;
 }
+#infoMessage {
+    display: none;
+}
+
 .progress-container {
     height: 20px;
     display: block;
@@ -66,29 +69,13 @@
     border-radius: 20px;
 }
 
-.progress-bar {
+.loading-bar {
     width: 0;
     height: 100%;
     background-color: #007bff;
     border-radius: 20px;
-    transition: width 0.4s ease;
+    transition: width 1s ease;
     position: relative;
 
 }
 
-.progress-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: black;
-    font-weight: semibold;
-}
-
-#successMessage {
-    display: none;
-}
-
-#errorMessage {
-    display: none; 
-}

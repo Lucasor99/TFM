@@ -46,8 +46,8 @@ DEFAULT_FROM_EMAIL = 'webmaster@example.com'
 
 # Otros ajustes específicos de producción
 #SECURE_SSL_REDIRECT = False  # Redirigir a HTTPS en producción. No necesario con nginx
-SECURE_CROSS_ORIGIN_OPENER_POLICY = None 
-#SECURE_CROSS_ORIGIN_OPENER_POLICY = "default-src 'self'; img-src 'self' https://*; connect-src 'self' http://asn1scc:5000;"
+#SECURE_CROSS_ORIGIN_OPENER_POLICY = None 
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "default-src 'self'; img-src 'self' https://*; connect-src 'self' http://asn1scc:5000;"
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
@@ -56,5 +56,5 @@ SECURE_BROWSER_XSS_FILTER = False
 SECURE_CONTENT_TYPE_NOSNIFF = False
 
 # Añadir tu url de producción aquí
-CSRF_TRUSTED_ORIGINS = ['https://autogs.lucasor.com'] # Cambia esto por tu dirección de producción ejemplo: ['https://example.com']
+CSRF_TRUSTED_ORIGINS = ['https://*'] # Cambia esto por tu dirección de producción ejemplo: ['https://example.com']
 
