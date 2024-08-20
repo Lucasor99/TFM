@@ -113,7 +113,6 @@ def create_csv():
     send_telecommands = request.form.get('sendTelecommands', '')
     
     tablenames = request.form.get('tablenames', '').split(' ')
-    print(tablenames)
 
     # Construir el comando
     command = [

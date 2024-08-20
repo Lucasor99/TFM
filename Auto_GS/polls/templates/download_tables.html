@@ -34,16 +34,15 @@
             </div>
 
             <div id="progressContainer" class="progress-container">
-                <div id="progressBar" class="progress-bar"></div>
-                <div id="progressText" class="progress-text">0%</div>
+                <div id="loadingBar" class="loading-bar"></div>
             </div>
 
             <input type="hidden" id="tableList" name="tableList">
 
  
-            <div id="successMessage" class="alert alert-success"></div>
-            <div id="errorMessage" class="alert alert-danger"></div>
-
+            {% if error_message %}
+            <div id="errorMessage" class="alert alert-danger">{{ error_message }}</div>
+            {% endif %}
 
             <div class="form-group mt-3">
                 <button type="submit" class="btn btn-primary">{% trans "Download" %}</button>
@@ -53,93 +52,31 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('createModelsForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const successMessage = document.getElementById('successMessage');
-        const tableListInput = document.getElementById('tableList');
-        const progressContainer = document.getElementById('progressContainer');
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
+
+        const $ = el => document.querySelector(el);
+        const $$ = el => document.querySelectorAll(el);
+
+        const $form = $('form');
+        const $tableListInput = $('#tableList');
+        const $progressContainer = $('#progressContainer');
+        const $loadingBar = $('#loadingBar');
 
         function updateFileList() {
-            const checkedItems = Array.from(document.querySelectorAll('input[name="tablenames"]:checked'))
+            const checkedItems = Array.from($$('input[name="tablenames"]:checked'))
                 .map(checkbox => checkbox.value);
 
-            tableListInput.value = checkedItems.join(' ');
+            $tableListInput.value = checkedItems.join(' ');
         }
 
-        form.addEventListener('submit', (event) => {
+        $form.addEventListener('submit', () => {
             updateFileList();
-            event.preventDefault(); // Prevent the default form submission
-
-            progressBar.style.width = '0%';
-            progressText.textContent = '0%';
-
-            errorMessage.style.display = 'none';
-            errorMessage.textContent = '';
-            successMessage.style.display = 'none';
-            successMessage.textContent = ''
-
-            const formData = new FormData(event.target);
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', form.action, true);
-
-            xhr.upload.addEventListener('progress', (event) => {
-                if (event.lengthComputable) {
-                    const percentComplete = Math.round((event.loaded / event.total) * 100);
-                    progressBar.style.width = percentComplete + '%';
-                    progressText.textContent = percentComplete + '%';
-                    progressContainer.style.visibility = 'visible';
-                }
-            });
-
-            xhr.onload = () => {
-                if (xhr.status === 200) {
-                    errorMessage.style.display = 'none';
-                    successMessage.style.display = 'none';
-
-                    if (tableListInput.value.length > 0){
-                        
-                        try {
-                            const now = new Date();
-                            const timestamp = now.toISOString().replace(/[:.]/g, '-');
-                            const filename = `tmtc_${timestamp}.zip`;
-
-
-                            const tempLink = document.createElement('a');
-                            tempLink.href = URL.createObjectURL(new Blob([xhr.response], { type: 'application/zip' }));
-                            tempLink.download = filename;
-                            document.body.appendChild(tempLink);
-                            tempLink.click();
-                            document.body.removeChild(tempLink);
-
-                            successMessage.textContent = '{% trans "Files downloaded successfully!" %}';
-                            successMessage.style.display = 'block';
-                            progressContainer.style.visibility = 'hidden';
-                            
-                        } catch (e) {
-                            errorMessage.textContent = '{% trans "Error: " %}' + e;
-                            errorMessage.style.display = 'block';
-                        }
-                    } else {
-                        errorMessage.textContent = '{% trans "No tables selected" %}';
-                        errorMessage.style.display = 'block';
-                    }
-                } else {
-                    errorMessage.textContent = `{% trans "Error during file download: " %} ${xhr.statusText}`;
-                    errorMessage.style.display = 'block';
-                }
-            };
-
-            xhr.onerror = () => {
-                errorMessage.textContent = `{% trans "Error during file download: " %} ${xhr.statusText}`;
-                errorMessage.style.display = 'block';
-            };
-
-            xhr.responseType = 'blob';
-
-            xhr.send(formData);
+            
+            $progressContainer.style.visibility = 'visible';
+            $loadingBar.style.width = '0%';
+            $loadingBar.offsetWidth;
+            $loadingBar.style.width = '100%'; 
+            
+        
         });
     });
 </script>

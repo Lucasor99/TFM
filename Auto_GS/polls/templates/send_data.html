@@ -19,29 +19,36 @@
     <div class="container mt-5">
         <form id="createModelsForm" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            
+
             <div class="form-group">
                 <h2>{% trans "Send data" %}</h2>
-                <label class="mb-3" for="csv_files">{% trans "Drag and drop CSV Files here or click to select:" %}</label>
+                <label class="mb-3" for="csv_files">{% trans "Drag and drop CSV Files here or click to select:"%}</label>
                 <div id="dropZone" class="drop-zone">
                     <p>{% trans "Drag files here" %}</p>
-                    <input type="file" id="csv_files" class="form-control-file" name="csv_files" multiple style="display: none;">
+                    <input type="file" id="csv_files" class="form-control-file" name="csv_files" multiple
+                        style="display: none;">
                 </div>
             </div>
-            
+
             <h5>{% trans "Files to send:" %}</h5>
             <div id="progressContainer" class="progress-container">
-                <div id="progressBar" class="progress-bar"></div>
-                <div id="progressText" class="progress-text">0%</div>
+                <div id="loadingBar" class="loading-bar"></div>
             </div>
             <div class="file-list" id="fileList">
                 <!-- File list will be populated here -->
-                 <a>{% trans "No files" %}</a>
+                {% if not success_message and not error_message %}
+                <a>{% trans "No files" %}</a>
+                {% endif %}
             </div>
- 
-            <div id="successMessage" class="alert alert-success"></div>
-            <div id="errorMessage" class="alert alert-danger"></div>
 
+            <div id="infoMessage" class="alert alert-info">aa</div>
+
+            {% if success_message %}
+            <div id="successMessage" class="alert alert-success">{{ success_message }}</div>
+            {% endif %}
+            {% if error_message %}
+            <div id="errorMessage" class="alert alert-danger">{{ error_message }}</div>
+            {% endif %}
 
             <div class="form-group mt-3">
                 <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
@@ -51,163 +58,123 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('createModelsForm');
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('csv_files');
-    const fileList = document.getElementById('fileList');
-    const errorMessage = document.getElementById('errorMessage');
-    const successMessage = document.getElementById('successMessage');
-    const progressContainer = document.getElementById('progressContainer');
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressText');
-    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+            const $ = el => document.querySelector(el);
+            const $$ = el => document.querySelectorAll(el);
 
-    let files = [];
+            const $form = $('form');
+            const $dropZone = $('#dropZone');
+            const $fileInput = $('#csv_files');
+            const $fileList = $('#fileList');
+            const $infoMessage = $('#infoMessage');
+            const $successMessage = $('#successMessage');
+            const $errorMessage = $('#errorMessage');
+            const $progressContainer = $('#progressContainer');
+            const $loadingBar = $('#loadingBar');
 
-    dropZone.addEventListener('click', () => fileInput.click());
+            const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
-    dropZone.addEventListener('dragover', (event) => {
-        event.preventDefault();
-        dropZone.classList.add('hover');
-    });
+            let files = [];
 
-    dropZone.addEventListener('dragleave', () => {
-        dropZone.classList.remove('hover');
-    });
+            $dropZone.addEventListener('click', () => $fileInput.click());
 
-    dropZone.addEventListener('drop', (event) => {
-        event.preventDefault();
-        dropZone.classList.remove('hover');
-        handleFiles(event.dataTransfer.files);
-    });
-
-    fileInput.addEventListener('change', () => handleFiles(fileInput.files));
-
-    function handleFiles(newFiles) {
-        errorMessage.textContent = ''; // Clear previous error messages
-        errorMessage.style.display = 'none';
-        successMessage.textContent = ''; // Clear previous success message
-        successMessage.style.display = 'none';
-
-        Array.from(newFiles).forEach(file => {
-            if (!file.name.endsWith('.csv')) {
-                errorMessage.textContent = `{% trans "Only .csv files are allowed:" %} ${file.name}`;
-                return;
-            }
-            if (file.size > MAX_FILE_SIZE) {
-                errorMessage.textContent = `{% trans "File size exceeds 10 MB limit for file:" %} ${file.name}`;
-                return;
-            }
-            if (!files.some(f => f.name === file.name)) {
-                files.push(file);
-            }
-        });
-
-        updateFileList();
-    }
-
-    function updateFileList() {
-        fileList.innerHTML = ''; // Clear the list before adding new items
-
-
-
-        if (files.length === 0) {
-            const noFilesMessage = document.createElement('a');
-            noFilesMessage.textContent = '{% trans "No files" %}';
-            fileList.appendChild(noFilesMessage);
-        } else {
-
-            files.forEach(file => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
-
-                const label = document.createElement('label');
-                label.textContent = file.name;
-
-                const removeButton = document.createElement('button');
-                removeButton.textContent = '❌';
-                removeButton.title = 'Remove this file';
-                removeButton.addEventListener('click', () => removeFile(file.name));
-
-                fileItem.appendChild(label);
-                fileItem.appendChild(removeButton);
-                fileList.appendChild(fileItem);
+            $dropZone.addEventListener('dragover', (event) => {
+                event.preventDefault();
+                $dropZone.classList.add('hover');
             });
-        }
-    }
 
-    function removeFile(fileName) {
-        files = files.filter(file => file.name !== fileName);
-        updateFileList();
-    }
+            $dropZone.addEventListener('dragleave', () => {
+                $dropZone.classList.remove('hover');
+            });
 
-    function resetForm() {
-        files = [];
-        fileList.innerHTML = '';
-        form.reset();
-        progressBar.style.width = '0%';
-        progressText.textContent = '0%';
-    }
+            $dropZone.addEventListener('drop', (event) => {
+                event.preventDefault();
+                $dropZone.classList.remove('hover');
+                handleFiles(event.dataTransfer.files);
+            });
 
-    form.addEventListener('submit', (event) => {
-        event.preventDefault(); // Prevent the default form submission
-        progressBar.style.width = '0%';
-        progressText.textContent = '0%';
+            $fileInput.addEventListener('change', () => handleFiles($fileInput.files));
 
-        const formData = new FormData(event.target);
+            function handleFiles(newFiles) {
+                $infoMessage.textContent = '';
+                $infoMessage.style.display = 'none';
+                if ($successMessage) $successMessage.style.display = 'none';
+                if ($errorMessage) $errorMessage.style.display = 'none';
 
-        files.forEach(file => {
-            formData.append('csv_files', file);
-        });
-
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', form.action, true);
-
-        xhr.upload.addEventListener('progress', (event) => {
-            if (event.lengthComputable) {
-                const percentComplete = Math.round((event.loaded / event.total) * 100);
-                progressBar.style.width = percentComplete + '%';
-                progressText.textContent = percentComplete + '%';
-                progressContainer.style.visibility = 'visible';
-            }
-        });
-
-        xhr.onload = () => {
-            if (xhr.status === 200) {
-
-                errorMessage.style.display = 'none';
-                successMessage.style.display = 'none';
-
-                try {
-                    const response = JSON.parse(xhr.responseText);
-                    if (response.error) {
-                        errorMessage.textContent = '{% trans "Error: " %}' + response.error;
-                        errorMessage.style.display = 'block';
-    
-                    } else {
-                        successMessage.textContent = '{% trans "Files uploaded successfully!" %}';
-                        successMessage.style.display = 'block';
-                        resetForm();
-                        progressContainer.style.visibility = 'hidden';
+                Array.from(newFiles).forEach(file => {
+                    if (!file.name.endsWith('.csv')) {
+                        $infoMessage.textContent = `{% trans "Only .csv files are allowed:" %} ${file.name}`;
+                        $infoMessage.style.display = 'block';
+                        return;
                     }
-                } catch (e) {
-                    errorMessage.textContent = `{% trans "Error:" %} ${e}`;
-                    errorMessage.style.display = 'block';
-                }
-            } else {
-                errorMessage.textContent = `{% trans "Error during file upload:" %} ${xhr.statusText}`;
-                errorMessage.style.display = 'block';
+                    if (file.size > MAX_FILE_SIZE) {
+                        $infoMessage.textContent = `{% trans "File size exceeds 10 MB limit for file:" %} ${file.name}`;
+                        $infoMessage.style.display = 'block';
+                        return;
+                    }
+                    if (!files.some(f => f.name === file.name)) {
+                        files.push(file);
+                    }
+                });
+
+                updateFileList();
             }
-        };
 
-        xhr.onerror = () => {
-            errorMessage.textContent = `{% trans "Error during file upload:" %} ${xhr.statusText}`;
-            errorMessage.style.display = 'block';
-        };
+            function updateFileList() {
+                $fileList.innerHTML = ''; // Clear the list before adding new items
 
-        xhr.send(formData);
-    });
-});
+
+
+                if (files.length === 0) {
+                    const noFilesMessage = document.createElement('a');
+                    noFilesMessage.textContent = '{% trans "No files" %}';
+                    $fileList.appendChild(noFilesMessage);
+                } else {
+
+                    files.forEach(file => {
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'file-item';
+
+                        const label = document.createElement('label');
+                        label.textContent = file.name;
+
+                        const removeButton = document.createElement('button');
+                        removeButton.textContent = '❌';
+                        removeButton.title = 'Remove this file';
+                        removeButton.addEventListener('click', () => removeFile(file.name));
+
+                        fileItem.appendChild(label);
+                        fileItem.appendChild(removeButton);
+                        $fileList.appendChild(fileItem);
+                    });
+                }
+                updateFileInput();
+            }
+
+            function updateFileInput() {
+                const dataTransfer = new DataTransfer();
+                files.forEach(file => dataTransfer.items.add(file));
+                $fileInput.files = dataTransfer.files;
+            }
+
+            function removeFile(fileName) {
+                files = files.filter(file => file.name !== fileName);
+                updateFileList();
+            }
+
+            $form.addEventListener('submit', () => {
+                updateFileInput();
+                $progressContainer.style.visibility = 'visible';
+
+                $loadingBar.style.transition = 'width 0.4s ease-out';
+                $loadingBar.style.width = '50%';
+
+                setTimeout(() => {
+                    $loadingBar.style.transition = 'width 2.5s ease-in';
+                    $loadingBar.style.width = '95%';
+                }, 400);
+
+            });
+        });
 
     </script>
 </body>
