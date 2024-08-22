@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-13 14:17+0000\n"
+"POT-Creation-Date: 2024-08-22 18:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,83 +18,99 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: accounts/templates/ac_base.html:35
-#: accounts/templates/password_change_done.html:12
+#: accounts/templates/ac_base.html:34
 msgid "Back"
 msgstr "Volver"
 
-#: accounts/templates/login.html:27
-msgid "Forgot your password?"
-msgstr "¿Olvidaste tu contraseña?"
+#: accounts/templates/ac_base.html:35 polls/templates/base.html:53
+msgid "Logout"
+msgstr "Cerrar sesión"
 
-#: accounts/templates/manage_users.html:32
-msgid "Enable"
-msgstr "Habilitar"
+#: accounts/templates/ac_base.html:38
+msgid "Login"
+msgstr "Iniciar sesión"
 
-#: accounts/templates/manage_users.html:35
-msgid "Disable"
-msgstr "Deshabilitar"
+#: accounts/templates/ac_base.html:40
+msgid "Sign up"
+msgstr "Registrarse"
 
-#: accounts/templates/manage_users.html:39
-msgid "Staff"
-msgstr ""
-
-#: accounts/templates/manage_users.html:41
-msgid "Remove Staff"
-msgstr "Eliminar Staff"
-
-#: accounts/templates/manage_users.html:51
-msgid "Django Administrator"
-msgstr "Administrador Django"
-
-#: accounts/templates/password_change.html:9 polls/templates/base.html:67
-msgid "Change Password"
-msgstr "Cambiar contraseña"
-
-#: accounts/templates/password_change.html:26
-#: accounts/templates/password_reset/password_reset.html:25
-#: accounts/templates/password_reset/password_reset_confirm.html:25
-#: accounts/templates/register.html:29 polls/templates/create_models.html:50
-#: polls/templates/send_data.html:47 polls/templates/telecomando.html:27
+#: accounts/templates/login.html:27 accounts/templates/password_change.html:27
+#: accounts/templates/password_reset/password_reset.html:26
+#: accounts/templates/password_reset/password_reset_confirm.html:26
+#: accounts/templates/register.html:30 polls/templates/create_models.html:57
+#: polls/templates/send_data.html:54 polls/templates/telecomando.html:27
 msgid "Submit"
 msgstr "Enviar"
 
-#: accounts/templates/password_change_done.html:8
+#: accounts/templates/login.html:29
+msgid "Forgot your password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: accounts/templates/manage_users.html:33
+msgid "Enable"
+msgstr "Habilitar"
+
+#: accounts/templates/manage_users.html:36
+msgid "Disable"
+msgstr "Deshabilitar"
+
+#: accounts/templates/manage_users.html:40
+msgid "Staff"
+msgstr ""
+
+#: accounts/templates/manage_users.html:42
+msgid "Remove Staff"
+msgstr "Eliminar Staff"
+
+#: accounts/templates/manage_users.html:52
+msgid "Django Administrator"
+msgstr "Administrador Django"
+
+#: accounts/templates/password_change.html:10 polls/templates/base.html:67
+msgid "Change Password"
+msgstr "Cambiar contraseña"
+
+#: accounts/templates/password_change_done.html:9
 msgid "Password Changed"
 msgstr "Contraseña cambiada"
 
-#: accounts/templates/password_change_done.html:11
+#: accounts/templates/password_change_done.html:12
 msgid "Your password has been changed"
 msgstr "Tu contraseña ha sido cambiada"
 
-#: accounts/templates/password_reset/password_reset.html:9
+#: accounts/templates/password_reset/password_reset.html:10
 msgid "Reset Password"
 msgstr "Restablecer contraseña"
 
-#: accounts/templates/password_reset/password_reset_complete.html:9
-#: accounts/templates/password_reset/password_reset_done.html:9
+#: accounts/templates/password_reset/password_reset_complete.html:10
+#: accounts/templates/password_reset/password_reset_done.html:10
 msgid "Password Reset"
 msgstr "Contraseña restablecida"
 
-#: accounts/templates/password_reset/password_reset_complete.html:12
+#: accounts/templates/password_reset/password_reset_complete.html:13
 msgid "Your password has been set. You can now"
 msgstr "Tu contraseña ha sido establecida. Ahora puedes"
 
-#: accounts/templates/password_reset/password_reset_confirm.html:9
+#: accounts/templates/password_reset/password_reset_confirm.html:10
 msgid "Confirm Password"
 msgstr "Confirmar contraseña"
 
-#: accounts/templates/password_reset/password_reset_done.html:12
+#: accounts/templates/password_reset/password_reset_done.html:13
 msgid ""
 "We've emailed you instructions for setting your password, if an account "
 "exists with the email you entered. You should receive them shortly."
-msgstr "Te hemos enviado instrucciones para establecer tu contraseña, si existe una cuenta con el correo electrónico que has introducido. Deberías recibirlas pronto."
+msgstr ""
+"Te hemos enviado instrucciones para establecer tu contraseña, si existe una "
+"cuenta con el correo electrónico que has introducido. Deberías recibirlas "
+"pronto."
 
-#: accounts/templates/password_reset/password_reset_done.html:13
+#: accounts/templates/password_reset/password_reset_done.html:14
 msgid ""
 "If you don't receive an email, please make sure you've entered the address "
 "you registered with, and check your spam folder."
-msgstr "Si no recibes un correo electrónico, asegúrate de haber introducido la dirección con la que te registraste y comprueba tu carpeta de spam."
+msgstr ""
+"Si no recibes un correo electrónico, asegúrate de haber introducido la "
+"dirección con la que te registraste y comprueba tu carpeta de spam."
 
 #: config/settings/common.py:75 config/settings/oldsettings.py:155
 msgid "English"
@@ -145,10 +161,6 @@ msgstr "Insertar Datos"
 msgid "Download Tables"
 msgstr "Descargar Tablas"
 
-#: polls/templates/base.html:53
-msgid "Logout"
-msgstr "Cerrar sesión"
-
 #: polls/templates/base.html:56
 msgid "My Account"
 msgstr "Mi cuenta"
@@ -194,43 +206,22 @@ msgstr "Arrastre y suelte los archivos ASN aquí o haga clic para seleccionar:"
 msgid "Drag files here"
 msgstr "Arrastre los archivos aquí"
 
-#: polls/templates/create_models.html:32
+#: polls/templates/create_models.html:33
 msgid "Mark the telecommand models:"
 msgstr "Marcar los modelos de telecomando:"
 
-#: polls/templates/create_models.html:39 polls/templates/create_models.html:120
-#: polls/templates/send_data.html:39 polls/templates/send_data.html:116
+#: polls/templates/create_models.html:41 polls/templates/create_models.html:137
+#: polls/templates/send_data.html:40 polls/templates/send_data.html:129
 msgid "No files"
 msgstr "No hay archivos"
 
-#: polls/templates/create_models.html:98
+#: polls/templates/create_models.html:110
 msgid "Only .asn files are allowed:"
 msgstr "Solo se permiten archivos .asn:"
 
-#: polls/templates/create_models.html:102
+#: polls/templates/create_models.html:115
 msgid "File size exceeds 1 MB limit for file:"
 msgstr "El tamaño del archivo supera el límite de 1 MB para el archivo:"
-
-#: polls/templates/create_models.html:206
-#: polls/templates/download_tables.html:122 polls/templates/send_data.html:184
-msgid "Error: "
-msgstr "Error: "
-
-#: polls/templates/create_models.html:210 polls/templates/send_data.html:188
-msgid "Files uploaded successfully!"
-msgstr "Archivos subidos con éxito!"
-
-#: polls/templates/create_models.html:216 polls/templates/send_data.html:194
-#, fuzzy
-#| msgid "Error: "
-msgid "Error:"
-msgstr "Error: "
-
-#: polls/templates/create_models.html:220
-#: polls/templates/create_models.html:226 polls/templates/send_data.html:198
-#: polls/templates/send_data.html:204
-msgid "Error during file upload:"
-msgstr "Error durante la carga del archivo:"
 
 #: polls/templates/delete.html:12
 msgid "Delete commands: "
@@ -248,24 +239,9 @@ msgstr "Seleccionar"
 msgid "Mark the tables to download:"
 msgstr "Marcar las tablas a descargar:"
 
-#: polls/templates/download_tables.html:49
+#: polls/templates/download_tables.html:48
 msgid "Download"
 msgstr "Descargar"
-
-#: polls/templates/download_tables.html:117
-msgid "Files downloaded successfully!"
-msgstr "Archivos descargados con éxito!"
-
-#: polls/templates/download_tables.html:126
-#, fuzzy
-#| msgid "No tables"
-msgid "No tables selected"
-msgstr "No hay tablas"
-
-#: polls/templates/download_tables.html:130
-#: polls/templates/download_tables.html:136
-msgid "Error during file download: "
-msgstr "Error durante la descarga del archivo: "
 
 #: polls/templates/index.html:13
 msgid "Index of the AUTO-GS"
@@ -311,15 +287,15 @@ msgstr "Enviar datos"
 msgid "Drag and drop CSV Files here or click to select:"
 msgstr "Arrastre y suelte los archivos CSV aquí o haga clic para seleccionar:"
 
-#: polls/templates/send_data.html:32
+#: polls/templates/send_data.html:33
 msgid "Files to send:"
 msgstr "Archivos a enviar:"
 
-#: polls/templates/send_data.html:94
+#: polls/templates/send_data.html:105
 msgid "Only .csv files are allowed:"
 msgstr "Solo se permiten archivos .csv:"
 
-#: polls/templates/send_data.html:98
+#: polls/templates/send_data.html:110
 msgid "File size exceeds 10 MB limit for file:"
 msgstr "El tamaño del archivo supera el límite de 10 MB para el archivo:"
 

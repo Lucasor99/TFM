@@ -243,7 +243,7 @@ def create_models(request):
         data = {
             'modulesTelecommand': ','.join(modules_telecommand_list),
             'keyspace': "tfm",
-            'contact_points': "localhost",
+            'contact_points': "cassandra",
             'clusterPort': 9042
         }
         
@@ -284,7 +284,7 @@ def send_data(request):
         files = [('csv_files', (file.name, file.read(), file.content_type)) for file in csv_files]
         data = {
             'keyspace': "tfm",
-            'contact_points': "localhost",
+            'contact_points': "cassandra",
             'clusterPort': 9042
         }
         
@@ -319,7 +319,7 @@ def download_tables(request):
         data = {
             'tablenames': tablenames_list,
             'keyspace': "tfm",
-            'contact_points': "localhost",
+            'contact_points': "cassandra",
             'clusterPort': 9042
         }
         
