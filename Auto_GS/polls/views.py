@@ -16,9 +16,9 @@ from .utilities.functions import insert_data, create_tree_view, select_by, updat
 from datetime import datetime
 
 import json, random, requests
+import os
 
-
-api_url = "http://localhost:5000"
+api_url = os.environ.get('API_URL', "http://localhost:5000")
 session = get_cassandra_session()
 
 def change_language(request):

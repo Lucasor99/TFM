@@ -34,6 +34,8 @@ spec:
                   key: DJANGO_SECRET_KEY
             - name: DJANGO_SETTINGS_MODULE
               value: "config.settings.prod"
+            - name: API_URL
+              value: "http://asn1scc:5000"
           command: ["/bin/sh", "-c", "python3 manage.py collectstatic --noinput && python3 manage.py migrate && gunicorn -w 2 -b 0.0.0.0:8000 config.wsgi:application"]
           ports:
             - containerPort: 8000
