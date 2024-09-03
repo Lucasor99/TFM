@@ -75,7 +75,7 @@ The ASN.1 compiler is used to create database tables and insert data into Cassan
    ```bash
    python3 /src/asn2dataModel.py -modulesTelecommand "DataTypes-Telecommands" -keyspace tfm -contact_points cassandra -clusterPort 9042 ./filesASN1 DataTypesTelecommands.asn DataTypes-Telemetries.asn
    ```
-  >[!NOTE]
+  >[!TIP]
   >The `-modulesTelecommand` parameter is optional and can be omitted if the telecommand data is not required.
   
    This command compiles ASN.1 files into a data model, creating tables in the specified keyspace.
@@ -93,7 +93,7 @@ The ASN.1 compiler is used to create database tables and insert data into Cassan
    ```bash
    python3 /src/ReadWriteTMTC/createCSV.py ./filesTelecommand "datatypes_telecommands" -keyspace tfm -contact_points cassandra -clusterPort 9042 -sendTelecommands True
    ```
-  >[!NOTE]
+  >[!TIP]
   >The `-sendTelecommands` parameter is optional by default is set to `False`.
 
    Generates a CSV file from the specified tables, which can be sent as a telecommand.
