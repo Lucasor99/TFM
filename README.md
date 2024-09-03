@@ -33,6 +33,10 @@ python3 auto-gs.py -create 3 -rf 3
 ## Creating Tables and Inserting Data
 
 After deployment, data can be managed either through the web application or directly by accessing the containers.
+<div style="display: inline-block; margin-left: auto; margin-right: auto;">
+<img src="images/HomeWithoutTables.png" width="300">
+<img src="images/CreateModel.png" width="300">
+</div>
 
 
 ### Commands for direct management
