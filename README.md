@@ -92,7 +92,7 @@ The ASN.1 compiler is used to create database tables and insert data into Cassan
    ```
   >[!NOTE]
   >The `-sendTelecommands` parameter is optional by default is set to `False`.
-  
+
    Generates a CSV file from the specified tables, which can be sent as a telecommand.
 
 These commands allow for efficient data management within the Ground Station platform, ensuring that satellite telemetry and telecommand data are correctly processed and stored.
