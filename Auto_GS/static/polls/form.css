@@ -4,8 +4,7 @@
     justify-content: center;
 }
 .file-item {
-    display: flex;
-    align-items: center;
+    display: inline;
     margin-bottom: 10px;
 }
 .file-item input[type="checkbox"] {
