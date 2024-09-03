@@ -30,9 +30,12 @@ python3 auto-gs.py -create 3 -rf 3
 >[!IMPORTANT]
 >The replication factor must be set to a value lower than the number of Cassandra nodes.
 
-## Creating and Inserting Data
+## Creating Tables and Inserting Data
 
-After deployment, data can be managed either through the web application or directly by accessing the containers. Here are the key commands for direct data management:
+After deployment, data can be managed either through the web application or directly by accessing the containers.
+
+
+### Commands for direct management
 
 - **Copy ASN.1 Files:**
 
