@@ -2,7 +2,7 @@
 
 This project is a Ground Station platform that includes a web application, databases for user management and satellite data storage, and an API integrated with an ASN.1 compiler. The API is responsible for generating database tables and inserting data received in ASN.1 and CSV formats. The system is designed to efficiently handle satellite telemetry and telecommand data, ensuring data integrity and security.
 
-![Ground Station Project Architecture](path/to/image.png)
+<img src="images/diseñoServiciosSimple.png" width="500" style="margin-left: auto; margin-right: auto; display: block;"/>
 
 ## Kubernetes Cluster Deployment
 
@@ -23,6 +23,9 @@ python3 auto-gs.py -create 3 -rf 3
 
 - **`-create n`:** Deploys the application with `n` replicas of the Cassandra pods.
 - **`-rf n` (optional):** Specifies the replication factor for Cassandra. If not provided, a default value of 3 is used.
+
+>[!IMPORTANT]
+>The replication factor must be set to a value greater than or equal to the number of replicas.
 
 ### Creating and Inserting Data
 
@@ -67,15 +70,17 @@ The ASN.1 compiler is used to create database tables and insert data into Cassan
 1. **Create Data Model:**
 
    ```bash
-   python3 /src/asn2dataModel.py -modulesTelecommand "DataTypes-Telecommands" -keyspace tfg -contact_points cassandra -clusterPort 9042 ./filesASN1 DataTypesTelecommands.asn DataTypes-Telemetries.asn
+   python3 /src/asn2dataModel.py -modulesTelecommand "DataTypes-Telecommands" -keyspace tfm -contact_points cassandra -clusterPort 9042 ./filesASN1 DataTypesTelecommands.asn DataTypes-Telemetries.asn
    ```
-
+  >[!NOTE]
+  >The `-modulesTelecommand` parameter is optional and can be omitted if the telecommand data is not required.
+  
    This command compiles ASN.1 files into a data model, creating tables in the specified keyspace.
 
 2. **Insert Telemetry/Telecommand Data:**
 
    ```bash
-   python3 /src/ReadWriteTMTC/readCSV.py ./filesCSV -keyspace tfg -contact_points cassandra -clusterPort 9042 -filesTelecommands datatypes_telecommands.csv
+   python3 /src/ReadWriteTMTC/readCSV.py ./filesCSV -keyspace tfm -contact_points cassandra -clusterPort 9042 -filesTelecommands datatypes_telecommands.csv
    ```
 
    This command inserts data from CSV files into the corresponding tables.
@@ -83,9 +88,11 @@ The ASN.1 compiler is used to create database tables and insert data into Cassan
 3. **Create Telecommand CSV:**
 
    ```bash
-   python3 /src/ReadWriteTMTC/createCSV.py ./filesTelecommand "datatypes_telecommands" -keyspace tfg -contact_points cassandra -clusterPort 9042 -sendTelecommands True
+   python3 /src/ReadWriteTMTC/createCSV.py ./filesTelecommand "datatypes_telecommands" -keyspace tfm -contact_points cassandra -clusterPort 9042 -sendTelecommands True
    ```
-
+  >[!NOTE]
+  >The `-sendTelecommands` parameter is optional by default is set to `False`.
+  
    Generates a CSV file from the specified tables, which can be sent as a telecommand.
 
 These commands allow for efficient data management within the Ground Station platform, ensuring that satellite telemetry and telecommand data are correctly processed and stored.
