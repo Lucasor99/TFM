@@ -2,7 +2,8 @@
 
 This project is a Ground Station platform that includes a web application, databases for user management and satellite data storage, and an API integrated with an ASN.1 compiler. The API is responsible for generating database tables and inserting data received in ASN.1 and CSV formats. The system is designed to efficiently handle satellite telemetry and telecommand data, ensuring data integrity and security.
 
-![Ground Station Project Architecture](path/to/image.png)
+<img src="images/diseñoServiciosSimple.png" width="500" style="margin-left: auto; margin-right: auto; display: block;"/>
+
 
 ## Kubernetes Cluster Deployment
 
