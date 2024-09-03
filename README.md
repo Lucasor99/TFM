@@ -27,7 +27,7 @@ python3 auto-gs.py -create 3 -rf 3
 >[!IMPORTANT]
 >The replication factor must be set to a value greater than or equal to the number of replicas.
 
-### Creating and Inserting Data
+## Creating and Inserting Data
 
 After deployment, data can be managed either through the web application or directly by accessing the containers. Here are the key commands for direct data management:
 
