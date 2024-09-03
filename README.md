@@ -25,6 +25,9 @@ python3 auto-gs.py -create 3 -rf 3
 - **`-rf n` (optional):** Specifies the replication factor for Cassandra. If not provided, a default value of 3 is used.
 
 >[!IMPORTANT]
+>The number of Cassandra pods must be equal or lower than the number of Kubernetes nodes.
+>
+>[!IMPORTANT]
 >The replication factor must be set to a value lower than the number of Cassandra nodes.
 
 ## Creating and Inserting Data
