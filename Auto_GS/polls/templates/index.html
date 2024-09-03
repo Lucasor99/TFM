@@ -17,12 +17,19 @@
 <body>
     <div>
         <div class="container">
-            <h4>{% trans "List of tables" %}</h4>
+            {% if nav_items %}
+            <h2>{% trans "List of tables" %}</h2>
             <ul>
                 {% for item in nav_items %}
                 <li class="card m-3 bg-light"><a href="{% url 'tabla' item %}">{{ item }}</a></li>
                 {% endfor %}
             </ul>
+            {% else %}
+            <h4>{% trans "No tables" %}</h4>
+            <button type="button" class="btn btn-primary" onclick="window.location.href='/polls/create_models/'">
+                {% trans "Create a new table" %}
+            </button>
+            {% endif %}
         </div>
     </div>
 </body>

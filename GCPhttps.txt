@@ -1,0 +1,18 @@
+kubectl create clusterrolebinding cluster-admin-binding \
+  --clusterrole cluster-admin \
+  --user $(gcloud config get-value account)
+
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.1/deploy/static/provider/cloud/deploy.yaml
+
+
+kubectl get svc --namespace=ingress-nginx
+
+
+//kubectl apply -f DeployFiles/web-ingress.yaml
+
+kubectl create namespace cert-manager
+
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.2/cert-manager.yaml
+
+kubectl create -f prod_issuer.yaml

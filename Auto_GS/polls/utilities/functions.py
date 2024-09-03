@@ -1,4 +1,4 @@
-from Auto_GS.cassandra_conection import get_cassandra_session
+from config.cassandra_conection import get_cassandra_session
 
 
 #Insertar dato

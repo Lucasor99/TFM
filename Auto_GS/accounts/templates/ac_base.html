@@ -2,8 +2,7 @@
 <html>
 
 <head>
-    {% load static %}
-
+    {% load static i18n %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auto-GS</title>
@@ -26,19 +25,19 @@
                 <h1> Auto Ground Station </h1>
             </a>
             <a href="{% url 'index' %}">
-                <img src="{% static 'img/logo_upm_mono.png' %}" alt="Logo UPM" width="200">
+                <img src="{% static 'img/favicon.png' %}" alt="satellite" height="65" style="margin-left: 133.8px;">
             </a>
         </div>
         <nav>
             <ul>
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'index' %}">Back</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href="{% url 'index' %}">{% trans "Back"%}</a></li>
+                <li><a href="{% url 'logout' %}">{% trans "Logout"%}</a></li>
                 {% else %}
                 {% if request.resolver_match.url_name != 'login' %}
-                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'login' %}">{% trans "Login"%}</a></li>
                 {% else %}
-                <li><a href="{% url 'register' %}">Sign up</a></li>
+                <li><a href="{% url 'register' %}">{% trans "Sign up"%}</a></li>
                 {% endif %}
                 {% endif %}
             </ul>

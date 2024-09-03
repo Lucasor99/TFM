@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<head>
+    {% load static i18n %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Create Models" %}</title>
+    <link rel="stylesheet" href="{% static 'polls/tabla.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/form.css' %}">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <form id="createModelsForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <h2>{% trans "Download Tables" %}</h2>
+            </div>
+            <h5>{% trans "Mark the tables to download:" %}</h5>
+            
+            <div class="file-list" id="fileList">
+                {% for item in nav_items %}
+                <div class="file-item">
+                    <input type="checkbox" class="check-item" name="tablenames" value="{{ item }}"><label>{{ item }}</label>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div id="progressContainer" class="progress-container">
+                <div id="loadingBar" class="loading-bar"></div>
+            </div>
+
+            <input type="hidden" id="tableList" name="tableList">
+
+ 
+            {% if error_message %}
+            <div id="errorMessage" class="alert alert-danger">{{ error_message }}</div>
+            {% endif %}
+
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">{% trans "Download" %}</button>
+            </div>
+        </form>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const $ = el => document.querySelector(el);
+        const $$ = el => document.querySelectorAll(el);
+
+        const $form = $('form');
+        const $tableListInput = $('#tableList');
+        const $progressContainer = $('#progressContainer');
+        const $loadingBar = $('#loadingBar');
+
+        function updateFileList() {
+            const checkedItems = Array.from($$('input[name="tablenames"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            $tableListInput.value = checkedItems.join(' ');
+        }
+
+        $form.addEventListener('submit', () => {
+            updateFileList();
+            
+            $progressContainer.style.visibility = 'visible';
+            $loadingBar.style.width = '0%';
+            $loadingBar.offsetWidth;
+            $loadingBar.style.width = '100%'; 
+            
+        
+        });
+    });
+</script>
+</body>
+
+{% endblock %}

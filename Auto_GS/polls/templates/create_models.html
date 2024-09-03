@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<head>
+    {% load static i18n %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Create Models" %}</title>
+    <link rel="stylesheet" href="{% static 'polls/tabla.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/form.css' %}">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <form id="createModelsForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <h2>{% trans "Create data models" %}</h2>
+                <label class="mb-3" for="asn_files">{% trans "Drag and drop ASN Files here or click to select:"%}</label>
+                <div id="dropZone" class="drop-zone">
+                    <p>{% trans "Drag files here" %}</p>
+                    <input type="file" id="asn_files" class="form-control-file" name="asn_files" multiple
+                        style="display: none;">
+                </div>
+            </div>
+
+            <h5>{% trans "Mark the telecommand models:" %}</h5>
+            <div id="progressContainer" class="progress-container">
+                <div id="loadingBar" class="loading-bar"></div>
+            </div>
+            <div class="file-list" id="fileList">
+                <!-- File list will be populated here -->
+                {% if success_message or error_message %}
+                {% else %}
+                <a>{% trans "No files" %}</a>
+                {% endif %}
+            </div>
+
+            <input type="hidden" id="modulesTelecommand" name="modulesTelecommand">
+
+            <div id="infoMessage" class="alert alert-info">aa</div>
+
+            {% if success_message %}
+            <div id="successMessage" class="alert alert-success">{{ success_message }}</div>
+            {% endif %}
+            {% if error_message %}
+            <div id="errorMessage" class="alert alert-danger">{{ error_message }}</div>
+            {% endif %}
+
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const $ = el => document.querySelector(el);
+            const $$ = el => document.querySelectorAll(el);
+
+            const $form = $('form');
+            const $dropZone = $('#dropZone');
+            const $fileInput = $('#asn_files');
+            const $fileList = $('#fileList');
+            const $infoMessage = $('#infoMessage');
+            const $successMessage = $('#successMessage');
+            const $errorMessage = $('#errorMessage');
+            const $modulesTelecommandInput = $('#modulesTelecommand');
+            const $progressContainer = $('#progressContainer');
+            const $loadingBar = $('#loadingBar');
+            const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1 MB
+
+
+            let files = [];
+
+            $dropZone.addEventListener('click', () => $fileInput.click());
+
+            $dropZone.addEventListener('dragover', (event) => {
+                event.preventDefault();
+                $dropZone.classList.add('hover');
+            });
+
+            $dropZone.addEventListener('dragleave', () => {
+                $dropZone.classList.remove('hover');
+            });
+
+            $dropZone.addEventListener('drop', (event) => {
+                event.preventDefault();
+                $dropZone.classList.remove('hover');
+                handleFiles(event.dataTransfer.files);
+            });
+
+            $fileInput.addEventListener('change', () => handleFiles($fileInput.files));
+
+            function handleFiles(newFiles) {
+                $infoMessage.textContent = '';
+                $infoMessage.style.display = 'none';
+                if ($successMessage) $successMessage.style.display = 'none';
+                if ($errorMessage) $errorMessage.style.display = 'none';
+
+
+                Array.from(newFiles).forEach(file => {
+                    if (!file.name.endsWith('.asn')) {
+                        $infoMessage.textContent = `{% trans "Only .asn files are allowed:" %} ${file.name}`;
+                        $infoMessage.style.display = 'block';
+                        return;
+                    }
+                    if (file.size > MAX_FILE_SIZE) {
+                        $infoMessage.textContent = `{% trans "File size exceeds 1 MB limit for file:" %} ${file.name}`;
+                        $infoMessage.style.display = 'block';
+                        return;
+                    }
+                    if (!files.some(f => f.name === file.name)) {
+                        files.push(file);
+                    }
+                });
+
+                updateFileList();
+            }
+
+            function updateFileList() {
+                const selectedFiles = new Set(
+                    Array.from($$('input[name="telecommandModels"]:checked'))
+                        .map(checkbox => checkbox.value)
+                );
+
+                $fileList.innerHTML = ''; // Clear the list before adding new items
+
+                if (files.length === 0) {
+                    const noFilesMessage = document.createElement('a');
+                    noFilesMessage.textContent = '{% trans "No files" %}';
+                    $fileList.appendChild(noFilesMessage);
+                } else {
+
+                    files.forEach(file => {
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'file-item';
+
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.name = 'telecommandModels';
+                        checkbox.value = file.name;
+                        checkbox.addEventListener('change', updateModulesTelecommand); // Update the hidden input when checked state changes
+
+                        if (selectedFiles.has(file.name)) {
+                            checkbox.checked = true;
+                        }
+
+                        const label = document.createElement('label');
+                        label.textContent = file.name;
+
+                        const removeButton = document.createElement('button');
+                        removeButton.textContent = '❌';
+                        removeButton.title = 'Remove this file';
+                        removeButton.addEventListener('click', () => removeFile(file.name));
+
+                        fileItem.appendChild(checkbox);
+                        fileItem.appendChild(label);
+                        fileItem.appendChild(removeButton);
+                        $fileList.appendChild(fileItem);
+                    });
+                }
+                updateModulesTelecommand();
+                updateFileInput();
+            }
+
+            function updateModulesTelecommand() {
+                const checkedFiles = Array.from($$('input[name="telecommandModels"]:checked'))
+                    .map(checkbox => checkbox.value.replace(/\.[^/.]+$/, "")); // Remove file extension
+
+                $modulesTelecommandInput.value = checkedFiles.join(',');
+            }
+
+            function updateFileInput() {
+                const dataTransfer = new DataTransfer();
+                files.forEach(file => dataTransfer.items.add(file));
+                $fileInput.files = dataTransfer.files;
+            }
+
+            function removeFile(fileName) {
+                files = files.filter(file => file.name !== fileName);
+                updateFileList();
+            }
+
+            $form.addEventListener('submit', () => {
+                updateFileInput();
+                updateModulesTelecommand();
+                $progressContainer.style.visibility = 'visible';
+
+                $loadingBar.style.transition = 'width 0.6s ease-out'; 
+                $loadingBar.style.width = '50%';
+
+                setTimeout(() => {
+                    $loadingBar.style.transition = 'width 3.5s ease-in';
+                    $loadingBar.style.width = '95%';
+                }, 600);
+
+            });
+
+
+        });
+
+    </script>
+</body>
+
+{% endblock %}

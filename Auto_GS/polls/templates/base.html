@@ -19,7 +19,7 @@
         </a>
         <a><h1>Auto Ground Station</h1></a>
         <a href="{% url 'index' %}">
-            <img src="{% static 'img/logo_upm_mono.png' %}" alt="UPM" width="200">
+            <img src="{% static 'img/favicon.png' %}" alt="UPM" height="65" style="margin-left: 133.8px;">
         </a>
     </div>
     <nav>
@@ -36,9 +36,19 @@
                 </ul>
             </li>
             {% if user.is_staff %}
-            <li><a href="{% url 'telecomando' %}">{% trans "Create Command" %}</a></li>
-            <li><a href="{% url 'update' %}">{% trans "Update Command" %}</a></li>
-            <li><a href="{% url 'delete' %}">{% trans "Delete Command" %}</a></li>
+            <li class="my-dropdown">
+                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                    {% trans "Telecommands" %} <span class="caret"></span>
+                </a>
+                <ul class="dropdown-content" role="menu">
+                    <li><a href="{% url 'telecomando' %}">{% trans "Create Telecommand" %}</a></li>
+                    <li><a href="{% url 'update' %}">{% trans "Update Telecommand" %}</a></li>
+                    <li><a href="{% url 'delete' %}">{% trans "Delete Telecommand" %}</a></li> 
+                </ul>
+            </li>
+            <li><a href="{% url 'create_models' %}">{% trans "Create Models" %}</a></li>
+            <li><a href="{% url 'send_data' %}">{% trans "Send Data" %}</a></li>
+            <li><a href="{% url 'download_tables' %}">{% trans "Download Tables" %}</a></li>
             {% endif %}
             <li><a href="{% url 'logout' %}">{% trans "Logout" %}</a></li>
             <li class="my-dropdown">

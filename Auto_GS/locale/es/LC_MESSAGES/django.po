@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-16 16:29+0200\n"
+"POT-Creation-Date: 2024-08-22 18:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,61 +18,164 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Auto_GS/settings.py:22
-msgid "English"
-msgstr ""
+#: accounts/templates/ac_base.html:34
+msgid "Back"
+msgstr "Volver"
 
-#: Auto_GS/settings.py:23
-msgid "Español"
-msgstr ""
-
-#: Auto_GS/settings.py:24
-msgid "Français"
-msgstr ""
-
-#: polls/templates/base.html:26
-msgid "Home"
-msgstr "Inicio"
-
-#: polls/templates/base.html:29
-msgid "Tables"
-msgstr "Tablas"
-
-#: polls/templates/base.html:38
-msgid "Create Command"
-msgstr "Crear Telecomando"
-
-#: polls/templates/base.html:39
-msgid "Update Command"
-msgstr "Modificar Telecomando"
-
-#: polls/templates/base.html:40
-msgid "Delete Command"
-msgstr "Borrar Telecomando"
-
-#: polls/templates/base.html:42
+#: accounts/templates/ac_base.html:35 polls/templates/base.html:53
 msgid "Logout"
 msgstr "Cerrar sesión"
 
+#: accounts/templates/ac_base.html:38
+msgid "Login"
+msgstr "Iniciar sesión"
+
+#: accounts/templates/ac_base.html:40
+msgid "Sign up"
+msgstr "Registrarse"
+
+#: accounts/templates/login.html:27 accounts/templates/password_change.html:27
+#: accounts/templates/password_reset/password_reset.html:26
+#: accounts/templates/password_reset/password_reset_confirm.html:26
+#: accounts/templates/register.html:30 polls/templates/create_models.html:57
+#: polls/templates/send_data.html:54 polls/templates/telecomando.html:27
+msgid "Submit"
+msgstr "Enviar"
+
+#: accounts/templates/login.html:29
+msgid "Forgot your password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: accounts/templates/manage_users.html:33
+msgid "Enable"
+msgstr "Habilitar"
+
+#: accounts/templates/manage_users.html:36
+msgid "Disable"
+msgstr "Deshabilitar"
+
+#: accounts/templates/manage_users.html:40
+msgid "Staff"
+msgstr ""
+
+#: accounts/templates/manage_users.html:42
+msgid "Remove Staff"
+msgstr "Eliminar Staff"
+
+#: accounts/templates/manage_users.html:52
+msgid "Django Administrator"
+msgstr "Administrador Django"
+
+#: accounts/templates/password_change.html:10 polls/templates/base.html:67
+msgid "Change Password"
+msgstr "Cambiar contraseña"
+
+#: accounts/templates/password_change_done.html:9
+msgid "Password Changed"
+msgstr "Contraseña cambiada"
+
+#: accounts/templates/password_change_done.html:12
+msgid "Your password has been changed"
+msgstr "Tu contraseña ha sido cambiada"
+
+#: accounts/templates/password_reset/password_reset.html:10
+msgid "Reset Password"
+msgstr "Restablecer contraseña"
+
+#: accounts/templates/password_reset/password_reset_complete.html:10
+#: accounts/templates/password_reset/password_reset_done.html:10
+msgid "Password Reset"
+msgstr "Contraseña restablecida"
+
+#: accounts/templates/password_reset/password_reset_complete.html:13
+msgid "Your password has been set. You can now"
+msgstr "Tu contraseña ha sido establecida. Ahora puedes"
+
+#: accounts/templates/password_reset/password_reset_confirm.html:10
+msgid "Confirm Password"
+msgstr "Confirmar contraseña"
+
+#: accounts/templates/password_reset/password_reset_done.html:13
+msgid ""
+"We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr ""
+"Te hemos enviado instrucciones para establecer tu contraseña, si existe una "
+"cuenta con el correo electrónico que has introducido. Deberías recibirlas "
+"pronto."
+
+#: accounts/templates/password_reset/password_reset_done.html:14
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+"Si no recibes un correo electrónico, asegúrate de haber introducido la "
+"dirección con la que te registraste y comprueba tu carpeta de spam."
+
+#: config/settings/common.py:75 config/settings/oldsettings.py:155
+msgid "English"
+msgstr ""
+
+#: config/settings/common.py:76 config/settings/oldsettings.py:156
+msgid "Español"
+msgstr ""
+
+#: config/settings/common.py:77 config/settings/oldsettings.py:157
+msgid "Français"
+msgstr ""
+
+#: polls/templates/base.html:27
+msgid "Home"
+msgstr "Inicio"
+
+#: polls/templates/base.html:30
+msgid "Tables"
+msgstr "Tablas"
+
+#: polls/templates/base.html:41
+msgid "Telecommands"
+msgstr "Telecomandos"
+
+#: polls/templates/base.html:44
+msgid "Create Telecommand"
+msgstr "Crear Telecomando"
+
 #: polls/templates/base.html:45
+msgid "Update Telecommand"
+msgstr "Modificar Telecomando"
+
+#: polls/templates/base.html:46
+msgid "Delete Telecommand"
+msgstr "Borrar Telecomando"
+
+#: polls/templates/base.html:49 polls/templates/create_models.html:13
+#: polls/templates/download_tables.html:13
+msgid "Create Models"
+msgstr "Crear modelos"
+
+#: polls/templates/base.html:50
+msgid "Send Data"
+msgstr "Insertar Datos"
+
+#: polls/templates/base.html:51 polls/templates/download_tables.html:24
+msgid "Download Tables"
+msgstr "Descargar Tablas"
+
+#: polls/templates/base.html:56
 msgid "My Account"
 msgstr "Mi cuenta"
 
-#: polls/templates/base.html:49
+#: polls/templates/base.html:60
 msgid "User"
 msgstr "Usuario"
 
-#: polls/templates/base.html:50
+#: polls/templates/base.html:61
 msgid "Email"
 msgstr "Correo electrónico"
 
-#: polls/templates/base.html:54
+#: polls/templates/base.html:65
 msgid "Manage Users"
 msgstr "Administrar usuarios"
-
-#: polls/templates/base.html:56
-msgid "Change Password"
-msgstr "Cambiar contraseña"
 
 #: polls/templates/borrar_datos.html:10
 msgid "Delete data from table:"
@@ -91,6 +194,35 @@ msgstr "Introduzca el Valor: "
 msgid "Delete"
 msgstr "Borrar"
 
+#: polls/templates/create_models.html:24
+msgid "Create data models"
+msgstr "Crear modelos de datos"
+
+#: polls/templates/create_models.html:25
+msgid "Drag and drop ASN Files here or click to select:"
+msgstr "Arrastre y suelte los archivos ASN aquí o haga clic para seleccionar:"
+
+#: polls/templates/create_models.html:27 polls/templates/send_data.html:27
+msgid "Drag files here"
+msgstr "Arrastre los archivos aquí"
+
+#: polls/templates/create_models.html:33
+msgid "Mark the telecommand models:"
+msgstr "Marcar los modelos de telecomando:"
+
+#: polls/templates/create_models.html:41 polls/templates/create_models.html:137
+#: polls/templates/send_data.html:40 polls/templates/send_data.html:129
+msgid "No files"
+msgstr "No hay archivos"
+
+#: polls/templates/create_models.html:110
+msgid "Only .asn files are allowed:"
+msgstr "Solo se permiten archivos .asn:"
+
+#: polls/templates/create_models.html:115
+msgid "File size exceeds 1 MB limit for file:"
+msgstr "El tamaño del archivo supera el límite de 1 MB para el archivo:"
+
 #: polls/templates/delete.html:12
 msgid "Delete commands: "
 msgstr "Borrar telecomandos: "
@@ -103,23 +235,37 @@ msgstr "Selecciona la tabla"
 msgid "Select"
 msgstr "Seleccionar"
 
+#: polls/templates/download_tables.html:26
+msgid "Mark the tables to download:"
+msgstr "Marcar las tablas a descargar:"
+
+#: polls/templates/download_tables.html:48
+msgid "Download"
+msgstr "Descargar"
+
 #: polls/templates/index.html:13
 msgid "Index of the AUTO-GS"
 msgstr "Índice del AUTO-GS"
 
-#: polls/templates/index.html:20
+#: polls/templates/index.html:21
 msgid "List of tables"
 msgstr "Lista de tablas"
+
+#: polls/templates/index.html:28
+msgid "No tables"
+msgstr "No hay tablas"
+
+#: polls/templates/index.html:30
+msgid "Create a new table"
+msgstr "Crear una nueva tabla"
 
 #: polls/templates/modificar_tabla.html:11
 msgid "Modify table"
 msgstr "Modificar tabla"
 
 #: polls/templates/modificar_tabla.html:16
-#, fuzzy
-#| msgid "Modify table"
 msgid "Modify table: "
-msgstr "Modificar tabla"
+msgstr "Modificar tabla: "
 
 #: polls/templates/modificar_tabla.html:19
 msgid "Select the row you want to modify: "
@@ -132,6 +278,26 @@ msgstr "Selecciona la columna y escribe el valor que quieres modificar: "
 #: polls/templates/modificar_tabla.html:43
 msgid "Modify"
 msgstr "Modificar"
+
+#: polls/templates/send_data.html:13 polls/templates/send_data.html:24
+msgid "Send data"
+msgstr "Enviar datos"
+
+#: polls/templates/send_data.html:25
+msgid "Drag and drop CSV Files here or click to select:"
+msgstr "Arrastre y suelte los archivos CSV aquí o haga clic para seleccionar:"
+
+#: polls/templates/send_data.html:33
+msgid "Files to send:"
+msgstr "Archivos a enviar:"
+
+#: polls/templates/send_data.html:105
+msgid "Only .csv files are allowed:"
+msgstr "Solo se permiten archivos .csv:"
+
+#: polls/templates/send_data.html:110
+msgid "File size exceeds 10 MB limit for file:"
+msgstr "El tamaño del archivo supera el límite de 10 MB para el archivo:"
 
 #: polls/templates/tabla.html:11 polls/templates/tabla.html:17
 msgid "Table: "
@@ -162,26 +328,20 @@ msgid "Bar Chart"
 msgstr "Gráfico de barras"
 
 #: polls/templates/telecomando.html:11
-#, fuzzy
-#| msgid "Create Command"
-msgid "Create Commands"
-msgstr "Crear Telecomando"
+msgid "Create Telecommands"
+msgstr "Crear Telecomandos"
 
 #: polls/templates/telecomando.html:19
 msgid "Insert Data"
 msgstr "Insertar Datos"
 
-#: polls/templates/telecomando.html:27
-msgid "Submit"
-msgstr "Enviar"
-
 #: polls/templates/update.html:11
+#, fuzzy
+#| msgid "Modify Telecommands"
 msgid "Modify Commands"
 msgstr "Modificar Telecomandos"
 
 #: polls/templates/update.html:17
-#, fuzzy
-#| msgid "Select the table to modify"
 msgid "Select the table to Modify"
 msgstr "Selecciona la tabla a modificar"
 

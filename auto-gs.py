@@ -54,12 +54,17 @@ def create_deployment(replicas, rf):
     print("Creating network policies...")
 
     # Generate PersistentVolumes
+    run_command("kubectl apply -f DeployFiles/static-pv.yaml")
+    print("Creating static files persistent volume...")
+
     with open('DeployFiles/cassandra-pv-template.yaml', 'r') as f:
         cassandra_pv_template = f.read()
 
     for i in range(replicas):
         pv = cassandra_pv_template.replace('${ID}', str(i)).replace('${NODE}', node_array[i])
         run_command(f"echo '{pv}' | kubectl apply -f -")
+        
+    print("Creating Cassandra persistent volumes...")
 
     # Generate StatefulSet and Service
     with open('DeployFiles/cassandra-statefulset-template.yaml', 'r') as f:
@@ -99,6 +104,11 @@ def create_deployment(replicas, rf):
 
     # Deploy the asn1scc service
     run_command("kubectl apply -f DeployFiles/asn1scc.yaml")
+    print("Deploying asn1scc service...")
+
+    # Create nginx service
+    run_command("kubectl apply -f DeployFiles/nginx.yaml")
+    print("Deploying nginx service...")
 
 def create_keyspace(rf):
     """Create the Cassandra keyspace with the given replication factor."""
@@ -121,7 +131,7 @@ def create_keyspace(rf):
             print(f"Error: Failed to create keyspace 'tfm' within 2 minutes. Last error: {stderr}")
             sys.exit(1)
         print("Retrying to create keyspace...")
-        time.sleep(5)
+        time.sleep(10)
 
 def copy_to_pod(files, pod_prefix, dest_dir):
     pod, _, _ = run_command(f"kubectl get pods -l app={pod_prefix} -o jsonpath='{{.items[0].metadata.name}}'")

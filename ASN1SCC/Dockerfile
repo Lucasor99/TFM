@@ -16,6 +16,8 @@ RUN pip install cassandra-csv
 
 COPY requirements.txt /tmp/
 RUN pip3 install -r /tmp/requirements.txt
+Expose 5000
 
 WORKDIR /dmt/
-CMD ["python3", "watchdog_script.py"]
+
+CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:5000", "api:app"]

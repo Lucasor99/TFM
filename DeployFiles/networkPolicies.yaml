@@ -115,6 +115,12 @@ spec:
     - podSelector:
         matchLabels:
           app: mysql
+    - podSelector:
+        matchLabels:
+          app: asn1scc
+    - podSelector:
+        matchLabels:
+          app: nginx
   egress:
   - to:
     - podSelector:
@@ -123,6 +129,12 @@ spec:
     - podSelector:
         matchLabels:
           app: mysql
+    - podSelector:
+        matchLabels:
+          app: asn1scc
+    - podSelector:
+        matchLabels:
+          app: nginx
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -141,8 +153,42 @@ spec:
     - podSelector:
         matchLabels:
           app: cassandra
+    - podSelector:
+        matchLabels:
+          app: web
   egress:
   - to:
     - podSelector:
         matchLabels:
           app: cassandra
+    - podSelector:
+        matchLabels:
+          app: web
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-nginx
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: nginx
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: web
+    ports:
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 443
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: web

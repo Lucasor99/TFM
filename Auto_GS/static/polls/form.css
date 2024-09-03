@@ -1,0 +1,81 @@
+.file-list {
+    margin-top: 2px;
+    display: grid;
+    justify-content: center;
+}
+.file-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.file-item input[type="checkbox"] {
+    margin-right: 10px;
+}
+.file-item label {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.check-item {
+    margin-left: 20px;
+}
+
+.file-list a {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: rgb(148, 148, 148) !important;
+    height: 100px;
+}
+.file-item button {
+    margin-top: 10px;
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    color: red;
+    cursor: pointer;
+}
+.drop-zone {
+    border: 2px dashed #007bff;
+    padding: 40px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+.drop-zone:hover {
+    background-color: #e2e6ea;
+}
+.drop-zone p {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #007bff;
+}
+.error {
+    color: red;
+    margin-top: 10px;
+}
+#infoMessage {
+    display: none;
+}
+
+.progress-container {
+    height: 20px;
+    display: block;
+    visibility: hidden; 
+    margin-bottom: 10px;
+    position: relative;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+}
+
+.loading-bar {
+    width: 0;
+    height: 100%;
+    background-color: #007bff;
+    border-radius: 20px;
+    transition: width 1s ease;
+    position: relative;
+
+}
+

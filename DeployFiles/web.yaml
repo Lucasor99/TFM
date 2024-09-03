@@ -27,11 +27,28 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: MYSQL_ROOT_PASSWORD
-          command: ["/bin/sh", "-c", "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"]
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: DJANGO_SECRET_KEY
+            - name: DJANGO_SETTINGS_MODULE
+              value: "config.settings.prod"
+            - name: API_URL
+              value: "http://asn1scc:5000"
+          command: ["/bin/sh", "-c", "python3 manage.py collectstatic --noinput && python3 manage.py migrate && gunicorn -w 2 -b 0.0.0.0:8000 config.wsgi:application"]
           ports:
             - containerPort: 8000
-          securityContext:
-            runAsUser: 0
+          # securityContext:
+          #   runAsUser: 0
+          volumeMounts:
+            - name: static-storage
+              mountPath: /staticfiles
+      volumes:
+        - name: static-storage
+          persistentVolumeClaim:
+            claimName: staticfiles-pvc
+
 ---
 apiVersion: v1
 kind: Service
@@ -41,11 +58,11 @@ metadata:
     app: web
     service: web
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: web
   ports:
     - port: 8000
       name: http
       targetPort: 8000
-      nodePort: 30000
+      #nodePort: 30000

@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template import loader
 from django.contrib.auth.decorators import login_required
@@ -7,16 +7,18 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import redirect
 from django.utils.translation import activate
 from django.conf import settings
+import requests.exceptions
 
-from Auto_GS.cassandra_conection import get_cassandra_session
+from config.cassandra_conection import get_cassandra_session
 from .models import *
 
 from .utilities.functions import insert_data, create_tree_view, select_by, update_data, delete_data
+from datetime import datetime
 
-import json, random
+import json, random, requests
+import os
 
-
-
+api_url = os.environ.get('API_URL', "http://localhost:5000")
 session = get_cassandra_session()
 
 def change_language(request):
@@ -191,6 +193,7 @@ def delete(request):
  # Imprimir el valor de item para depurar
     return render(request, "delete.html")
 
+@login_required
 @staff_member_required
 def borrar_datos(request):
     if 'tabla' in request.GET:
@@ -214,4 +217,153 @@ def borrar_datos(request):
     else:
         # Manejar el caso donde no se seleccionó ninguna tabla
         return HttpResponse("No se seleccionó ninguna tabla.")
+    
+@login_required
+@staff_member_required
+def create_models(request):
+    if request.method == 'POST':
+        # Obtén el valor de modulesTelecommand como una cadena de texto
+        modules_telecommand_str = request.POST.get('modulesTelecommand', '')
+        modules_telecommand_list = modules_telecommand_str.split(',')
+        print(modules_telecommand_list)
+        asn_files = request.FILES.getlist('asn_files')
+        print(asn_files)
+
+        if not asn_files:
+            return render(request, 'create_models.html', {'error_message': 'No files uploaded.'})
+
+        # Validar tamaños de archivos
+        MAX_FILE_SIZE = 1 * 1024 * 1024  # 1 MB
+        for file in asn_files:
+            if file.size > MAX_FILE_SIZE:
+                return render(request, 'create_models.html', {'error_message': f'File size exceeds 1 MB limit: {file.name}'})
+
+        # Preparar los datos y archivos para enviar a la API Flask
+        files = [('asn_files', (file.name, file.read(), file.content_type)) for file in asn_files]
+        data = {
+            'modulesTelecommand': ','.join(modules_telecommand_list),
+            'keyspace': "tfm",
+            'contact_points': "cassandra",
+            'clusterPort': 9042
+        }
+        
+        # Enviar solicitud POST con archivos y datos
+        try:
+            response = requests.post( api_url + "/create_models", data=data, files=files)
+            response.raise_for_status()  # Lanza excepción para errores HTTP
+            response_data = response.json()
+
+            if response_data.get('error')!='':
+                return render(request, 'create_models.html', {'error_message': f'Error: {response_data.get("error")}'})
+            else:
+                return render(request, 'create_models.html', {'success_message': 'Archivos cargados correctamente'})
+
+        except requests.exceptions.RequestException as e:
+            return render(request, 'create_models.html', {'error_message': 'Error al conectar con el servicio de ASN1SCC'})
+        
+
+    return render(request, 'create_models.html')
+
+login_required
+@staff_member_required
+def send_data(request):
+    if request.method == 'POST':
+
+        csv_files = request.FILES.getlist('csv_files')
+
+        if not csv_files:
+            return render(request, 'send_data.html', {'error_message': 'No files uploaded.'})
+    
+        # Validar tamaños de archivos
+        MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+        for file in csv_files:
+            if file.size > MAX_FILE_SIZE:
+                return JsonResponse({'error': f'File size exceeds 10 MB limit: {file.name}'}, status=400)
+
+        # Preparar los datos y archivos para enviar a la API Flask
+        files = [('csv_files', (file.name, file.read(), file.content_type)) for file in csv_files]
+        data = {
+            'keyspace': "tfm",
+            'contact_points': "cassandra",
+            'clusterPort': 9042
+        }
+        
+        # Enviar solicitud POST con archivos y datos
+        try:
+            response = requests.post( api_url + "/read_tmtc", data=data, files=files)
+            response.raise_for_status()  # Lanza excepción para errores HTTP
+            response_data = response.json()
+            
+            if response_data.get('error')!='':
+                return render(request, 'send_data.html', {'error_message': f'Error: {response_data.get("error")}'})
+            else:
+                return render(request, 'send_data.html', {'success_message': 'Archivos cargados correctamente'})
+
+        except requests.exceptions.RequestException as e:
+            return render(request, 'send_data.html', {'error_message': f'Error al conectar con el servicio de ASN1SCC'})
+        
+
+    return render(request, 'send_data.html')
+
+@login_required
+@staff_member_required
+def download_tables(request):
+    if request.method == 'POST':
+        # Obtén el valor de tablenames como una cadena de texto
+        tablenames_list = request.POST.get('tableList', '')
+        
+        if not tablenames_list:
+            return render(request, 'download_tables.html', {'error_message': 'No files selected.'})
+        
+        # Preparar los datos para enviar a la API Flask
+        data = {
+            'tablenames': tablenames_list,
+            'keyspace': "tfm",
+            'contact_points': "cassandra",
+            'clusterPort': 9042
+        }
+        
+        # Enviar solicitud POST con archivos y datos
+        try:
+            response = requests.post( api_url + "/createCSV", data=data)
+            response.raise_for_status()  # Lanza excepción para errores HTTP
+            response_data = response.json()
+            
+            # Descargar los archivos desde las URLs proporcionadas en la respuesta
+            files = []
+            files = response_data.get('files', [])
+            if not files:
+                return render(request, 'download_tables.html', {'error_message': f'No files returned from the API' })
+
+
+            # Crea un archivo zip con todos los archivos CSV y devuélvelo como respuesta
+            from io import BytesIO
+            from zipfile import ZipFile
+
+            zip_buffer = BytesIO()
+            with ZipFile(zip_buffer, 'w') as zip_file:
+                for file_info in files:
+                    file_url = file_info.get('url')
+                    if file_url:
+                        file_name = file_info.get('filename')
+                        # Descargar el archivo CSV
+                        file_response = requests.get(api_url + file_url)
+                        file_response.raise_for_status()  # Lanza excepción para errores HTTP
+                        zip_file.writestr(file_name, file_response.content)
+            
+            zip_buffer.seek(0)
+            response = HttpResponse(zip_buffer, content_type='application/zip')
+            now = datetime.now()
+            timestamp = now.strftime("%Y-%m-%dT%H-%M-%S")
+            filename = f'tmtc_{timestamp}.zip'
+
+            response['Content-Disposition'] = f'attachment; filename={filename}'
+
+            return response
+
+        except requests.exceptions.RequestException as e:
+            return render(request, 'download_tables.html', {'error_message': f'Error al conectar con el servicio de ASN1SCC'})
+        
+
+    return render(request, 'download_tables.html')
     
