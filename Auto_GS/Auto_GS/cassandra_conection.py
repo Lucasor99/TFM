@@ -1,3 +1,4 @@
+# cassandra_conection.py
 from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
 from django.conf import settings
