@@ -25,7 +25,7 @@ python3 auto-gs.py -create 3 -rf 3
 - **`-rf n` (optional):** Specifies the replication factor for Cassandra. If not provided, a default value of 3 is used.
 
 >[!IMPORTANT]
->The replication factor must be set to a value greater than or equal to the number of replicas.
+>The replication factor must be set to a value lower than the number of Cassandra nodes.
 
 ## Creating and Inserting Data
 
