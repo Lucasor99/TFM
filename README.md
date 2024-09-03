@@ -26,7 +26,7 @@ python3 auto-gs.py -create 3 -rf 3
 
 >[!IMPORTANT]
 >The number of Cassandra pods must be equal or lower than the number of Kubernetes nodes.
->
+
 >[!IMPORTANT]
 >The replication factor must be set to a value lower than the number of Cassandra nodes.
 
