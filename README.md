@@ -104,3 +104,4 @@ The ASN.1 compiler is used to create database tables and insert data into Cassan
 
    Generates a CSV file from the specified tables, which can be sent as a telecommand.
 
+For more information go to [Compiler Usage Guide](CompilerUsageGuide.md).
