@@ -30,9 +30,12 @@ python3 auto-gs.py -create 3 -rf 3
 >[!IMPORTANT]
 >The replication factor must be set to a value lower than the number of Cassandra nodes.
 
-## Creating and Inserting Data
+## Creating Tables and Inserting Data
 
-After deployment, data can be managed either through the web application or directly by accessing the containers. Here are the key commands for direct data management:
+After deployment, data can be managed either through the web application or directly by accessing the containers.
+
+
+### Commands for direct management
 
 - **Copy ASN.1 Files:**
 
@@ -75,7 +78,7 @@ The ASN.1 compiler is used to create database tables and insert data into Cassan
    ```bash
    python3 /src/asn2dataModel.py -modulesTelecommand "DataTypes-Telecommands" -keyspace tfm -contact_points cassandra -clusterPort 9042 ./filesASN1 DataTypesTelecommands.asn DataTypes-Telemetries.asn
    ```
-  >[!NOTE]
+  >[!TIP]
   >The `-modulesTelecommand` parameter is optional and can be omitted if the telecommand data is not required.
   
    This command compiles ASN.1 files into a data model, creating tables in the specified keyspace.
@@ -93,7 +96,7 @@ The ASN.1 compiler is used to create database tables and insert data into Cassan
    ```bash
    python3 /src/ReadWriteTMTC/createCSV.py ./filesTelecommand "datatypes_telecommands" -keyspace tfm -contact_points cassandra -clusterPort 9042 -sendTelecommands True
    ```
-  >[!NOTE]
+  >[!TIP]
   >The `-sendTelecommands` parameter is optional by default is set to `False`.
 
    Generates a CSV file from the specified tables, which can be sent as a telecommand.
