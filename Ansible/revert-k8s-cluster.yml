@@ -1,0 +1,104 @@
+# - hosts: master
+#   become: true
+#   tasks:
+#     - name: Remove Kubernetes admin config
+#       ansible.builtin.file:
+#         path: /etc/kubernetes/admin.conf
+#         state: absent
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Reset Kubernetes cluster
+      ansible.builtin.command: kubeadm reset -f
+      ignore_errors: yes
+
+    - name: Unmark held packages
+      ansible.builtin.shell: |
+        apt-mark unhold kubeadm kubectl kubelet || true
+        apt-get update -y
+      args:
+        warn: false
+      ignore_errors: yes
+
+    - name: Remove Kubernetes components
+      ansible.builtin.apt:
+        name:
+          - kubeadm
+          - kubectl
+          - kubelet
+        state: absent
+        purge: yes
+        autoremove: yes
+      ignore_errors: yes
+
+# - hosts: all
+#   become: true
+#   tasks:
+#     - name: Remove Docker repository
+#       ansible.builtin.apt_repository:
+#         repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+#         state: absent
+
+#     - name: Remove Docker repository key
+#       ansible.builtin.file:
+#         path: /usr/share/keyrings/docker-archive-keyring.gpg
+#         state: absent
+
+#     - name: Uninstall containerd
+#       ansible.builtin.apt:
+#         name: containerd.io
+#         state: absent
+
+#     - name: Remove Docker
+#       ansible.builtin.apt:
+#         name: docker-ce
+#         state: absent
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Restore swap settings
+      ansible.builtin.shell: |
+        sed -i '/ swap / s/^#//g' /etc/fstab
+        swapon -a
+      ignore_errors: yes
+
+    - name: Remove Kubernetes sysctl settings
+      ansible.builtin.file:
+        path: /etc/sysctl.d/k8s.conf
+        state: absent
+
+    - name: Remove kernel module settings
+      ansible.builtin.file:
+        path: /etc/modules-load.d/k8s.conf
+        state: absent
+
+    - name: Remove Kubernetes and related ports from firewall
+      ansible.builtin.command: >
+        ufw delete allow "{{ item }}/tcp"
+      loop:
+        - 6443
+        - 2379:2380
+        - 10250
+        - 10259
+        - 10257
+        - 30000:32767
+
+    - name: Remove Calico ports from firewall
+      ansible.builtin.command: >
+        ufw delete allow "{{ item.0 }}/{{ item.1 }}"
+      loop:
+        - [179, 'tcp']
+        - [4789, 'udp']
+        - [5473, 'tcp']
+        - [51820, 'udp']
+        - [51821, 'udp']
+
+    - name: Remove Cassandra ports from firewall
+      ansible.builtin.command: >
+        ufw delete allow "{{ item }}/tcp"
+      loop:
+        - 7000
+        - 7001
+        - 7199

@@ -53,6 +53,10 @@ spec:
       labels:
         app: cassandra
     spec:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
         - name: cassandra
           image: cassandra:latest

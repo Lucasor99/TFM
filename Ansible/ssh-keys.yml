@@ -7,14 +7,14 @@
         path: /home/{{ ansible_user }}/.ssh
         state: directory
         mode: '0700'
-        owner: {{ ansible_user }}
-        group: {{ ansible_user }}
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
     
     - name: Copy the SSH public key to authorized_keys
       copy:
-        src: /path/to/local/id_rsa.pub  # Ruta al archivo de clave pública local
+        src:  /home/{{ ansible_user }}/.ssh/id_rsa.pub  # Ruta al archivo de clave pública local
         dest: /home/{{ ansible_user }}/.ssh/authorized_keys
         mode: '0600'
-        owner: {{ ansible_user }}
-        group: {{ ansible_user }}
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
       # Puede agregar `backup: yes` para crear una copia de seguridad antes de sobrescribir.

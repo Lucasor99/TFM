@@ -62,7 +62,7 @@ spec:
   selector:
     app: web
   ports:
-    - port: 8000
+    - port: 80
       name: http
       targetPort: 8000
       #nodePort: 30000
