@@ -96,10 +96,6 @@ kubectl get nodes -o wide
 
 You should see the master and worker nodes listed, indicating the cluster is running successfully.
 
----
-
-This section provides a streamlined process for setting up Ansible, generating SSH keys, distributing them, and creating a Kubernetes cluster.
-
 ## Application Deployment in Kubernetes
 
 To deploy the application within a Kubernetes cluster, use the `auto-gs.py` script. This script automates the deployment process, ensuring that all components are set up correctly. The primary deployment command is:
