@@ -78,6 +78,9 @@ Run the following playbook (`k8s-cluster.yml`) to install and configure the Kube
 ansible-playbook -i hosts.ini k8s-cluster.yml --ask-become-pass
 ```
 
+>[!NOTE]
+> The --ask-become-pass option is used to avoid entering the sudo password for each command.
+
 This playbook will:
 - Allow necessary ports through the firewall
 - Install Docker and containerd
