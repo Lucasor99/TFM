@@ -14,16 +14,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-    'cassandra': {
-        'ENGINE': 'django_cassandra_engine',
+    }
+}
+CASSANDRA= {
         'NAME': 'tfm',
         'USER': os.getenv('CASSANDRA_USER', 'cassandra'),  
         'PASSWORD': os.getenv('CASSANDRA_PASSWORD'),        
         'HOST': 'localhost',
         'PORT': '9042',
         'contact_points': ['localhost'],
-    }
 }
 
 # Otros ajustes específicos de desarrollo

@@ -20,18 +20,18 @@ DATABASES = {
         'HOST': 'mysql',
         #'HOST': 'mysql.default.svc.cluster.local',
         'PORT': '3306',
-    },
-
-    'cassandra': {
-        'ENGINE': 'django_cassandra_engine',
-        'NAME': 'tfm',
-        'USER': os.getenv('CASSANDRA_USER', 'cassandra'),  
-        'PASSWORD': os.getenv('CASSANDRA_PASSWORD'),        
-        'HOST': 'cassandra',
-        'PORT': '9042',
-        'contact_points': ['cassandra'],
     }
 }
+
+CASSANDRA= {
+    'NAME': 'tfm',
+    'USER': os.getenv('CASSANDRA_USER', 'cassandra'),  
+    'PASSWORD': os.getenv('CASSANDRA_PASSWORD'),        
+    'HOST': 'cassandra',
+    'PORT': '9042',
+    'contact_points': ['cassandra'],
+}
+
 
 # Pasword reset (Definir dominio y correo si se utiliza)
 
@@ -49,8 +49,8 @@ DEFAULT_FROM_EMAIL = 'webmaster@example.com'
 #SECURE_CROSS_ORIGIN_OPENER_POLICY = None 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "default-src 'self'; img-src 'self' https://*; connect-src 'self' http://asn1scc:5000;"
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
 SECURE_BROWSER_XSS_FILTER = False
 SECURE_CONTENT_TYPE_NOSNIFF = False

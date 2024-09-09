@@ -31,11 +31,14 @@ def change_language(request):
 @login_required
 def index(request):
 
+    if session is None:
+        return render(request, "error.html", {'error_message': 'Conection with Cassandra database failed'})
+
     try:
         select_query = "describe tables"
         result = session.execute(select_query)
 
-        print(result.current_rows)
+        #print(result.current_rows)
 
         columns = result.column_names
         rows = result.all()
@@ -51,12 +54,12 @@ def index(request):
     except Exception as e:
         print(f"Ha ocurrido un error: {str(e)}")
         # Maneja el error adecuadamente, puedes regresar un JsonResponse si lo prefieres
-        return render(request, "error.html", {'error_message': 'Error en la consulta a la base de datos.'})
+        return render(request, "error.html", {'error_message': 'Error in query to Cassandra database.'})
 
 @login_required
 def tabla(request, item=None):
     try:
-        print("Valor de item:", item)  # Imprimir el valor de item para depurar
+        #print("Valor de item:", item)  # Imprimir el valor de item para depurar
 
         if item:
             # Realizar la consulta a Cassandra
@@ -86,10 +89,10 @@ def tabla(request, item=None):
 
         if 'columna' in request.GET and 'valor' in request.GET:
             columna = request.GET['columna']
-            print(columna)
+            #print(columna)
             try:
                 valor = int(request.GET['valor'])
-                print(valor)
+                #print(valor)
             except ValueError:
                 valor = None
 
@@ -107,15 +110,14 @@ def tabla(request, item=None):
     except Exception as e:
         print(f"Ha ocurrido un error: {str(e)}")
         # Maneja el error adecuadamente, puedes regresar un JsonResponse si lo prefieres
-        return render(request, "error.html", {'error_message': 'Error en la consulta a la base de datos.'})
+        return render(request, "error.html", {'error_message': 'Error in query to Cassandra database.'})
 
 
 @login_required
 @staff_member_required
 def telecomando(request):
-    success_message = "Los datos se han enviado correctamente a la base de datos."
-    error_message = "Ha ocurrido un error, compruebe que ha introducido los datos correctamente"
-
+    success_message = "Data has been successfully sent to Cassandra database."
+    error_message = "An error occurred, please check that you have entered the data correctly"
 
     try:
         # Realizar la consulta a Cassandra
@@ -147,7 +149,7 @@ def telecomando(request):
     except Exception as e:
         print(f"Ha ocurrido un error: {str(e)}")
         # Maneja el error adecuadamente, puedes regresar un JsonResponse si lo prefieres
-        return render(request, "error.html", {'error_message': 'Error en la consulta a la base de datos.'})
+        return render(request, "error.html", {'error_message': 'Error in query to Cassandra database.'})
 
 
 @login_required
@@ -175,7 +177,7 @@ def modificar_tabla(request):
                 new_value = int(request.POST['new_value'])
             except ValueError:
                 # Maneja el caso en el que los valores no puedan ser convertidos a enteros
-                return HttpResponse("Los valores no son correctos")
+                return HttpResponse("Values are not correct")
 
             update_data(tabla_seleccionada,column,value,new_column,new_value)
 
@@ -184,7 +186,7 @@ def modificar_tabla(request):
         return render(request, 'modificar_tabla.html', {'tabla_seleccionada': tabla_seleccionada, "columns" :columns})
     else:
         # Manejar el caso donde no se seleccionó ninguna tabla
-        return HttpResponse("No se seleccionó ninguna tabla.")
+        return HttpResponse("No table selected.")
 
 
 @login_required
@@ -209,14 +211,14 @@ def borrar_datos(request):
                 value = int(request.POST['value'])
             except ValueError:
                 # Maneja el caso en el que los valores no puedan ser convertidos a enteros
-                return HttpResponse("Los valores no son correctos")
+                return HttpResponse("Values are not correct")
         
             delete_data(tabla_seleccionada, column, value)
         
         return render(request, 'borrar_datos.html', { 'tabla_seleccionada': tabla_seleccionada, "columns" :columns})
     else:
         # Manejar el caso donde no se seleccionó ninguna tabla
-        return HttpResponse("No se seleccionó ninguna tabla.")
+        return HttpResponse("No table selected.")
     
 @login_required
 @staff_member_required
@@ -225,9 +227,9 @@ def create_models(request):
         # Obtén el valor de modulesTelecommand como una cadena de texto
         modules_telecommand_str = request.POST.get('modulesTelecommand', '')
         modules_telecommand_list = modules_telecommand_str.split(',')
-        print(modules_telecommand_list)
+        #print(modules_telecommand_list)
         asn_files = request.FILES.getlist('asn_files')
-        print(asn_files)
+        #print(asn_files)
 
         if not asn_files:
             return render(request, 'create_models.html', {'error_message': 'No files uploaded.'})
@@ -256,10 +258,10 @@ def create_models(request):
             if response_data.get('error')!='':
                 return render(request, 'create_models.html', {'error_message': f'Error: {response_data.get("error")}'})
             else:
-                return render(request, 'create_models.html', {'success_message': 'Archivos cargados correctamente'})
+                return render(request, 'create_models.html', {'success_message': 'Files loaded successfully'})
 
         except requests.exceptions.RequestException as e:
-            return render(request, 'create_models.html', {'error_message': 'Error al conectar con el servicio de ASN1SCC'})
+            return render(request, 'create_models.html', {'error_message': 'Error connecting to ASN1SCC service'})
         
 
     return render(request, 'create_models.html')
@@ -297,10 +299,10 @@ def send_data(request):
             if response_data.get('error')!='':
                 return render(request, 'send_data.html', {'error_message': f'Error: {response_data.get("error")}'})
             else:
-                return render(request, 'send_data.html', {'success_message': 'Archivos cargados correctamente'})
+                return render(request, 'send_data.html', {'success_message': 'Files loaded successfully'})
 
         except requests.exceptions.RequestException as e:
-            return render(request, 'send_data.html', {'error_message': f'Error al conectar con el servicio de ASN1SCC'})
+            return render(request, 'send_data.html', {'error_message': f'Error connecting to ASN1SCC service'})
         
 
     return render(request, 'send_data.html')
@@ -362,7 +364,7 @@ def download_tables(request):
             return response
 
         except requests.exceptions.RequestException as e:
-            return render(request, 'download_tables.html', {'error_message': f'Error al conectar con el servicio de ASN1SCC'})
+            return render(request, 'download_tables.html', {'error_message': f'Error connecting to ASN1SCC service'})
         
 
     return render(request, 'download_tables.html')

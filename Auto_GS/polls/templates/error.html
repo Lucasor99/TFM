@@ -1,3 +1,27 @@
-<div>
-    Error
-</div>
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<head>
+    {% load static i18n %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Index of the AUTO-GS" %}</title>
+    <link rel="stylesheet" href="{% static 'polls/tabla.css' %}">
+</head>
+
+<body>
+    <div>
+        <div class="container">
+            <h2>{% trans "Error" %}</h2>
+            <p>{{ error_message }}</p>
+        </div>
+    </div>
+</body>
+
+
+{% endblock %}

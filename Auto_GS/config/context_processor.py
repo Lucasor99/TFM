@@ -11,11 +11,14 @@ def user_info(request):
 
 def nav_items_processor(request):
     session = get_cassandra_session()
-
     nav_items = []
-    aux = session.execute("describe tables")
 
-    for row in aux:
-        nav_items.append(row.name)
+    if session is None:
+        return {'nav_items': []}
+    else:
+        aux = session.execute("describe tables")
 
-    return {'nav_items': nav_items}
+        for row in aux:
+            nav_items.append(row.name)
+
+        return {'nav_items': nav_items}
