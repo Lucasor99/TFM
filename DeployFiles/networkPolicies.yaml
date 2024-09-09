@@ -12,6 +12,47 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
+  name: allow-cassandra-cluster
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandra
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: cassandra
+    ports:
+    - protocol: TCP
+      port: 9042
+    - protocol: TCP
+      port: 7000
+    - protocol: TCP
+      port: 7001
+    - protocol: TCP
+      port: 7199
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: cassandra
+    ports:
+    - protocol: TCP
+      port: 9042
+    - protocol: TCP
+      port: 7000
+    - protocol: TCP
+      port: 7001
+    - protocol: TCP
+      port: 7199
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
   name: allow-cassandra
   namespace: default
 spec:
