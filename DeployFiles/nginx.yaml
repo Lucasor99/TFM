@@ -80,11 +80,13 @@ spec:
 #     #nginx.ingress.kubernetes.io/rewrite-target: /
 #     kubernetes.io/ingress.class: "nginx"
 #     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+#     nginx.ingress.kubernetes.io/whitelist-source-ranges: 192.168.0.0/16
 # spec:
 #   ingressClassName: nginx
 #   tls:
 #   - hosts:
 #    - autogs.example.com
+#    - api.autogs.example.com
 #   secretName: web-tls
 #   rules:
 #   - host: autogs.example.com
