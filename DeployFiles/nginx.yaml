@@ -99,6 +99,7 @@ spec:
 #             name: nginx
 #             port:
 #               number: 80
+# Eliminar para no hacer accesible la api desde fuera
   # - host: api.autogs.example.com
   #   http:
   #     paths:
