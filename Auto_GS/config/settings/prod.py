@@ -56,5 +56,5 @@ SECURE_BROWSER_XSS_FILTER = False
 SECURE_CONTENT_TYPE_NOSNIFF = False
 
 # Añadir tu url de producción aquí
-CSRF_TRUSTED_ORIGINS = ['https://*'] # Cambia esto por tu dirección de producción ejemplo: ['https://example.com']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:30000'] # Cambia esto por tu dirección de producción ejemplo: ['https://example.com']
 
