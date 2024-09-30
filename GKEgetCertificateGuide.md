@@ -15,12 +15,9 @@ kubectl get svc --namespace=ingress-nginx
 ```
 
 ```bash
-//kubectl apply -f DeployFiles/web-ingress.yaml
-```
-
- ```bash
  kubectl  create namespace cert-manager
 ```
+
 ```bash
   kubectl   apply   -f   https://github.com/cert-manager/cert-manager/releases/download/v1.15.2/cert-manager.yaml
 ```
