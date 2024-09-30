@@ -1,223 +1,224 @@
-# - hosts: all
-#   become: true
-#   tasks:
-#     - name: Allow OpenSSH through firewall
-#       ansible.builtin.ufw:
-#         rule: allow
-#         name: OpenSSH
+- hosts: all
+  become: true
+  tasks:
+    - name: Allow OpenSSH through firewall
+      ansible.builtin.ufw:
+        rule: allow
+        name: OpenSSH
 
-#     - name: Enable the firewall
-#       ansible.builtin.ufw:
-#         state: enabled
-#         logging: 'on'
+    - name: Enable the firewall
+      ansible.builtin.ufw:
+        state: enabled
+        logging: 'on'
 
-#     - name: Allow Kubernetes ports
-#       ansible.builtin.ufw:
-#         rule: allow
-#         port: "{{ item }}"
-#         proto: tcp
-#       loop:
-#         - '6443'
-#         - 2379:2380
-#         - '10250'
-#         - '10259'
-#         - '10257'
-#         - 30000:32767
+    - name: Allow Kubernetes ports
+      ansible.builtin.ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop:
+        - '6443'
+        - 2379:2380
+        - '10250'
+        - '10259'
+        - '10257'
+        - 30000:32767
 
-#     - name: Allow Calico ports
-#       ansible.builtin.ufw:
-#         rule: allow
-#         port: "{{ item.0 }}"
-#         proto: "{{ item.1 }}"
-#       loop:
-#         - [179, 'tcp']
-#         - [4789, 'udp']
-#         - [5473, 'tcp']
-#         - [51820, 'udp']
-#         - [51821, 'udp']
+    - name: Allow Calico ports
+      ansible.builtin.ufw:
+        rule: allow
+        port: "{{ item.0 }}"
+        proto: "{{ item.1 }}"
+      loop:
+        - [179, 'tcp']
+        - [4789, 'udp']
+        - [5473, 'tcp']
+        - [51820, 'udp']
+        - [51821, 'udp']
 
-#     - name: Allow Cassandra ports
-#       ansible.builtin.ufw:
-#         rule: allow
-#         port: "{{ item }}"
-#         proto: tcp
-#       loop:
-#         - '7000'
-#         - '7001'
-#         - '7199'
+    - name: Allow Cassandra ports
+      ansible.builtin.ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop:
+        - '7000'
+        - '7001'
+        - '7199'
 
-#     - name: Ensure kernel modules are loaded
-#       ansible.builtin.shell: |
-#         modprobe overlay
-#         modprobe br_netfilter
-#       args:
-#         warn: false
+    - name: Ensure kernel modules are loaded
+      ansible.builtin.shell: |
+        modprobe overlay
+        modprobe br_netfilter
+      args:
+        warn: false
 
-#     - name: Add kernel modules to load at boot
-#       ansible.builtin.copy:
-#         dest: /etc/modules-load.d/k8s.conf
-#         content: |
-#           overlay
-#           br_netfilter
+    - name: Add kernel modules to load at boot
+      ansible.builtin.copy:
+        dest: /etc/modules-load.d/k8s.conf
+        content: |
+          overlay
+          br_netfilter
 
-#     - name: Set sysctl parameters for Kubernetes
-#       ansible.builtin.copy:
-#         dest: /etc/sysctl.d/k8s.conf
-#         content: |
-#           net.bridge.bridge-nf-call-iptables = 1
-#           net.bridge.bridge-nf-call-ip6tables = 1
-#           net.ipv4.ip_forward = 1
+    - name: Set sysctl parameters for Kubernetes
+      ansible.builtin.copy:
+        dest: /etc/sysctl.d/k8s.conf
+        content: |
+          net.bridge.bridge-nf-call-iptables = 1
+          net.bridge.bridge-nf-call-ip6tables = 1
+          net.ipv4.ip_forward = 1
 
-#     - name: Apply sysctl settings
-#       ansible.builtin.command: sysctl --system
+    - name: Apply sysctl settings
+      ansible.builtin.command: sysctl --system
 
-#     - name: Disable swap
-#       ansible.builtin.shell: sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+    - name: Disable swap
+      ansible.builtin.shell: sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
-#     - name: Turn off swap
-#       ansible.builtin.command: swapoff -a
+    - name: Turn off swap
+      ansible.builtin.command: swapoff -a
 
-# # - hosts: all
-# #   become: true
-# #   tasks:
-# #     - name: Install dependencies
-# #       ansible.builtin.apt:
-# #         name:
-# #           - apt-transport-https
-# #           - ca-certificates
-# #           - curl
-# #         state: present
-# #         update_cache: true
+- hosts: all
+  become: true
+  tasks:
 
-#     # - name: Add Docker repository key
-#     #   ansible.builtin.shell: |
-#     #     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-#     #   args:
-#     #     warn: false
+    # - name: Install dependencies
+    #   ansible.builtin.apt:
+    #     name:
+    #       - apt-transport-https
+    #       - ca-certificates
+    #       - curl
+    #     state: present
+    #     update_cache: true
 
-#     # - name: Add Docker repository
-#     #   ansible.builtin.apt_repository:
-#     #     repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+    # - name: Add Docker repository key
+    #   ansible.builtin.shell: |
+    #     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    #   args:
+    #     warn: false
 
-#     # - name: Install containerd
-#     #   ansible.builtin.apt:
-#     #     name: containerd.io
-#     #     state: present
+    # - name: Add Docker repository
+    #   ansible.builtin.apt_repository:
+    #     repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
 
-#     # - name: Configure containerd with SystemdCgroup
-#     #   ansible.builtin.shell: |
-#     #     mkdir -p /etc/containerd
-#     #     containerd config default | tee /etc/containerd/config.toml
-#     #     sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
-#     #   args:
-#     #     warn: false
+    - name: Install containerd
+      ansible.builtin.apt:
+        name: containerd.io
+        state: present
 
-#     # - name: Start and enable containerd
-#     #   ansible.builtin.systemd:
-#     #     name: containerd
-#     #     enabled: yes
-#     #     state: started
+    - name: Configure containerd with SystemdCgroup
+      ansible.builtin.shell: |
+        mkdir -p /etc/containerd
+        containerd config default | tee /etc/containerd/config.toml
+        sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+      args:
+        warn: false
 
-# - hosts: all
-#   become: true
-#   tasks:
-#     # - name: Add Kubernetes repository key
-#     #   ansible.builtin.shell: |
-#     #     curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-#     #   args:
-#     #     warn: false
+    - name: Start and enable containerd
+      ansible.builtin.systemd:
+        name: containerd
+        enabled: yes
+        state: started
 
-#     # - name: Add Kubernetes repository
-#     #   ansible.builtin.shell: |
-#     #     echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
-#     #   args:
-#     #     warn: false
+- hosts: all
+  become: true
+  tasks:
+    # - name: Add Kubernetes repository key
+    #   ansible.builtin.shell: |
+    #     curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    #   args:
+    #     warn: false
 
-#     - name: Install Kubernetes components
-#       ansible.builtin.apt:
-#         name:
-#           - kubelet
-#           - kubeadm
-#           - kubectl
-#         state: present
-#         update_cache: true
+    # - name: Add Kubernetes repository
+    #   ansible.builtin.shell: |
+    #     echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    #   args:
+    #     warn: false
 
-#     - name: Hold Kubernetes packages
-#       ansible.builtin.dpkg_selections:
-#         name: "{{ item }}"
-#         selection: hold
-#       loop:
-#         - kubelet
-#         - kubeadm
-#         - kubectl
+    - name: Install Kubernetes components
+      ansible.builtin.apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+        update_cache: true
 
-# - hosts: master
-#   become: true
-#   tasks:
+    - name: Hold Kubernetes packages
+      ansible.builtin.dpkg_selections:
+        name: "{{ item }}"
+        selection: hold
+      loop:
+        - kubelet
+        - kubeadm
+        - kubectl
 
-#     - name: Ensure br_netfilter is loaded
-#       ansible.builtin.modprobe:
-#         name: br_netfilter
+- hosts: master
+  become: true
+  tasks:
 
-#     - name: Check if br_netfilter is loaded
-#       ansible.builtin.shell: lsmod | grep br_netfilter
-#       register: br_netfilter_check
-#       ignore_errors: true
+    - name: Ensure br_netfilter is loaded
+      ansible.builtin.modprobe:
+        name: br_netfilter
 
-#     - name: Pull Kubernetes control plane images
-#       ansible.builtin.command: kubeadm config images pull
+    - name: Check if br_netfilter is loaded
+      ansible.builtin.shell: lsmod | grep br_netfilter
+      register: br_netfilter_check
+      ignore_errors: true
 
-#     - name: Initialize Kubernetes cluster
-#       ansible.builtin.command: >
-#         kubeadm init
-#         --pod-network-cidr=192.168.0.0/16
-#         --apiserver-advertise-address={{ ansible_default_ipv4.address }}
-#         --cri-socket=unix:///run/containerd/containerd.sock
-#       register: kubeadm_init
+    - name: Pull Kubernetes control plane images
+      ansible.builtin.command: kubeadm config images pull
 
-#     - name: Set up Kubernetes admin config
-#       ansible.builtin.shell: |
-#         mkdir -p $HOME/.kube
-#         cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
-#         chown $(id -u):$(id -g) $HOME/.kube/config
-#       args:
-#         executable: /bin/bash
-#       when: kubeadm_init.changed
+    - name: Initialize Kubernetes cluster
+      ansible.builtin.command: >
+        kubeadm init
+        --pod-network-cidr=192.168.0.0/16
+        --apiserver-advertise-address={{ ansible_default_ipv4.address }}
+        --cri-socket=unix:///run/containerd/containerd.sock
+      register: kubeadm_init
 
-#     - name: Retrieve kubeadm join command
-#       ansible.builtin.shell: |
-#         kubeadm token create --print-join-command
-#       register: kubeadm_join_command
-#       changed_when: false
+    - name: Set up Kubernetes admin config
+      ansible.builtin.shell: |
+        mkdir -p $HOME/.kube
+        cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
+        chown $(id -u):$(id -g) $HOME/.kube/config
+      args:
+        executable: /bin/bash
+      when: kubeadm_init.changed
 
-#     - name: Save kubeadm join 
-#       ansible.builtin.copy:
-#         dest: /etc/kubernetes/kubeadm_join_command
-#         content: "{{ kubeadm_join_command.stdout }}"
+    - name: Retrieve kubeadm join command
+      ansible.builtin.shell: |
+        kubeadm token create --print-join-command
+      register: kubeadm_join_command
+      changed_when: false
 
-#     - name: Debug kubeadm token and CA cert hash
-#       debug:
-#         msg: "Token: {{ kubeadm_join_command.stdout }}"
+    - name: Save kubeadm join 
+      ansible.builtin.copy:
+        dest: /etc/kubernetes/kubeadm_join_command
+        content: "{{ kubeadm_join_command.stdout }}"
+
+    - name: Debug kubeadm token and CA cert hash
+      debug:
+        msg: "Token: {{ kubeadm_join_command.stdout }}"
 
 
-# - hosts: workers
-#   become: true
-#   tasks:
-#     - name: Retrieve kubeadm join token from master
-#       ansible.builtin.fetch:
-#         src: /etc/kubernetes/kubeadm_join_command
-#         dest: /tmp/kubeadm_join_command
-#         flat: yes
-#       delegate_to: master
+- hosts: workers
+  become: true
+  tasks:
+    - name: Retrieve kubeadm join token from master
+      ansible.builtin.fetch:
+        src: /etc/kubernetes/kubeadm_join_command
+        dest: /tmp/kubeadm_join_command
+        flat: yes
+      delegate_to: master
 
-#     - name: Set kubeadm join token fact
-#       ansible.builtin.set_fact:
-#         kubeadm_join_command: "{{ lookup('file', '/tmp/kubeadm_join_command') | trim }}"
+    - name: Set kubeadm join token fact
+      ansible.builtin.set_fact:
+        kubeadm_join_command: "{{ lookup('file', '/tmp/kubeadm_join_command') | trim }}"
 
-#     - name: Join the Kubernetes cluster
-#       ansible.builtin.shell: >
-#         {{ kubeadm_join_command}}
-#       when: hostvars['master'].kubeadm_init.changed
+    - name: Join the Kubernetes cluster
+      ansible.builtin.shell: >
+        {{ kubeadm_join_command}}
+      when: hostvars['master'].kubeadm_init.changed
 
 - hosts: master
   become: true
@@ -226,9 +227,9 @@
     - hosts: master
   become: true
   tasks:
-    - name: Install Kubernetes Dashboard
-      ansible.builtin.shell: |
-        kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+    # - name: Install Kubernetes Dashboard
+    #   ansible.builtin.shell: |
+    #     kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
 
     # - name: Apply Kubernetes Dashboard access
     #   ansible.builtin.shell: |
@@ -239,12 +240,3 @@
         kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/tigera-operator.yaml
         curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/custom-resources.yaml
         kubectl create -f custom-resources.yaml
-
-    - name: Watch Calico pods until ready
-      ansible.builtin.command: watch kubectl get pods -n calico-system
-      async: 300
-      poll: 0
-    
-    - name: Patch FelixConfiguration to enable WireGuard
-      ansible.builtin.shell: |
-        kubectl patch felixconfiguration default --type='merge' -p '{"spec":{"wireguardEnabled":true}}'

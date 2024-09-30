@@ -89,6 +89,18 @@ This playbook will:
 - Join the worker nodes to the master to form the cluster
 - Install the Calico network plugin
 
+>[!IMPORTANT]
+> Run the following command to get permission to access the Kubernetes cluster:
+> ```bash
+> sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
+> ```
+
+
+To enable WireGuard on the nodes, run the following command(wait calico pods to be ready):
+ ```bash
+ kubectl patch felixconfiguration default --type='merge' -p '{"spec":{"wireguardEnabled":true}}'
+ ```
+
 ### 5. Verify the Cluster
 
 Once the playbook has finished running, you can verify the cluster setup by logging into the master node and running the following command:
