@@ -122,6 +122,7 @@
 - hosts: all
   become: true
   tasks:
+
     # - name: Add Kubernetes repository key
     #   ansible.builtin.shell: |
     #     curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
@@ -204,6 +205,7 @@
 - hosts: workers
   become: true
   tasks:
+
     - name: Retrieve kubeadm join token from master
       ansible.builtin.fetch:
         src: /etc/kubernetes/kubeadm_join_command
@@ -224,9 +226,6 @@
   become: true
   tasks:
 
-    - hosts: master
-  become: true
-  tasks:
     # - name: Install Kubernetes Dashboard
     #   ansible.builtin.shell: |
     #     kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
