@@ -172,6 +172,9 @@ After deployment, data can be managed either through the web application or dire
 
   Opens a console in the `web` pod for web application management.
 
+  > [!NOTE]
+  > First time you need to run the command `python3 manage.py createsuperuser` on the web pod
+
 ### ASN.1 Compiler Commands
 
 The ASN.1 compiler is used to create database tables and insert data into Cassandra. Here are the essential commands:
