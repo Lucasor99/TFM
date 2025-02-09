@@ -50,6 +50,10 @@ ul, ol {
     padding-left: 0px;
 }
 
+.row.justify-content-center {
+  margin-right: 0;
+}
+
 .form-group.row {
     display: flex;
     justify-content: center;
