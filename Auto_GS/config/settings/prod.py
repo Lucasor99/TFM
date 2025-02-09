@@ -58,3 +58,21 @@ SECURE_CONTENT_TYPE_NOSNIFF = False
 # Añadir tu url de producción aquí
 CSRF_TRUSTED_ORIGINS = ['http://localhost:30000'] # Cambia esto por tu dirección de producción ejemplo: ['https://example.com']
 
+
+# Password validation
+# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
