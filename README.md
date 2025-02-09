@@ -109,6 +109,9 @@ You should see the master and worker nodes listed, indicating the cluster is run
 
 ## Application Deployment in Kubernetes
 
+>[!WARNING]
+>Before deploying the application, you should create your own custom container image and change it in the deployment files.
+
 To deploy the application within a Kubernetes cluster, use the `auto-gs.py` script. This script automates the deployment process, ensuring that all components are set up correctly. The primary deployment command is:
 
 ### Deployment Command
